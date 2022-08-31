@@ -23,6 +23,7 @@ return new class extends Migration
             $table->unsignedBigInteger('target')->nullable();
             $table->unsignedBigInteger('created_by')->nullable();
             $table->text('notes')->nullable();
+            $table->string('status')->default('active')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

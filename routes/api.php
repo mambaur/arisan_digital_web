@@ -38,3 +38,22 @@ Route::post('/member/store', [MemberController::class, 'store']);
 Route::patch('/member/update/{id}', [MemberController::class, 'update']);
 
 Route::delete('/member/delete/{id}', [MemberController::class, 'destroy']);
+
+/*
+|--------------------------------------------------------------------------
+| Groups Routes
+|--------------------------------------------------------------------------
+|
+| Manage grouops data API
+|
+*/
+
+Route::get('/groups', [GroupController::class, 'index']);
+
+Route::get('/group/{id}', [GroupController::class, 'show']);
+
+Route::post('/group/store', [GroupController::class, 'store']);
+
+Route::patch('/group/update/{id}', [GroupController::class, 'update']);
+
+Route::delete('/group/delete/{id}', [GroupController::class, 'destroy']);

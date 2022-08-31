@@ -3,26 +3,35 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
-use App\Models\Member;
+use App\Models\Group;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
-class MemberController extends Controller
+class GroupController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
+     * @param  int  $id => User ID
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($id)
     {
-        $members = Member::all();
-
-        return response()->json([
-            "status" => "success",
-            "message" => "Get data members success.",
-            "data" => $members
-        ], 200);
+        $groups = Group::where('created_by', $id)->latest()->paginate(10);
+        $data = [];
+        foreach ($groups as $item) {
+            $data[] = [
+                'id' => $item->id,
+                'name' => $item->name,
+                'code' => $item->code,
+                'periods_type' => $item->periods_type,
+                'periods_date' => $item->periods_date,
+                'dues' => $item->dues,
+                'target' => $item->target,
+                'notes' => $item->notes,
+                'status' => $item->status,
+            ];
+        }
     }
 
     /**
@@ -33,9 +42,13 @@ class MemberController extends Controller
      */
     public function store(Request $request)
     {
+
         $validate = Validator::make($request->all(), [
             'name' => 'required',
-            'group_id' => 'required',
+            'created_by' => 'required',
+            'dues' => 'required',
+            'periods_type' => 'required',
+            'periods_date' => 'required',
         ]);
 
         if ($validate->fails()) {
@@ -49,58 +62,58 @@ class MemberController extends Controller
             );
         }
 
-        Member::create([
-            "group_id" => $request->group_id,
+        Group::create([
             "name" => $request->name,
-            "no_telp" => $request->no_telp,
-            "no_whatsapp" => $request->no_whatsapp,
-            "email" => $request->email,
-            // "date_paid" => $request->date_paid,
-            "status_paid" => 'unpaid',
-            // "nominal_paid" => $request->nominal_paid,
-            "status_active" => 'active',
+            "code" => 'bycript by id',
+            "periods_type" => $request->periods_type,
+            "periods_date" => $request->periods_date,
+            "dues" => $request->dues,
+            "target" => $request->target,
+            "created_by" => $request->created_by,
+            "notes" => $request->notes,
         ]);
 
         return response()->json([
             "status" => "success",
-            "message" => "Member baru berhasil ditambahkan.",
+            "message" => "Group baru berhasil ditambahkan.",
         ], 201);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  int  $id => Group ID
      * @return \Illuminate\Http\Response
      */
     public function show($id)
     {
-        $member = Member::find($id);
-        if (!$member) {
+        $group = Group::find($id);
+        if (!$group) {
             return response()->json(
                 [
                     'status' => 'failed',
-                    'message' => 'Data anggota tidak ditemukan.',
+                    'message' => 'Data group tidak ditemukan.',
                 ],
                 200
             );
         }
 
+        $data = [
+            'id' => $group->id,
+            'name' => $group->name,
+            'code' => $group->code,
+            'periods_type' => $group->periods_type,
+            'periods_date' => $group->periods_date,
+            'dues' => $group->dues,
+            'target' => $group->target,
+            'notes' => $group->notes,
+            'status' => $group->status,
+        ];
+
         return response()->json([
             "status" => "success",
-            "message" => "Get data member detail success.",
-            "data" => [
-                "id" => $id,
-                "group_id" => $member->group_id,
-                "name" => $member->name,
-                "no_telp" => $member->no_telp,
-                "no_whatsapp" => $member->no_whatsapp,
-                "email" => $member->email,
-                "date_paid" => $member->date_paid,
-                "status_paid" => $member->status_paid,
-                "nominal_paid" => $member->nominal_paid,
-                "status_active" => $member->status_active,
-            ]
+            "message" => "Data group berhasil didapatkan.",
+            "data" => $data
         ], 200);
     }
 
@@ -115,6 +128,9 @@ class MemberController extends Controller
     {
         $validate = Validator::make($request->all(), [
             'name' => 'required',
+            'dues' => 'required',
+            'periods_type' => 'required',
+            'periods_date' => 'required',
         ]);
 
         if ($validate->fails()) {
@@ -128,54 +144,56 @@ class MemberController extends Controller
             );
         }
 
-        $member = Member::find($id);
-        if (!$member) {
+        $group = Group::find($id);
+        if (!$group) {
             return response()->json(
                 [
                     'status' => 'failed',
-                    'message' => 'Data anggota tidak ditemukan.',
+                    'message' => 'Data group tidak ditemukan.',
                 ],
                 200
             );
         }
 
-        $member->update([
+        $group->update([
             "name" => $request->name,
-            "no_telp" => $request->no_telp,
-            "no_whatsapp" => $request->no_whatsapp,
-            "email" => $request->email,
+            "periods_type" => $request->periods_type,
+            "periods_date" => $request->periods_date,
+            "dues" => $request->dues,
+            "target" => $request->target,
+            "notes" => $request->notes,
         ]);
 
         return response()->json([
             "status" => "success",
-            "message" => "Data anggota berhasil diupdate.",
+            "message" => "Data group berhasil diupdate.",
         ], 201);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  int  $id => Group ID
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
     {
-        $member = Member::find($id);
-        if (!$member) {
+        $group = Group::find($id);
+        if (!$group) {
             return response()->json(
                 [
                     'status' => 'failed',
-                    'message' => 'Data anggota tidak ditemukan.',
+                    'message' => 'Data group tidak ditemukan.',
                 ],
                 200
             );
         }
 
-        $member = Member::destroy($id);
+        $group = Group::destroy($id);
 
         return response()->json([
             "status" => "success",
-            "message" => "Anggota berhasil dihapus.",
+            "message" => "Group berhasil dihapus.",
         ], 200);
     }
 }
