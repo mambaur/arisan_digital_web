@@ -11,4 +11,9 @@ class ArisanHistoryDetail extends Model
     use HasFactory, SoftDeletes;
 
     protected $guarded = [];
+
+    public function member()
+    {
+        return $this->belongsTo(Member::class, 'member_id');
+    }
 }

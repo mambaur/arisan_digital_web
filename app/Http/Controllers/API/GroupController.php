@@ -32,6 +32,12 @@ class GroupController extends Controller
                 'status' => $item->status,
             ];
         }
+
+        return response()->json([
+            "status" => "success",
+            "message" => "Data group berhasil didapatkan.",
+            "data" => $groups
+        ], 200);
     }
 
     /**
@@ -42,7 +48,6 @@ class GroupController extends Controller
      */
     public function store(Request $request)
     {
-
         $validate = Validator::make($request->all(), [
             'name' => 'required',
             'created_by' => 'required',
@@ -108,6 +113,7 @@ class GroupController extends Controller
             'target' => $group->target,
             'notes' => $group->notes,
             'status' => $group->status,
+            'created_at' => $group->created_at->format('Y-m-d')
         ];
 
         return response()->json([
@@ -167,6 +173,96 @@ class GroupController extends Controller
         return response()->json([
             "status" => "success",
             "message" => "Data group berhasil diupdate.",
+        ], 201);
+    }
+
+    /**
+     * Update status the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function updateStatus(Request $request, $id)
+    {
+        $validate = Validator::make($request->all(), [
+            'status' => 'required',
+        ]);
+
+        if ($validate->fails()) {
+            $error = $validate->errors()->first();
+            return response()->json(
+                [
+                    'status' => 'failed',
+                    'message' => $error,
+                ],
+                200
+            );
+        }
+
+        $group = Group::find($id);
+        if (!$group) {
+            return response()->json(
+                [
+                    'status' => 'failed',
+                    'message' => 'Data group tidak ditemukan.',
+                ],
+                200
+            );
+        }
+
+        $group->update([
+            "status" => $request->status,
+        ]);
+
+        return response()->json([
+            "status" => "success",
+            "message" => "Status group berhasil diupdate.",
+        ], 201);
+    }
+
+    /**
+     * Update notes the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function updateNotes(Request $request, $id)
+    {
+        $validate = Validator::make($request->all(), [
+            'notes' => 'required',
+        ]);
+
+        if ($validate->fails()) {
+            $error = $validate->errors()->first();
+            return response()->json(
+                [
+                    'status' => 'failed',
+                    'message' => $error,
+                ],
+                200
+            );
+        }
+
+        $group = Group::find($id);
+        if (!$group) {
+            return response()->json(
+                [
+                    'status' => 'failed',
+                    'message' => 'Data group tidak ditemukan.',
+                ],
+                200
+            );
+        }
+
+        $group->update([
+            "notes" => $request->notes,
+        ]);
+
+        return response()->json([
+            "status" => "success",
+            "message" => "Catatan group berhasil diupdate.",
         ], 201);
     }
 

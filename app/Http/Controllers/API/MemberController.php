@@ -16,7 +16,7 @@ class MemberController extends Controller
      */
     public function index()
     {
-        $members = Member::all();
+        $members = Member::latest()->paginate(10);
 
         return response()->json([
             "status" => "success",
@@ -149,6 +149,87 @@ class MemberController extends Controller
         return response()->json([
             "status" => "success",
             "message" => "Data anggota berhasil diupdate.",
+        ], 201);
+    }
+
+    /**
+     * Update status paid the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function updateStatusPaid(Request $request, $id)
+    {
+        $validate = Validator::make($request->all(), [
+            'date_paid' => 'required',
+            'status_paid' => 'required',
+            'nominal_paid' => 'required',
+        ]);
+
+        if ($validate->fails()) {
+            $error = $validate->errors()->first();
+            return response()->json(
+                [
+                    'status' => 'failed',
+                    'message' => $error,
+                ],
+                200
+            );
+        }
+
+        $member = Member::find($id);
+        if (!$member) {
+            return response()->json(
+                [
+                    'status' => 'failed',
+                    'message' => 'Data anggota tidak ditemukan.',
+                ],
+                200
+            );
+        }
+
+        $member->update([
+            "date_paid" => $request->date_paid,
+            "status_paid" => $request->status_paid,
+            "nominal_paid" => $request->nominal_paid,
+        ]);
+
+        return response()->json([
+            "status" => "success",
+            "message" => "Status anggota berhasil diupdate.",
+        ], 201);
+    }
+
+    /**
+     * Reset status paid the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function resetStatusPaid(Request $request, $id)
+    {
+        $member = Member::find($id);
+        if (!$member) {
+            return response()->json(
+                [
+                    'status' => 'failed',
+                    'message' => 'Data anggota tidak ditemukan.',
+                ],
+                200
+            );
+        }
+
+        $member->update([
+            "date_paid" => null,
+            "status_paid" => 'unpaid',
+            "nominal_paid" => null,
+        ]);
+
+        return response()->json([
+            "status" => "success",
+            "message" => "Status anggota berhasil direset.",
         ], 201);
     }
 
