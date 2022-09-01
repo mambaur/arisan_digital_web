@@ -91,7 +91,17 @@ class MemberController extends Controller
             "message" => "Get data member detail success.",
             "data" => [
                 "id" => $id,
-                "group_id" => $member->group_id,
+                "group" => [
+                    "id" => $member->group->id,
+                    "name" => $member->group->name,
+                    'code' => $member->group->code,
+                    'periods_type' => $member->group->periods_type,
+                    'periods_date' => $member->group->periods_date,
+                    'dues' => $member->group->dues,
+                    'target' => $member->group->target,
+                    'notes' => $member->group->notes,
+                    'status' => $member->group->status,
+                ],
                 "name" => $member->name,
                 "no_telp" => $member->no_telp,
                 "no_whatsapp" => $member->no_whatsapp,

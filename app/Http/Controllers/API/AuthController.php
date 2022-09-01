@@ -40,7 +40,18 @@ class AuthController extends Controller
         }
 
         $user = User::where('email', $request->email)->first();
-        if(!$user){
+        
+        if($user){
+            if($user->google_id != $request->google_id){
+                return response()->json(
+                    [
+                        'status' => 'failed',
+                        'message' => 'Login gagal, data kredensial akun anda tidak cocok.'
+                    ],
+                    200
+                );
+            }
+        }else{
             // Register User
             $user = User::create([
                 "google_id" => $request->google_id,
