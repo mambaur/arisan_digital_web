@@ -218,7 +218,7 @@ class MemberController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function resetStatusPaid(Request $request, $id)
+    public function resetStatusPaid($id)
     {
         $member = Member::find($id);
         if (!$member) {

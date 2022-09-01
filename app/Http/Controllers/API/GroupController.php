@@ -4,7 +4,9 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Models\Group;
+use App\Models\Member;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
 class GroupController extends Controller
@@ -36,7 +38,38 @@ class GroupController extends Controller
         return response()->json([
             "status" => "success",
             "message" => "Data group berhasil didapatkan.",
-            "data" => $groups
+            "data" => $data
+        ], 200);
+    }
+
+    /**
+     * Display a memberGroup of the resource.
+     *
+     * @param  int  $id => Group ID
+     * @return \Illuminate\Http\Response
+     */
+    public function memberGroup($id)
+    {
+        $members = Member::where('group_id', $id)->orderBy('name', 'asc')->paginate(10);
+        $data = [];
+        foreach ($members as $item) {
+            $data[] = [
+                "id" => $item->id,
+                "name" => $item->name,
+                "no_telp" => $item->no_telp,
+                "no_whatsapp" => $item->no_whatsapp,
+                "email" => $item->email,
+                "date_paid" => $item->date_paid,
+                "status_paid" => $item->status_paid,
+                "nominal_paid" => $item->nominal_paid,
+                "status_active" => $item->status_active,
+            ];
+        }
+
+        return response()->json([
+            "status" => "success",
+            "message" => "Data member group berhasil didapatkan.",
+            "data" => $data
         ], 200);
     }
 
@@ -67,14 +100,16 @@ class GroupController extends Controller
             );
         }
 
+        $code = Hash::make(time() . $request->name . $request->user()->id);
+
         Group::create([
             "name" => $request->name,
-            "code" => 'bycript by id',
+            "code" => $code,
             "periods_type" => $request->periods_type,
             "periods_date" => $request->periods_date,
             "dues" => $request->dues,
             "target" => $request->target,
-            "created_by" => $request->created_by,
+            "created_by" => $request->user()->id,
             "notes" => $request->notes,
         ]);
 

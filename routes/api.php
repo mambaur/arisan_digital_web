@@ -22,7 +22,7 @@ use Illuminate\Support\Facades\Route;
 // });
 
 
-Route::get('/login', [AuthController::class, 'login']);
+Route::post('/login', [AuthController::class, 'login']);
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
 
@@ -36,9 +36,9 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     */
 
     Route::get('/user', [AuthController::class, 'show']);
-    
+
     Route::get('/logout', [AuthController::class, 'logout']);
-    
+
     /*
     |--------------------------------------------------------------------------
     | Members Routes
@@ -75,6 +75,8 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
     Route::get('/group/{id}', [GroupController::class, 'show']);
 
+    Route::get('/group/members/{id}', [GroupController::class, 'memberGroup']);
+
     Route::post('/group/store', [GroupController::class, 'store']);
 
     Route::patch('/group/update/{id}', [GroupController::class, 'update']);
@@ -101,5 +103,4 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('/arisan-history/store', [ArisanHistoryController::class, 'store']);
 
     Route::post('/arisan-history/delete/{id}', [ArisanHistoryController::class, 'destroy']);
-
 });

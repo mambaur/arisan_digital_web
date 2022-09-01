@@ -25,7 +25,7 @@ class ArisanHistoryController extends Controller
         foreach ($arisan_histories as $item) {
             $history_details = [];
             foreach ($item->arisan_history_details as $row) {
-                $history_details[] =[
+                $history_details[] = [
                     "id" => $row->id,
                     "member" => [
                         "id" => $row->member->id,
@@ -103,6 +103,12 @@ class ArisanHistoryController extends Controller
                 "nominal_paid" => $item->nominal_paid,
                 "date_paid" => $item->date_paid
             ]);
+
+            $item->update([
+                "date_paid" => null,
+                "status_paid" => 'unpaid',
+                "nominal_paid" => null,
+            ]);
         }
 
         DB::commit();
@@ -134,7 +140,7 @@ class ArisanHistoryController extends Controller
 
         $history_details = [];
         foreach ($arisan_history->arisan_history_details as $row) {
-            $history_details[] =[
+            $history_details[] = [
                 "id" => $row->id,
                 "member" => [
                     "id" => $row->member->id,

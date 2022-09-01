@@ -21,13 +21,13 @@ class AuthController extends Controller
         $validator = Validator::make(
             $request->all(),
             [
-              'email' => 'required|email',
-              'name' => 'required',
-              'google_id' => 'required',
-              'device_name' => 'required',
+                'email' => 'required|email',
+                'name' => 'required',
+                'google_id' => 'required',
+                'device_name' => 'required',
             ]
         );
-      
+
         if ($validator->fails()) {
             $error = $validator->errors()->first();
             return response()->json(
@@ -40,9 +40,9 @@ class AuthController extends Controller
         }
 
         $user = User::where('email', $request->email)->first();
-        
-        if($user){
-            if($user->google_id != $request->google_id){
+
+        if ($user) {
+            if ($user->google_id != $request->google_id) {
                 return response()->json(
                     [
                         'status' => 'failed',
@@ -51,7 +51,7 @@ class AuthController extends Controller
                     200
                 );
             }
-        }else{
+        } else {
             // Register User
             $user = User::create([
                 "google_id" => $request->google_id,
@@ -74,7 +74,7 @@ class AuthController extends Controller
             200
         );
     }
-    
+
     /**
      * Display the specified resource.
      *
