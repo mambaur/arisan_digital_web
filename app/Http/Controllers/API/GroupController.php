@@ -83,7 +83,6 @@ class GroupController extends Controller
     {
         $validate = Validator::make($request->all(), [
             'name' => 'required',
-            'created_by' => 'required',
             'dues' => 'required',
             'periods_type' => 'required',
             'periods_date' => 'required',
@@ -116,7 +115,7 @@ class GroupController extends Controller
         return response()->json([
             "status" => "success",
             "message" => "Group baru berhasil ditambahkan.",
-        ], 201);
+        ], 200);
     }
 
     /**
