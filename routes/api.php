@@ -71,7 +71,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     |
     */
 
-    Route::get('/groups/{id}', [GroupController::class, 'index']);
+    Route::get('/groups', [GroupController::class, 'index']);
 
     Route::get('/group/{id}', [GroupController::class, 'show']);
 

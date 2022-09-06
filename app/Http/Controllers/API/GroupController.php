@@ -17,9 +17,9 @@ class GroupController extends Controller
      * @param  int  $id => User ID
      * @return \Illuminate\Http\Response
      */
-    public function index($id)
+    public function index(Request $request)
     {
-        $groups = Group::where('created_by', $id)->latest()->paginate(10);
+        $groups = Group::where('created_by', $request->user()->id)->latest()->paginate(10);
         $data = [];
         foreach ($groups as $item) {
             $data[] = [
