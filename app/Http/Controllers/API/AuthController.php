@@ -51,12 +51,23 @@ class AuthController extends Controller
                     200
                 );
             }
+
+            if ($user->name != $request->name) {
+                $user->name = $request->name;
+                $user->save();
+            }
+
+            if ($user->photo_url != $request->photo_url) {
+                $user->photo_url = $request->photo_url;
+                $user->save();
+            }
         } else {
             // Register User
             $user = User::create([
                 "google_id" => $request->google_id,
                 "name" => $request->name,
                 "email" => $request->email,
+                "photo_url" => $request->photo_url,
                 "password" => Hash::make("12345")
             ]);
         }
@@ -91,6 +102,7 @@ class AuthController extends Controller
                     "id" => $request->user()->id,
                     "name" => $request->user()->name,
                     "email" => $request->user()->email,
+                    "photo_url" => $request->user()->photo_url,
                 ]
             ], 200);
         }
