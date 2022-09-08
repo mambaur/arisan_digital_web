@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Group;
 use App\Models\Member;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
@@ -19,19 +20,30 @@ class GroupController extends Controller
      */
     public function index(Request $request)
     {
-        $groups = Group::where('created_by', $request->user()->id)->latest()->paginate(10);
+        $groups = Group::where('created_by', $request->user()->id)->latest()->get();
         $data = [];
         foreach ($groups as $item) {
+            $total_balance = $this->totalBalanceArisan($item);
+
+            $last_paid_members = Member::where('group_id', $item->id)->whereNotNull('nominal_paid')->latest()->limit(3)->get();
+
+            $total_targets = count($item->members) * $item->dues;
+            $total_not_dues = $total_targets - $total_balance;
+
+
             $data[] = [
                 'id' => $item->id,
                 'name' => $item->name,
                 'code' => $item->code,
                 'periods_type' => $item->periods_type,
-                'periods_date' => $item->periods_date,
+                'periods_date' => $item->periods_date->format('d F Y'),
                 'dues' => $item->dues,
                 'target' => $item->target,
                 'notes' => $item->notes,
                 'status' => $item->status,
+                'total_balance' => $total_balance,
+                'total_not_dues' => $total_not_dues,
+                'last_paid_members' => $last_paid_members
             ];
         }
 
@@ -40,6 +52,16 @@ class GroupController extends Controller
             "message" => "Data group berhasil didapatkan.",
             "data" => $data
         ], 200);
+    }
+
+    private function totalBalanceArisan(Group $group)
+    {
+        $total = 0;
+        foreach ($group->members as $item) {
+            $total += $item->nominal_paid;
+        }
+
+        return $total;
     }
 
     /**
@@ -99,11 +121,12 @@ class GroupController extends Controller
             );
         }
 
-        $code = Hash::make(time() . $request->name . $request->user()->id);
+        
+        DB::beginTransaction();
 
-        Group::create([
+        $group = Group::create([
             "name" => $request->name,
-            "code" => $code,
+            "code" => "_",
             "periods_type" => $request->periods_type,
             "periods_date" => $request->periods_date,
             "dues" => $request->dues,
@@ -112,9 +135,22 @@ class GroupController extends Controller
             "notes" => $request->notes,
         ]);
 
+        $group->code = $group->id.$request->code;
+        $group->save();
+
+        Member::create([
+            "group_id" => $group->id,
+            "name" => $request->user()->name,
+            "email" => $request->user()->email,
+            "status_paid" => 'unpaid',
+            "status_active" => 'active',
+        ]);
+
+        DB::commit();
+
         return response()->json([
             "status" => "success",
-            "message" => "Group baru berhasil ditambahkan.",
+            "message" => "Group $request->name berhasil ditambahkan.",
         ], 200);
     }
 
@@ -319,7 +355,13 @@ class GroupController extends Controller
             );
         }
 
+        DB::beginTransaction();
+
+        Member::where('group_id', $id)->delete();
+
         $group = Group::destroy($id);
+
+        DB::commit();
 
         return response()->json([
             "status" => "success",

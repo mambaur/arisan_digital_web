@@ -11,4 +11,11 @@ class Group extends Model
     use HasFactory, SoftDeletes;
 
     protected $guarded = [];
+
+    protected $dates = ['periods_date'];
+
+    public function members()
+    {
+        return $this->hasMany(Member::class, 'group_id');
+    }
 }
