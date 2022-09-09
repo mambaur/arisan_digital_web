@@ -85,6 +85,8 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
     Route::patch('/group/update/notes/{id}', [GroupController::class, 'updateNotes']);
 
+    Route::patch('/group/update/periods-date/{id}', [GroupController::class, 'updatePeriodsDate']);
+
     Route::delete('/group/delete/{id}', [GroupController::class, 'destroy']);
 
     /*

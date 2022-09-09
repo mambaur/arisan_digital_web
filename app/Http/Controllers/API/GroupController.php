@@ -36,7 +36,8 @@ class GroupController extends Controller
                 'name' => $item->name,
                 'code' => $item->code,
                 'periods_type' => $item->periods_type,
-                'periods_date' => $item->periods_date->format('d F Y'),
+                'periods_date' => $item->periods_date->format('Y-m-d'),
+                'periods_date_en' => $item->periods_date->format('d F Y'),
                 'dues' => $item->dues,
                 'target' => $item->target,
                 'notes' => $item->notes,
@@ -121,7 +122,7 @@ class GroupController extends Controller
             );
         }
 
-        
+
         DB::beginTransaction();
 
         $group = Group::create([
@@ -135,7 +136,7 @@ class GroupController extends Controller
             "notes" => $request->notes,
         ]);
 
-        $group->code = $group->id.$request->code;
+        $group->code = $group->id . $request->code;
         $group->save();
 
         Member::create([
@@ -333,6 +334,51 @@ class GroupController extends Controller
         return response()->json([
             "status" => "success",
             "message" => "Catatan group berhasil diupdate.",
+        ], 201);
+    }
+
+    /**
+     * Update notes the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function updatePeriodsDate(Request $request, $id)
+    {
+        $validate = Validator::make($request->all(), [
+            'periods_date' => 'required',
+        ]);
+
+        if ($validate->fails()) {
+            $error = $validate->errors()->first();
+            return response()->json(
+                [
+                    'status' => 'failed',
+                    'message' => $error,
+                ],
+                200
+            );
+        }
+
+        $group = Group::find($id);
+        if (!$group) {
+            return response()->json(
+                [
+                    'status' => 'failed',
+                    'message' => 'Data group tidak ditemukan.',
+                ],
+                200
+            );
+        }
+
+        $group->update([
+            "periods_date" => $request->periods_date,
+        ]);
+
+        return response()->json([
+            "status" => "success",
+            "message" => "Tanggal kocok group arisan berhasil diupdate.",
         ], 201);
     }
 
