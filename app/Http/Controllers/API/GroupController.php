@@ -72,7 +72,7 @@ class GroupController extends Controller
      * @param  int  $id => Group ID
      * @return \Illuminate\Http\Response
      */
-    public function memberGroup($id)
+    public function memberGroup(Request $request, $id)
     {
         $members = Member::where('group_id', $id)->orderBy('name', 'asc')->paginate(10);
         $data = [];
@@ -87,6 +87,7 @@ class GroupController extends Controller
                 "status_paid" => $item->status_paid,
                 "nominal_paid" => $item->nominal_paid,
                 "status_active" => $item->status_active,
+                "can_delete" => $item->is_owner ? false : true
             ];
         }
 
@@ -146,6 +147,7 @@ class GroupController extends Controller
             "email" => $request->user()->email,
             "status_paid" => 'unpaid',
             "status_active" => 'active',
+            "is_owner" => true
         ]);
 
         DB::commit();
