@@ -42,6 +42,7 @@ class GroupController extends Controller
                 'target' => $item->target,
                 'notes' => $item->notes,
                 'status' => $item->status,
+                'created_by' => $item->created_by,
                 'total_balance' => $total_balance,
                 'total_not_dues' => $total_not_dues,
                 'last_paid_members' => $last_paid_members
