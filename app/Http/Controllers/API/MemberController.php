@@ -64,7 +64,7 @@ class MemberController extends Controller
         return response()->json([
             "status" => "success",
             "message" => "Member baru berhasil ditambahkan.",
-        ], 201);
+        ], 200);
     }
 
     /**
@@ -159,7 +159,7 @@ class MemberController extends Controller
         return response()->json([
             "status" => "success",
             "message" => "Data anggota berhasil diupdate.",
-        ], 201);
+        ], 200);
     }
 
     /**
@@ -172,9 +172,9 @@ class MemberController extends Controller
     public function updateStatusPaid(Request $request, $id)
     {
         $validate = Validator::make($request->all(), [
-            'date_paid' => 'required',
+            // 'date_paid' => 'required',
             'status_paid' => 'required',
-            'nominal_paid' => 'required',
+            // 'nominal_paid' => 'required',
         ]);
 
         if ($validate->fails()) {
@@ -202,13 +202,58 @@ class MemberController extends Controller
         $member->update([
             "date_paid" => $request->date_paid,
             "status_paid" => $request->status_paid,
-            "nominal_paid" => $request->nominal_paid,
+            // "nominal_paid" => $request->nominal_paid,
         ]);
 
         return response()->json([
             "status" => "success",
             "message" => "Status anggota berhasil diupdate.",
-        ], 201);
+        ], 200);
+    }
+
+    /**
+     * Update status paid the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function updateStatusActive(Request $request, $id)
+    {
+        $validate = Validator::make($request->all(), [
+            'status_active' => 'required',
+        ]);
+
+        if ($validate->fails()) {
+            $error = $validate->errors()->first();
+            return response()->json(
+                [
+                    'status' => 'failed',
+                    'message' => $error,
+                ],
+                200
+            );
+        }
+
+        $member = Member::find($id);
+        if (!$member) {
+            return response()->json(
+                [
+                    'status' => 'failed',
+                    'message' => 'Data anggota tidak ditemukan.',
+                ],
+                200
+            );
+        }
+
+        $member->update([
+            "status_active" => $request->status_active,
+        ]);
+
+        return response()->json([
+            "status" => "success",
+            "message" => "Status aktif anggota berhasil diupdate.",
+        ], 200);
     }
 
     /**
@@ -240,7 +285,7 @@ class MemberController extends Controller
         return response()->json([
             "status" => "success",
             "message" => "Status anggota berhasil direset.",
-        ], 201);
+        ], 200);
     }
 
     /**

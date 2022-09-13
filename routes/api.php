@@ -56,6 +56,8 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
     Route::patch('/member/update/{id}', [MemberController::class, 'update']);
 
+    Route::patch('/member/update/status-active/{id}', [MemberController::class, 'updateStatusActive']);
+
     Route::patch('/member/update/status-paid/{id}', [MemberController::class, 'updateStatusPaid']);
 
     Route::patch('/member/reset/status-paid/{id}', [MemberController::class, 'resetStatusPaid']);
