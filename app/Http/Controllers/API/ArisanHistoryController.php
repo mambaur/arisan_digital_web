@@ -94,6 +94,10 @@ class ArisanHistoryController extends Controller
             "notes" => $request->notes
         ]);
 
+        Member::find($request->member_id)->update([
+            'is_get_reward' => 1
+        ]);
+
         $members = Member::where('group_id', $arisan_history->group_id)->get();
         foreach ($members as $item) {
             ArisanHistoryDetail::create([
@@ -115,8 +119,8 @@ class ArisanHistoryController extends Controller
 
         return response()->json([
             "status" => "success",
-            "message" => "Group baru berhasil ditambahkan.",
-        ], 201);
+            "message" => "Hasil pemenang arisan berhasil disimpan.",
+        ], 200);
     }
 
     /**

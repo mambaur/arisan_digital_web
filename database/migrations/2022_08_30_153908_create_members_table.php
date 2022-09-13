@@ -24,6 +24,7 @@ return new class extends Migration
             $table->string('status_paid')->comment('skip, cancel, paid, unpaid')->nullable();
             $table->unsignedBigInteger('nominal_paid')->nullable();
             $table->string('status_active');
+            $table->boolean('is_get_reward')->nullable()->default(0);
             $table->boolean('is_owner')->nullable()->default(0);
             $table->timestamps();
             $table->softDeletes();

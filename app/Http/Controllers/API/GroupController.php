@@ -25,11 +25,15 @@ class GroupController extends Controller
         foreach ($groups as $item) {
             $total_balance = $this->totalBalanceArisan($item);
 
-            $last_paid_members = Member::where('group_id', $item->id)->whereNotNull('nominal_paid')->latest()->limit(3)->get();
+            $last_paid_members = Member::where('group_id', $item->id)->where('status_paid', 'paid')->latest()->limit(3)->get();
+
+            $members = Member::where('group_id', $item->id)->where('is_get_reward', 0)->latest()->get();
 
             $total_targets = count($item->members) * $item->dues;
             $total_not_dues = $total_targets - $total_balance;
 
+            $unpaid_member = Member::whereNull('date_paid')->first();
+            $get_reward = Member::where('is_get_reward', 0)->first();
 
             $data[] = [
                 'id' => $item->id,
@@ -45,7 +49,9 @@ class GroupController extends Controller
                 'created_by' => $item->created_by,
                 'total_balance' => $total_balance,
                 'total_not_dues' => $total_not_dues,
-                'last_paid_members' => $last_paid_members
+                'last_paid_members' => $last_paid_members,
+                'members' => $members,
+                'is_shuffle' => $unpaid_member ? false : ($get_reward ? true : false)
             ];
         }
 
@@ -60,7 +66,9 @@ class GroupController extends Controller
     {
         $total = 0;
         foreach ($group->members as $item) {
-            $total += $item->nominal_paid;
+            if ($item->status_paid == 'paid') {
+                $total += $group->dues;
+            }
         }
 
         return $total;
@@ -87,7 +95,8 @@ class GroupController extends Controller
                 "status_paid" => $item->status_paid,
                 "nominal_paid" => $item->nominal_paid,
                 "status_active" => $item->status_active,
-                "can_delete" => $item->is_owner ? false : true
+                "can_delete" => $item->is_owner ? false : true,
+                "is_get_reward" => $item->is_get_reward
             ];
         }
 
@@ -247,7 +256,7 @@ class GroupController extends Controller
         return response()->json([
             "status" => "success",
             "message" => "Data group berhasil diupdate.",
-        ], 201);
+        ], 200);
     }
 
     /**
@@ -292,7 +301,7 @@ class GroupController extends Controller
         return response()->json([
             "status" => "success",
             "message" => "Status group berhasil diupdate.",
-        ], 201);
+        ], 200);
     }
 
     /**
@@ -337,7 +346,7 @@ class GroupController extends Controller
         return response()->json([
             "status" => "success",
             "message" => "Catatan group berhasil diupdate.",
-        ], 201);
+        ], 200);
     }
 
     /**
@@ -382,7 +391,7 @@ class GroupController extends Controller
         return response()->json([
             "status" => "success",
             "message" => "Tanggal kocok group arisan berhasil diupdate.",
-        ], 201);
+        ], 200);
     }
 
     /**
