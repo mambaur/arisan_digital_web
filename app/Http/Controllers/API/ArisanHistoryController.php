@@ -20,18 +20,18 @@ class ArisanHistoryController extends Controller
      */
     public function index($id)
     {
-        $arisan_histories = ArisanHistory::where('group_id', $id)->latest()->paginate(10);
+        $arisan_histories = ArisanHistory::where('group_id', $id)->latest()->get();
         $data = [];
         foreach ($arisan_histories as $item) {
             $history_details = [];
-            foreach ($item->arisan_history_details as $row) {
+            foreach ($item->arisanHistoryDetails as $row) {
                 $history_details[] = [
                     "id" => $row->id,
                     "member" => [
                         "id" => $row->member->id,
                         "name" => $row->member->name,
                         "no_telp" => $row->member->no_telp,
-                        "email" => $$row->member->email
+                        "email" => $row->member->email
                     ],
                     "status_paid" => $row->status_paid,
                     "nominal_paid" => $row->nominal_paid,
@@ -45,7 +45,7 @@ class ArisanHistoryController extends Controller
                     "id" => $item->member->id,
                     "name" => $item->member->name,
                     "no_telp" => $item->member->no_telp,
-                    "email" => $$item->member->email
+                    "email" => $item->member->email
                 ],
                 "date" => $item->date,
                 "notes" => $item->notes,
@@ -150,7 +150,7 @@ class ArisanHistoryController extends Controller
                     "id" => $row->member->id,
                     "name" => $row->member->name,
                     "no_telp" => $row->member->no_telp,
-                    "email" => $$row->member->email
+                    "email" => $row->member->email
                 ],
                 "status_paid" => $row->status_paid,
                 "nominal_paid" => $row->nominal_paid,
@@ -164,7 +164,7 @@ class ArisanHistoryController extends Controller
                 "id" => $arisan_history->member->id,
                 "name" => $arisan_history->member->name,
                 "no_telp" => $arisan_history->member->no_telp,
-                "email" => $$arisan_history->member->email
+                "email" => $arisan_history->member->email
             ],
             "date" => $arisan_history->date,
             "notes" => $arisan_history->notes,
