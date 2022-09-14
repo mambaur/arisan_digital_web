@@ -35,7 +35,7 @@ class ArisanHistoryController extends Controller
                     ],
                     "status_paid" => $row->status_paid,
                     "nominal_paid" => $row->nominal_paid,
-                    "date_paid" => $row->date_paid
+                    "date_paid" => $row->date_paid->format('d F Y')
                 ];
             }
 
@@ -47,7 +47,7 @@ class ArisanHistoryController extends Controller
                     "no_telp" => $item->member->no_telp,
                     "email" => $item->member->email
                 ],
-                "date" => $item->date,
+                "date" => $item->date->format('d F Y'),
                 "notes" => $item->notes,
                 "arisan_history_details" => $history_details
             ];
@@ -103,6 +103,7 @@ class ArisanHistoryController extends Controller
             ArisanHistoryDetail::create([
                 "arisan_history_id" => $arisan_history->id,
                 "member_id" => $item->id,
+                "status_active" => $item->status_active,
                 "status_paid" => $item->status_paid,
                 "nominal_paid" => $item->nominal_paid,
                 "date_paid" => $item->date_paid
@@ -153,8 +154,9 @@ class ArisanHistoryController extends Controller
                     "email" => $row->member->email
                 ],
                 "status_paid" => $row->status_paid,
+                "status_active" => $row->status_active,
                 "nominal_paid" => $row->nominal_paid,
-                "date_paid" => $row->date_paid
+                "date_paid" => $row->date_paid->format('d F Y')
             ];
         }
 
@@ -166,7 +168,7 @@ class ArisanHistoryController extends Controller
                 "no_telp" => $arisan_history->member->no_telp,
                 "email" => $arisan_history->member->email
             ],
-            "date" => $arisan_history->date,
+            "date" => $arisan_history->date->format('d F Y'),
             "notes" => $arisan_history->notes,
             "arisan_history_details" => $history_details
         ];

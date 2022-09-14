@@ -12,6 +12,8 @@ class ArisanHistoryDetail extends Model
 
     protected $guarded = [];
 
+    protected $dates = ['date_paid'];
+
     public function member()
     {
         return $this->belongsTo(Member::class, 'member_id');

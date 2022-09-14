@@ -19,6 +19,7 @@ return new class extends Migration
             $table->unsignedBigInteger('member_id')->nullable();
             $table->date('date_paid')->nullable();
             $table->string('status_paid')->comment('skip, cancel, paid, unpaid')->nullable();
+            $table->string('status_active')->comment('active, inactive')->nullable();
             $table->unsignedBigInteger('nominal_paid')->nullable();
             $table->timestamps();
             $table->softDeletes();
