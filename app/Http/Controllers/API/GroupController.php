@@ -32,8 +32,8 @@ class GroupController extends Controller
             $total_targets = count($item->members) * $item->dues;
             $total_not_dues = $total_targets - $total_balance;
 
-            $unpaid_member = Member::whereNull('date_paid')->first();
-            $get_reward = Member::where('is_get_reward', 0)->first();
+            $unpaid_member = Member::where('group_id', $item->id)->whereNull('date_paid')->first();
+            $get_reward = Member::where('group_id', $item->id)->where('is_get_reward', 0)->first();
 
             $data[] = [
                 'id' => $item->id,
@@ -250,7 +250,7 @@ class GroupController extends Controller
             "periods_date" => $request->periods_date,
             "dues" => $request->dues,
             "target" => $request->target,
-            "notes" => $request->notes,
+            // "notes" => $request->notes,
         ]);
 
         return response()->json([

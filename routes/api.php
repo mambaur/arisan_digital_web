@@ -3,6 +3,7 @@
 use App\Http\Controllers\API\ArisanHistoryController;
 use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\GroupController;
+use App\Http\Controllers\API\Guest\GroupController as GuestGroupController;
 use App\Http\Controllers\API\MemberController;
 use Illuminate\Support\Facades\Route;
 
@@ -100,11 +101,13 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     |
     */
 
-    Route::get('/arisan-histories/{id}', [ArisanHistoryController::class, 'index']);
-
-    Route::get('/arisan-history/{id}', [ArisanHistoryController::class, 'show']);
-
     Route::post('/arisan-history/store', [ArisanHistoryController::class, 'store']);
 
     Route::post('/arisan-history/delete/{id}', [ArisanHistoryController::class, 'destroy']);
 });
+
+Route::get('/guest/group/{code}', [GuestGroupController::class, 'index']);
+
+Route::get('/arisan-histories/{id}', [ArisanHistoryController::class, 'index']);
+
+Route::get('/arisan-history/{id}', [ArisanHistoryController::class, 'show']);
