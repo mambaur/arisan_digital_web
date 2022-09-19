@@ -26,7 +26,7 @@ Route::post('/login', [AuthController::class, 'login']);
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
 
-    Route::get('/members/mail/reminder/{id}', [MemberController::class, 'mailReminder']);
+    Route::post('/members/mail/reminder/{id}', [MemberController::class, 'mailReminder']);
 
     /*
     |--------------------------------------------------------------------------

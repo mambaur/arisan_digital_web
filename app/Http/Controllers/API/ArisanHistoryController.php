@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Models\ArisanHistory;
 use App\Models\ArisanHistoryDetail;
+use App\Models\Group;
 use App\Models\Member;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -93,6 +94,17 @@ class ArisanHistoryController extends Controller
             "date" => $request->date,
             "notes" => $request->notes
         ]);
+
+        $group = Group::find($request->group_id);
+        $periods_day = 7; // default weekly
+        if ($group->periods_type == 'monthly') {
+            $periods_day = 30; // per bulan
+        }
+        if ($group->periods_type == 'annual') {
+            $periods_day = 365; // per tahun
+        }
+        $group->periods_date = $group->periods_date->addDays($periods_day);
+        $group->save();
 
         Member::find($request->member_id)->update([
             'is_get_reward' => 1

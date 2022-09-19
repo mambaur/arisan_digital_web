@@ -327,22 +327,29 @@ class MemberController extends Controller
      */
     public function mailReminder($id)
     {
-        $members = Member::where('group_id', $id)->whereNotNull('date_paid')->get();
+        $members = Member::where('group_id', $id)->whereNull('date_paid')->get();
 
-        if (count($members)) {
+        if (!count($members)) {
             return response()->json([
                 "status" => "failed",
                 "message" => "Tidak ada email yang harus dikirimkan.",
             ], 200);
         }
 
+        $data = [];
         foreach ($members as $item) {
-            Mail::to($item->email)->send(new Remainder());
+            $data[] = $item->email;
+            try {
+                Mail::to($item->email)->send(new Remainder($item->group, $item));
+            } catch (\Throwable $th) {
+                //throw $th;
+            }
         }
 
         return response()->json([
             "status" => "success",
             "message" => "Email berhasil di kirim.",
+            "data" => $data,
         ], 200);
     }
 }
