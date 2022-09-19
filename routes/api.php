@@ -22,10 +22,11 @@ use Illuminate\Support\Facades\Route;
 //     return $request->user();
 // });
 
-
 Route::post('/login', [AuthController::class, 'login']);
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
+
+    Route::get('/members/mail/reminder/{id}', [MemberController::class, 'mailReminder']);
 
     /*
     |--------------------------------------------------------------------------
@@ -48,6 +49,8 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     | Manage members data API
     |
     */
+
+    Route::get('/members/mail/reminder', [MemberController::class, 'mailReminder']);
 
     Route::get('/members', [MemberController::class, 'index']);
 

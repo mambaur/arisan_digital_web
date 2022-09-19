@@ -3,8 +3,11 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Mail\Remainder;
+use App\Models\Group;
 use App\Models\Member;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 
 class MemberController extends Controller
@@ -312,6 +315,34 @@ class MemberController extends Controller
         return response()->json([
             "status" => "success",
             "message" => "Anggota berhasil dihapus.",
+        ], 200);
+    }
+
+    /**
+     * Send mail reminder.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function mailReminder($id)
+    {
+        $members = Member::where('group_id', $id)->whereNotNull('date_paid')->get();
+
+        if (count($members)) {
+            return response()->json([
+                "status" => "failed",
+                "message" => "Tidak ada email yang harus dikirimkan.",
+            ], 200);
+        }
+
+        foreach ($members as $item) {
+            Mail::to($item->email)->send(new Remainder());
+        }
+
+        return response()->json([
+            "status" => "success",
+            "message" => "Email berhasil di kirim.",
         ], 200);
     }
 }
