@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('no_telp')->nullable();
             $table->string('no_whatsapp')->nullable();
             $table->string('email')->nullable();
+            $table->string('gender')->comment('male, female')->nullable();
             $table->date('date_paid')->nullable();
             $table->string('status_paid')->comment('skip, cancel, paid, unpaid')->nullable();
             $table->unsignedBigInteger('nominal_paid')->nullable();

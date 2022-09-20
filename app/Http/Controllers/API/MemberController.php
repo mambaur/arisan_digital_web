@@ -58,6 +58,7 @@ class MemberController extends Controller
             "no_telp" => $request->no_telp,
             "no_whatsapp" => $request->no_whatsapp,
             "email" => $request->email,
+            "gender" => $request->gender,
             // "date_paid" => $request->date_paid,
             "status_paid" => 'unpaid',
             // "nominal_paid" => $request->nominal_paid,
@@ -109,6 +110,7 @@ class MemberController extends Controller
                 "no_telp" => $member->no_telp,
                 "no_whatsapp" => $member->no_whatsapp,
                 "email" => $member->email,
+                "gender" => $member->gender,
                 "date_paid" => $member->date_paid,
                 "status_paid" => $member->status_paid,
                 "nominal_paid" => $member->nominal_paid,
@@ -156,6 +158,7 @@ class MemberController extends Controller
             "name" => $request->name,
             "no_telp" => $request->no_telp,
             "no_whatsapp" => $request->no_whatsapp,
+            "gender" => $request->gender,
             "email" => $request->email,
         ]);
 

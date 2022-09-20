@@ -32,7 +32,8 @@ class ArisanHistoryController extends Controller
                         "id" => $row->member->id,
                         "name" => $row->member->name,
                         "no_telp" => $row->member->no_telp,
-                        "email" => $row->member->email
+                        "email" => $row->member->email,
+                        "gender" => $row->member->gender
                     ],
                     "status_paid" => $row->status_paid,
                     "nominal_paid" => $row->nominal_paid,
@@ -46,7 +47,8 @@ class ArisanHistoryController extends Controller
                     "id" => $item->member->id,
                     "name" => $item->member->name,
                     "no_telp" => $item->member->no_telp,
-                    "email" => $item->member->email
+                    "email" => $item->member->email,
+                    "gender" => $row->member->gender
                 ],
                 "date" => $item->date->format('d F Y'),
                 "notes" => $item->notes,
@@ -163,7 +165,8 @@ class ArisanHistoryController extends Controller
                     "id" => $row->member->id,
                     "name" => $row->member->name,
                     "no_telp" => $row->member->no_telp,
-                    "email" => $row->member->email
+                    "email" => $row->member->email,
+                    "gender" => $row->member->gender
                 ],
                 "status_paid" => $row->status_paid,
                 "status_active" => $row->status_active,
@@ -178,7 +181,8 @@ class ArisanHistoryController extends Controller
                 "id" => $arisan_history->member->id,
                 "name" => $arisan_history->member->name,
                 "no_telp" => $arisan_history->member->no_telp,
-                "email" => $arisan_history->member->email
+                "email" => $arisan_history->member->email,
+                "gender" => $row->member->gender
             ],
             "date" => $arisan_history->date->format('d F Y'),
             "notes" => $arisan_history->notes,

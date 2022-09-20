@@ -91,6 +91,7 @@ class GroupController extends Controller
                 "no_telp" => $item->no_telp,
                 "no_whatsapp" => $item->no_whatsapp,
                 "email" => $item->email,
+                "gender" => $item->gender,
                 "date_paid" => $item->date_paid,
                 "status_paid" => $item->status_paid,
                 "nominal_paid" => $item->nominal_paid,
@@ -154,6 +155,7 @@ class GroupController extends Controller
             "group_id" => $group->id,
             "name" => $request->user()->name,
             "email" => $request->user()->email,
+            "gender" => 'male',
             "status_paid" => 'unpaid',
             "status_active" => 'active',
             "is_owner" => true
