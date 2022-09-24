@@ -131,9 +131,8 @@ class AuthController extends Controller
         if (!$user->hasVerifiedEmail()) {
             return response()->json(
                 [
-                    'status' => 'failed',
-                    'message' => 'Akun kamu masih belum aktif, silahkan cek pesan masuk email kamu untuk melakukan verifikasi.',
-                    'data' => null,
+                    'status' => 'unverified',
+                    'message' => 'Akun kamu masih belum aktif, silahkan cek pesan masuk email kamu untuk melakukan verifikasi.'
                 ],
                 200
             );
