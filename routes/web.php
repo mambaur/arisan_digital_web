@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CLIController;
+// use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,8 +15,17 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Auth::routes(['verify' => true]);
+
 Route::get('/', function () {
     return view('welcome');
 });
 
 Route::get('/clear', [CLIController::class, 'index']);
+
+Route::get('/verify/success', function () {
+    return view('mails.verify_success');
+})->name('verify_success');
+
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

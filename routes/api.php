@@ -22,7 +22,17 @@ use Illuminate\Support\Facades\Route;
 //     return $request->user();
 // });
 
+// Auth::routes();
+
 Route::post('/login', [AuthController::class, 'login']);
+
+Route::post('/login-manual', [AuthController::class, 'loginManual']);
+
+Route::post('/register', [AuthController::class, 'register']);
+
+Route::post('/resend-verification', [AuthController::class, 'resendVerification']);
+
+Route::post('/reset-password', [AuthController::class, 'resetPassword']);
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
 
