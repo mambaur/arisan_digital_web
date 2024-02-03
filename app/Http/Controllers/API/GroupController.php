@@ -82,7 +82,7 @@ class GroupController extends Controller
      */
     public function memberGroup(Request $request, $id)
     {
-        $members = Member::where('group_id', $id)->orderBy('name', 'asc')->paginate(10);
+        $members = Member::where('group_id', $id)->where('name', 'like', "%$request->q%")->orderBy('name', 'asc')->get();
         $data = [];
         foreach ($members as $item) {
             $data[] = [

@@ -19,7 +19,7 @@ class MemberController extends Controller
      */
     public function index()
     {
-        $members = Member::latest()->paginate(10);
+        $members = Member::latest()->get();
 
         return response()->json([
             "status" => "success",
@@ -342,6 +342,8 @@ class MemberController extends Controller
         $data = [];
         foreach ($members as $item) {
             $data[] = $item->email;
+          
+                // Mail::to($item->email)->send(new Remainder($item->group, $item));
             try {
                 Mail::to($item->email)->send(new Remainder($item->group, $item));
             } catch (\Throwable $th) {

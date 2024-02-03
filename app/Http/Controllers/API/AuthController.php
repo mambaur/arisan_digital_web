@@ -44,18 +44,23 @@ class AuthController extends Controller
         $user = User::where('email', $request->email)->first();
 
         if ($user) {
-            if ($user->google_id != $request->google_id) {
-                return response()->json(
-                    [
-                        'status' => 'failed',
-                        'message' => 'Login gagal, data kredensial akun anda tidak cocok.'
-                    ],
-                    200
-                );
-            }
+            // if ($user->google_id != $request->google_id) {
+            //    return response()->json(
+            //        [
+            //            'status' => 'failed',
+            //            'message' => 'Login gagal, data kredensial akun anda tidak cocok.'
+            //        ],
+            //        200
+            //    );
+            //}
 
             if ($user->name != $request->name) {
                 $user->name = $request->name;
+                $user->save();
+            }
+          
+          	if (!$user->google_id) {
+                $user->google_id = $request->google_id;
                 $user->save();
             }
 
@@ -128,16 +133,16 @@ class AuthController extends Controller
             );
         }
 
-        if (!$user->hasVerifiedEmail()) {
-            return response()->json(
-                [
-                    'status' => 'failed',
-                    'message' => 'Akun kamu masih belum aktif, silahkan cek pesan masuk email kamu untuk melakukan verifikasi.',
-                    'data' => null,
-                ],
-                200
-            );
-        }
+        // if (!$user->hasVerifiedEmail()) {
+        //     return response()->json(
+        //         [
+        //             'status' => 'unverified',
+        //             'message' => 'Akun kamu masih belum aktif, silahkan cek pesan masuk email kamu untuk melakukan verifikasi. Jika tidak ada, silahkan cek di folder SPAM.',
+        //             'data' => null,
+        //         ],
+        //         200
+        //     );
+        // }
 
         $token = $user->createToken($request->device_name ?? "android")->plainTextToken;
 
@@ -189,12 +194,12 @@ class AuthController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
-        $user->sendEmailVerificationNotification();
+        // $user->sendEmailVerificationNotification();
 
         return response()->json(
             [
                 'status' => 'success',
-                'message' => 'Register berhasil, silahkan cek email untuk verifikasi akun kamu.',
+                'message' => 'Register berhasil, silahkan login menggunakan akun baru anda.',
                 'data' => null
             ],
             200
