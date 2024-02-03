@@ -58,8 +58,8 @@ class AuthController extends Controller
                 $user->name = $request->name;
                 $user->save();
             }
-          
-          	if (!$user->google_id) {
+
+            if (!$user->google_id) {
                 $user->google_id = $request->google_id;
                 $user->save();
             }
