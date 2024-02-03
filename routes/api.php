@@ -36,8 +36,6 @@ Route::post('/reset-password', [AuthController::class, 'resetPassword']);
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
 
-    Route::post('/members/mail/reminder/{id}', [MemberController::class, 'mailReminder']);
-
     /*
     |--------------------------------------------------------------------------
     | Auth Routes
@@ -59,6 +57,9 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     | Manage members data API
     |
     */
+
+
+    Route::post('/members/mail/reminder/{id}', [MemberController::class, 'mailReminder']);
 
     Route::get('/members/mail/reminder', [MemberController::class, 'mailReminder']);
 
