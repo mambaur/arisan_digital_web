@@ -12,7 +12,9 @@ class Group extends Model
 
     protected $guarded = [];
 
-    protected $dates = ['periods_date'];
+    protected $casts = [
+        'periods_date' => 'datetime',
+    ];
 
     public function members()
     {

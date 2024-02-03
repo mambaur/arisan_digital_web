@@ -325,12 +325,12 @@ class MemberController extends Controller
      * Send mail reminder.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  int  $group_id
      * @return \Illuminate\Http\Response
      */
-    public function mailReminder($id)
+    public function mailReminder($group_id)
     {
-        $members = Member::where('group_id', $id)->whereNull('date_paid')->get();
+        $members = Member::where('group_id', $group_id)->whereNull('date_paid')->get();
 
         if (!count($members)) {
             return response()->json([
@@ -342,8 +342,8 @@ class MemberController extends Controller
         $data = [];
         foreach ($members as $item) {
             $data[] = $item->email;
-          
-                // Mail::to($item->email)->send(new Remainder($item->group, $item));
+
+            // Mail::to($item->email)->send(new Remainder($item->group, $item));
             try {
                 Mail::to($item->email)->send(new Remainder($item->group, $item));
             } catch (\Throwable $th) {

@@ -9,7 +9,11 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class ArisanHistory extends Model
 {
     use HasFactory, SoftDeletes;
-    protected $dates = ['date'];
+
+    protected $casts = [
+        'date' => 'datetime',
+    ];
+
     protected $guarded = [];
 
     public function member()

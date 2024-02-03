@@ -18,10 +18,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-//     return $request->user();
-// });
-
 // Auth::routes();
 
 Route::post('/login', [AuthController::class, 'login']);
@@ -58,12 +54,9 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     |
     */
 
-
-    Route::post('/members/mail/reminder/{id}', [MemberController::class, 'mailReminder']);
-
-    Route::get('/members/mail/reminder', [MemberController::class, 'mailReminder']);
-
     Route::get('/members', [MemberController::class, 'index']);
+
+    Route::post('/members/mail/reminder/{group_id}', [MemberController::class, 'mailReminder']);
 
     Route::get('/member/{id}', [MemberController::class, 'show']);
 

@@ -12,7 +12,9 @@ class ArisanHistoryDetail extends Model
 
     protected $guarded = [];
 
-    protected $dates = ['date_paid'];
+    protected $casts = [
+        'date_paid' => 'datetime',
+    ];
 
     public function member()
     {
