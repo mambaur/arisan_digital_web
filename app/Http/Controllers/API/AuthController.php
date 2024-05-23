@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Validator;
+use Laravel\Socialite\Facades\Socialite;
 
 class AuthController extends Controller
 {
@@ -91,6 +92,32 @@ class AuthController extends Controller
             ],
             200
         );
+    }
+
+    public function loginWithGoogle(Request $request)
+    {
+        // Getting the user from socialite using token from google
+        $user = Socialite::driver('google')->stateless()->userFromToken($request->token);
+
+        // Getting or creating user from db
+        $userFromDb = User::firstOrCreate(
+            ['email' => $user->email],
+            [
+                'google_id' => $request->google_id,
+                'email' =>  $user->email,
+                'name' => $user->name,
+                "photo_url" => $request->photo_url,
+                'password' => Hash::make('2y82lkskfs732lska8'),
+            ]
+        );
+
+        // Returning response
+        return response()->json([
+            'data' => [
+                'token' => $userFromDb->createToken($request->device_name)->plainTextToken,
+                'user' => $userFromDb
+            ]
+        ], 200);
     }
 
     /**
