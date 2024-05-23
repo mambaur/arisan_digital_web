@@ -17,16 +17,12 @@ use Illuminate\Support\Facades\Route;
 
 Auth::routes(['verify' => true]);
 
-Route::get('/', function () {
-    return view('welcome');
+Route::middleware(['auth', 'role:admin'])->group(function () {
+    Route::get('/', [App\Http\Controllers\HomeController::class, 'root'])->name('home');
+
+    Route::get('{any}', [App\Http\Controllers\HomeController::class, 'index'])->name('index');
+
+    Route::get('/logs', [\Rap2hpoutre\LaravelLogViewer\LogViewerController::class, 'index']);
+
+    Route::get('/clear', [CLIController::class, 'index']);
 });
-
-Route::get('/clear', [CLIController::class, 'index']);
-
-Route::get('/verify/success', function () {
-    return view('mails.verify_success');
-})->name('verify_success');
-
-
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-Route::get('/logs', [\Rap2hpoutre\LaravelLogViewer\LogViewerController::class, 'index']);
