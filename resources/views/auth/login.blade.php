@@ -33,6 +33,11 @@
                                         <p class="text-muted">Sign in to continue to webadmin.</p>
                                     </div>
                                     <div class="p-2 mt-4">
+                                        @session('error')
+                                            <div class="alert alert-danger" role="alert">
+                                                {{ session('error') }}
+                                            </div>
+                                        @endsession
                                         <form method="POST" action="{{ route('login') }}" class="auth-input">
                                             @csrf
                                             <div class="mb-2">

@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Http\Request;
 
 class LoginController extends Controller
 {
@@ -18,7 +20,9 @@ class LoginController extends Controller
     |
     */
 
-    use AuthenticatesUsers;
+    use AuthenticatesUsers {
+        login as dologin;
+    }
 
     /**
      * Where to redirect users after login.
@@ -35,5 +39,27 @@ class LoginController extends Controller
     public function __construct()
     {
         $this->middleware('guest')->except('logout');
+    }
+
+    public function login(Request $request)
+    {
+        $email = $request->email;
+
+        $user = User::where('email', $email)->first();
+        if ($user) {
+            if (!count(@$user->getRoleNames() ?? [])) {
+                session()->flash('error', 'You are not permitted to log in to this page');
+                return redirect()->route('login')->withInput();
+            }
+
+            foreach (@$user->getRoleNames() as $role) {
+                if (!in_array($role, ['admin'])) {
+                    session()->flash('error', 'You are not permitted to log in to this page');
+                    return redirect()->route('login')->withInput();
+                }
+            }
+        }
+
+        return $this->doLogin($request);
     }
 }
