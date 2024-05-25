@@ -46,7 +46,14 @@
                     </ul>
                 </li>
 
-                <li class="menu-title" data-key="t-applications">Applications</li>
+                <li class="menu-title" data-key="">Arisan</li>
+
+                <li>
+                    <a href="{{ route('members') }}">
+                        <i class="bx bx-user-circle icon nav-icon"></i>
+                        <span class="menu-item" data-key="">Members</span>
+                    </a>
+                </li>
 
                 <li>
                     <a href="javascript: void(0);" class="has-arrow">

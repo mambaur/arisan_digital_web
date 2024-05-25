@@ -143,8 +143,8 @@
                                 <p>©
                                     <script>
                                         document.write(new Date().getFullYear())
-                                    </script> webadmin. Crafted with <i
-                                        class="mdi mdi-heart text-danger"></i> by Themesdesign
+                                    </script> arisan digital. Crafted with <i
+                                        class="mdi mdi-heart text-danger"></i> by Caraguna
                                 </p>
                             </div>
                         </div>

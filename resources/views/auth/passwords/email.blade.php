@@ -30,7 +30,7 @@
                                 <div class="card-body p-4">
                                     <div class="text-center mt-2">
                                         <h5>Reset Password</h5>
-                                        <p class="text-muted">Reset Password with webadmin.</p>
+                                        <p class="text-muted">Reset Password with arisan digital.</p>
                                     </div>
                                     <div class="p-2 mt-4">
 
@@ -85,8 +85,8 @@
                                 <p>©
                                     <script>
                                         document.write(new Date().getFullYear())
-                                    </script> webadmin. Crafted with <i
-                                        class="mdi mdi-heart text-danger"></i> by Themesdesign
+                                    </script> arisan digital. Crafted with <i
+                                        class="mdi mdi-heart text-danger"></i> by Caraguna
                                 </p>
                             </div>
                         </div>

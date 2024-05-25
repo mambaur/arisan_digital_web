@@ -1,6 +1,8 @@
 <?php
 
+use App\Http\Controllers\Admin\Member\MemberController;
 use App\Http\Controllers\CLIController;
+use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -15,12 +17,16 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Auth::routes(['verify' => true]);
+Auth::routes(['verify' => false, 'register' => false]);
 
 Route::middleware(['auth', 'role:admin'])->group(function () {
-    Route::get('/', [App\Http\Controllers\HomeController::class, 'root'])->name('home');
+    Route::get('/', [HomeController::class, 'root'])->name('home');
 
-    Route::get('{any}', [App\Http\Controllers\HomeController::class, 'index'])->name('index');
+    Route::get('/members', [MemberController::class, 'index'])->name('members');
+
+    Route::get('/members/data', [MemberController::class, 'data'])->name('member_data');
+
+    Route::get('{any}', [HomeController::class, 'index'])->name('index');
 
     Route::get('/logs', [\Rap2hpoutre\LaravelLogViewer\LogViewerController::class, 'index']);
 

@@ -30,7 +30,7 @@
                                 <div class="card-body p-4">
                                     <div class="text-center mt-2">
                                         <h5>Welcome Back !</h5>
-                                        <p class="text-muted">Sign in to continue to webadmin.</p>
+                                        <p class="text-muted">Sign in to continue to arisan digital.</p>
                                     </div>
                                     <div class="p-2 mt-4">
                                         @session('error')
@@ -90,37 +90,6 @@
                                                 <button class="btn btn-primary w-100" type="submit">Sign
                                                     In</button>
                                             </div>
-
-                                            <div class="mt-4 text-center">
-                                                <div class="signin-other-title">
-                                                    <h5 class="font-size-14 mb-3 mt-2 title"> Sign in with </h5>
-                                                </div>
-
-                                                <ul class="list-inline mt-2">
-                                                    <li class="list-inline-item">
-                                                        <a href="javascript:void(0)"
-                                                            class="social-list-item bg-primary text-white border-primary">
-                                                            <i class="bx bxl-facebook"></i>
-                                                        </a>
-                                                    </li>
-                                                    <li class="list-inline-item">
-                                                        <a href="javascript:void(0)"
-                                                            class="social-list-item bg-info text-white border-info">
-                                                            <i class="bx bxl-linkedin"></i>
-                                                        </a>
-                                                    </li>
-                                                    <li class="list-inline-item">
-                                                        <a href="javascript:void(0)"
-                                                            class="social-list-item bg-danger text-white border-danger">
-                                                            <i class="bx bxl-google"></i>
-                                                        </a>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                            <div class="mt-4 text-center">
-                                                <p class="mb-0">Don't have an account ? <a href="{{ route('register') }}"
-                                                        class="fw-medium text-primary"> Register</a></p>
-                                            </div>
                                         </form>
                                     </div>
 
@@ -136,8 +105,8 @@
                                 <p>©
                                     <script>
                                         document.write(new Date().getFullYear())
-                                    </script> webadmin. Crafted with <i
-                                        class="mdi mdi-heart text-danger"></i> by Themesdesign
+                                    </script> arisan digital. Crafted with <i
+                                        class="mdi mdi-heart text-danger"></i> by Caraguna
                                 </p>
                             </div>
                         </div>
