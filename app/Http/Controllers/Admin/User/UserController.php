@@ -1,27 +1,35 @@
 <?php
 
-namespace App\Http\Controllers\Admin\Member;
+namespace App\Http\Controllers\Admin\User;
 
-use App\Http\Controllers\Admin\Member\DataGrid\MemberDataGrid;
+use App\Http\Controllers\Admin\User\DataGrid\UserDataGrid;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-class MemberController extends Controller
+class UserController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index(Request $request)
     {
-        return view('admin.members.index');
+        return view('admin.users.index');
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function data(MemberDataGrid $grid, Request $request)
+    public function data(UserDataGrid $grid, Request $request)
     {
         return $grid->render();
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     */
+    public function create()
+    {
+        //
     }
 
     /**

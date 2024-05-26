@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Http\Controllers\Admin\Member\DataGrid;
+namespace App\Http\Controllers\Admin\User\DataGrid;
 
 use App\Models\Member;
+use App\Models\User;
 use WdevRs\LaravelDatagrid\DataGrid\DataGrid;
 
-class MemberDataGrid extends DataGrid
+class UserDataGrid extends DataGrid
 {
 
     /**
@@ -13,14 +14,11 @@ class MemberDataGrid extends DataGrid
      */
     public function __construct()
     {
-        $this->fromQuery(Member::with(['group'])->select('members.*')->join('groups', 'groups.id', 'members.group_id'))
-            ->column('members.id', 'ID')
-            ->column('members.email', 'email')
-            ->column('groups.name', 'groups.name')
-            ->column('members.no_telp', 'no_telp')
-            ->column('members.no_whatsapp', 'no_whatsapp')
-            ->column('members.created_at', 'created_at')
-            ->column('members.name', 'name');
+        $this->fromQuery(User::query())
+            ->column('users.id', 'id')
+            ->column('users.email', 'email')
+            ->column('users.created_at', 'created_at')
+            ->column('users.name', 'name');
     }
 
     public function render(string $view = 'laravel-datagrid::datagrid')

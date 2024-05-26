@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\Member\MemberController;
+use App\Http\Controllers\Admin\User\UserController;
 use App\Http\Controllers\CLIController;
 use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Auth;
@@ -25,6 +26,10 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/members', [MemberController::class, 'index'])->name('members');
 
     Route::get('/members/data', [MemberController::class, 'data'])->name('member_data');
+
+    Route::get('/users', [UserController::class, 'index'])->name('users');
+
+    Route::get('/users/data', [UserController::class, 'data'])->name('user_data');
 
     Route::get('{any}', [HomeController::class, 'index'])->name('index');
 
