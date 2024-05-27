@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\Group\GroupController;
 use App\Http\Controllers\Admin\Member\MemberController;
 use App\Http\Controllers\Admin\User\UserController;
 use App\Http\Controllers\CLIController;
@@ -30,6 +31,10 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/users', [UserController::class, 'index'])->name('users');
 
     Route::get('/users/data', [UserController::class, 'data'])->name('user_data');
+
+    Route::get('/groups', [GroupController::class, 'index'])->name('groups');
+
+    Route::get('/groups/data', [GroupController::class, 'data'])->name('group_data');
 
     Route::get('{any}', [HomeController::class, 'index'])->name('index');
 

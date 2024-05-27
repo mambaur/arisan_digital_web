@@ -1,12 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\Admin\User\DataGrid;
+namespace App\Http\Controllers\Admin\Group\DataGrid;
 
-use App\Models\Member;
-use App\Models\User;
+use App\Models\Group;
 use WdevRs\LaravelDatagrid\DataGrid\DataGrid;
 
-class UserDataGrid extends DataGrid
+class GroupDataGrid extends DataGrid
 {
 
     /**
@@ -14,12 +13,15 @@ class UserDataGrid extends DataGrid
      */
     public function __construct()
     {
-        $this->fromQuery(User::query())
-            ->column('users.id', 'id')
-            ->column('users.photo_url', 'photo_url')
-            ->column('users.email', 'email')
-            ->column('users.created_at', 'created_at')
-            ->column('users.name', 'name');
+        $this->fromQuery(Group::query())
+            ->column('groups.id', 'id')
+            ->column('groups.code', 'code')
+            ->column('groups.periods_type', 'periods_type')
+            ->column('groups.periods_date', 'periods_date')
+            ->column('groups.notes', 'notes')
+            ->column('groups.status', 'status')
+            ->column('groups.created_at', 'created_at')
+            ->column('groups.name', 'name');
     }
 
     public function render(string $view = 'laravel-datagrid::datagrid')
@@ -50,7 +52,6 @@ class UserDataGrid extends DataGrid
 
         return [
             'key' => $this->key,
-            // 'data' => $this->format($paginator->items()),
             'data' => $paginator->items(),
             'total' => $paginator->total(),
             'currentPage' => $paginator->currentPage(),

@@ -1,11 +1,11 @@
 @extends('layouts.master')
 
 @section('title')
-    User
+    Groups
 @endsection
 
 @section('page-title')
-    User
+    Groups
 @endsection
 
 @section('css')
@@ -144,19 +144,27 @@
 
     <script>
         new gridjs.Grid({
-            columns: [{
-                    name: 'Photo',
-                    formatter: (_, row) => gridjs.html(`<img src="${row.cells[0].data}" alt=""
-                                                class="avatar rounded-circle img-thumbnail me-2">`)
-                },
-                'Name', 'Email', {
-                    name: 'Created',
+            columns: [
+                'Code', 'Nama', 'Periods Type', {
+                    name: 'Periods Date',
                     formatter: (_, row) => gridjs.html(formatDate(row.cells[3].data))
+                }, {
+                    name: 'Notes',
+                    formatter: (_, row) => gridjs.html(
+                        `<span title="${row.cells[4].data}">${truncateText(row.cells[4].data, 20)}</span>`)
+                }, {
+                    name: 'Created',
+                    formatter: (_, row) => gridjs.html(formatDate(row.cells[5].data))
                 }, {
                     name: 'Actions',
                     sort: false,
                     formatter: (_, row) => gridjs.html(`
                 <ul class="list-inline mb-0">
+                                                <li class="list-inline-item">
+                                                    <a href="javascript:void(0);" data-bs-toggle="tooltip"
+                                                        data-bs-placement="top" title="Members" class="px-2 text-success"><i
+                                                            class="bx bx-user-voice font-size-18"></i></a>
+                                                </li>
                                                 <li class="list-inline-item">
                                                     <a href="javascript:void(0);" data-bs-toggle="tooltip"
                                                         data-bs-placement="top" title="Edit" class="px-2 text-primary"><i
@@ -167,18 +175,7 @@
                                                         data-bs-placement="top" title="Delete" class="px-2 text-danger"><i
                                                             class="bx bx-trash-alt font-size-18"></i></a>
                                                 </li>
-                                                <li class="list-inline-item dropdown">
-                                                    <a class="text-muted dropdown-toggle font-size-18 px-2" href="#"
-                                                        role="button" data-bs-toggle="dropdown" aria-haspopup="true">
-                                                        <i class="bx bx-dots-vertical-rounded"></i>
-                                                    </a>
-
-                                                    <div class="dropdown-menu dropdown-menu-end">
-                                                        <a class="dropdown-item" href="#">Action</a>
-                                                        <a class="dropdown-item" href="#">Another action</a>
-                                                        <a class="dropdown-item" href="#">Something else here</a>
-                                                    </div>
-                                                </li>
+                                                
                                             </ul>
                 `)
                 },
@@ -189,12 +186,14 @@
                     url: (prev, columns) => {
                         if (!columns.length) {
                             // Default sort
-                            return `${prev}order[]=users.created_at&dir[]=desc&`;
+                            return `${prev}order[]=groups.created_at&dir[]=desc&`;
                         };
 
                         const col = columns[0];
                         const dir = col.direction === 1 ? 'asc' : 'desc';
-                        let colName = ['users.photo_url', 'users.name', 'users.email', 'users.created_at', null]
+                        let colName = ['groups.code', 'groups.name', 'groups.periods_type',
+                                'groups.periods_date', 'groups.notes', 'groups.created_at', null
+                            ]
                             [
                                 col.index
                             ];
@@ -204,8 +203,9 @@
                 }
             },
             server: {
-                url: '/users/data?',
-                then: result => result.rows.data.map(item => [item.photo_url, item.name, item.email, item
+                url: '/groups/data?',
+                then: result => result.rows.data.map(item => [item.code, item.name, item.periods_type, item
+                    .periods_date, item.notes, item
                     .created_at, null
                 ]),
                 // then: data => console.log(data),
@@ -231,6 +231,18 @@
                 }
             },
         }).render(document.getElementById("wrapper"));
+
+
+        function truncateText(text, maxLength) {
+            if (!text) {
+                return '';
+            }
+
+            if (text.length <= maxLength) {
+                return text;
+            }
+            return text.substring(0, maxLength) + '...';
+        }
 
         function formatDate(dateString) {
             const date = new Date(dateString);

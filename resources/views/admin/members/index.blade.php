@@ -149,7 +149,10 @@
                 multiColumn: false,
                 server: {
                     url: (prev, columns) => {
-                        if (!columns.length) return prev;
+                        if (!columns.length) {
+                            // Default sort
+                            return `${prev}order[]=members.created_at&dir[]=desc&`;
+                        };
 
                         const col = columns[0];
                         const dir = col.direction === 1 ? 'asc' : 'desc';
