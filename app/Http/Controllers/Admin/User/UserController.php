@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin\User;
 
 use App\Http\Controllers\Admin\User\DataGrid\UserDataGrid;
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
@@ -70,5 +71,30 @@ class UserController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+    public function getUserSearchData(Request $request)
+    {
+        $search = $request->search;
+        $users = User::where(function ($query) use ($search) {
+            $query->where('name', 'like', '%' . $search . '%')
+                ->orWhere('email', 'like', '%' . $search . '%');
+        })
+            ->limit(15)->get();
+
+        $data = [];
+
+        foreach ($users as $item) {
+            $data[] =  [
+                'id' => $item->id,
+                'value' =>
+                $item->name .
+                    ' (' .
+                    $item->email .
+                    ')',
+            ];
+        }
+
+        return $data;
     }
 }

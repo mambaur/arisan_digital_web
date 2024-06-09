@@ -1,0 +1,119 @@
+.choices__inner {
+    padding: .25rem 2.5rem .25rem .5rem;
+    background-color: white;
+    vertical-align: middle;
+    border-radius: var(--bs-border-radius);
+    border: var(--bs-border-width) solid #e2e5e8;
+    min-height: 38px
+}
+
+.choices__heading {
+    border-bottom-color: var(--bs-border-color) !important
+}
+
+.choices[data-type*=select-one] .choices__inner {
+    padding-bottom: .25rem
+}
+
+.choices[data-type*=select-one]:after {
+    border: 0;
+    border-color: var(--bs-border-color) transparent transparent;
+    right: 11.5px;
+    left: auto;
+    content: "\f0140";
+    font-family: "Material Design Icons";
+    width: auto;
+    height: auto;
+    margin-top: 0;
+    top: 50%;
+    -webkit-transform: translateY(-50%);
+    transform: translateY(-50%)
+}
+
+.choices[data-type*=select-one].is-open:after {
+    margin-top: 0;
+    -webkit-transform: translateY(-50%) rotate(-180deg);
+    transform: translateY(-50%) rotate(-180deg)
+}
+
+.choices[data-type*=select-one] .choices__button {
+    right: 0;
+    left: auto;
+    margin-right: 25px;
+    margin-left: 0
+}
+
+.choices__input {
+    background-color: white;
+    margin-bottom: 0
+}
+
+.choices__list--multiple {
+    display: -webkit-inline-box;
+    display: -ms-inline-flexbox;
+    display: inline-flex;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    gap: 6px
+}
+
+.choices__list--multiple .choices__item {
+    background-color: #1f58c7;
+    border-color: #1f58c7;
+    margin-bottom: 0;
+    margin-right: 0;
+    font-weight: 400
+}
+
+.choices__list--multiple .choices__item.is-highlighted {
+    background-color: #1f58c7;
+    border: 1px solid #1f58c7
+}
+
+.choices.is-disabled .choices__inner,
+.choices.is-disabled .choices__input {
+    background-color: white
+}
+
+.is-focused .choices__inner,
+.is-open .choices__inner {
+    border-color: #8face3
+}
+
+.is-disabled .choices__list--multiple .choices__item {
+    background-color: #a4a9b4;
+    border-color: #a4a9b4
+}
+
+.choices[data-type*=select-multiple] .choices__button,
+.choices[data-type*=text] .choices__button {
+    border-left: 1px solid rgba(255, 255, 255, .5);
+    margin: 0 -4px 0 8px;
+    border-right: 0
+}
+
+.choices__list--dropdown {
+    background-color: white !important;
+    border-color: var(--bs-border-color-translucent) !important;
+    -webkit-box-shadow: var(--bs-box-shadow) !important;
+    box-shadow: var(--bs-box-shadow) !important
+}
+
+.choices__list--dropdown .choices__item--selectable.is-highlighted {
+    background-color: white !important
+}
+
+.is-open .choices__list--dropdown {
+    border-color: var(--bs-border-color-translucent) !important
+}
+
+.choices[data-type*=select-one] .choices__input {
+    background-color: white !important;
+    border-bottom-color: var(--bs-border-color) !important
+}
+
+.choices {
+    position: relative;
+    margin-bottom: 0px;
+    font-size: 16px;
+}

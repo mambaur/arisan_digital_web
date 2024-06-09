@@ -32,6 +32,9 @@
 
         <div class="page-content">
             <div class="container-fluid">
+
+                @include('layouts.alert')
+                
                 @yield('content')
             </div>
             <!-- container-fluid -->

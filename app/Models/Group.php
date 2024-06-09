@@ -5,6 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 class Group extends Model
 {
@@ -19,5 +21,19 @@ class Group extends Model
     public function members()
     {
         return $this->hasMany(Member::class, 'group_id');
+    }
+
+    public static function generateUniqueKey(): string
+    {
+        $KEY_LENGTH = 6;
+        do {
+            $key = Str::random($KEY_LENGTH);
+        } while (Group::where(DB::raw('BINARY `code`'), $key)->exists());
+        return $key;
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'created_by');
     }
 }

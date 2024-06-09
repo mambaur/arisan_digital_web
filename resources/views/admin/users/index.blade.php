@@ -16,9 +16,7 @@
 @section('content')
     <div class="row align-items-center">
         <div class="col-md-6">
-            {{-- <div class="mb-3">
-                <h5 class="card-title">Contact List <span class="text-muted fw-normal ms-2">(834)</span></h5>
-            </div> --}}
+            {{ Breadcrumbs::render('users') }}
         </div>
 
         <div class="col-md-6">
@@ -27,19 +25,7 @@
                     <a href="#" data-bs-toggle="modal" data-bs-target=".add-new" class="btn btn-primary"><i
                             class="bx bx-plus me-1"></i> Add New</a>
                 </div>
-                <div class="dropdown">
-                    <a class="btn btn-link text-muted py-1 font-size-16 shadow-none dropdown-toggle" href="#"
-                        role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        <i class="bx bx-dots-horizontal-rounded"></i>
-                    </a>
-                    <ul class="dropdown-menu dropdown-menu-end">
-                        <li><a class="dropdown-item" href="#">Action</a></li>
-                        <li><a class="dropdown-item" href="#">Another action</a></li>
-                        <li><a class="dropdown-item" href="#">Something else here</a></li>
-                    </ul>
-                </div>
             </div>
-
         </div>
     </div>
 

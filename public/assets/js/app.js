@@ -29,27 +29,29 @@ File: Main Js File
         });
     }
 
+    let assetUrl = window.location.origin
+
     function setLanguage(lang) {
         document.getElementsByClassName("header-lang-img").forEach(function (el) {
             if (el) {
                 switch (lang) {
                     case "eng":
-                        el.src = "assets/images/flags/us.jpg";
+                        el.src = assetUrl + "/assets/images/flags/us.jpg";
                         break;
                     case "sp":
-                        el.src = "assets/images/flags/spain.jpg";
+                        el.src = assetUrl + "/assets/images/flags/spain.jpg";
                         break;
                     case "gr":
-                        el.src = "assets/images/flags/germany.jpg";
+                        el.src = assetUrl + "/assets/images/flags/germany.jpg";
                         break;
                     case "it":
-                        el.src = "assets/images/flags/italy.jpg";
+                        el.src = assetUrl + "/assets/images/flags/italy.jpg";
                         break;
                     case "ru":
-                        el.src = "assets/images/flags/russia.jpg";
+                        el.src = assetUrl + "/assets/images/flags/russia.jpg";
                         break;
                     default:
-                        el.src = "assets/images/flags/us.jpg";
+                        el.src = assetUrl + "/assets/images/flags/us.jpg";
                         break;
                 }
                 localStorage.setItem('language', lang);
@@ -66,7 +68,7 @@ File: Main Js File
         var request = new XMLHttpRequest();
 
         // Instantiating the request object
-        request.open("GET", '/assets/lang/' + language + '.json');
+        request.open("GET", assetUrl + '/assets/lang/' + language + '.json');
 
         // Defining event listener for readystatechange event
         request.onreadystatechange = function () {
@@ -396,12 +398,12 @@ File: Main Js File
         if (document.getElementById("layout-direction-ltr").checked == true && id === "layout-direction-ltr") {
             document.getElementsByTagName("html")[0].removeAttribute("dir");
             document.getElementById("layout-direction-rtl").checked = false;
-            document.getElementById('bootstrap-style').setAttribute('href', 'assets/css/bootstrap.min.css');
-            document.getElementById('app-style').setAttribute('href', 'assets/css/app.min.css');
+            document.getElementById('bootstrap-style').setAttribute('href', assetUrl + '/assets/css/bootstrap.min.css');
+            document.getElementById('app-style').setAttribute('href', assetUrl + '/assets/css/app.min.css');
             sessionStorage.setItem("is_visited", "layout-direction-ltr");
         } else if (document.getElementById("layout-direction-rtl").checked == true && id === "layout-direction-rtl") {
             document.getElementById("layout-direction-ltr").checked = false;
-            document.getElementById('app-style').setAttribute('href', 'assets/css/app.min.rtl.css');
+            document.getElementById('app-style').setAttribute('href', assetUrl + '/assets/css/app.min.rtl.css');
             document.getElementsByTagName("html")[0].setAttribute("dir", "rtl");
             sessionStorage.setItem("is_visited", "layout-direction-rtl");
         }
@@ -508,14 +510,14 @@ File: Main Js File
                         (body.hasAttribute("data-layout") && body.getAttribute("data-layout") == "horizontal") ? '' : document.body.setAttribute('data-sidebar', 'light');
                         updateRadio('topbar-color-light');
                         updateRadio('sidebar-color-light');
-                    } else if(e.target.value == "dark"){
+                    } else if (e.target.value == "dark") {
                         document.body.setAttribute('data-layout-mode', 'dark');
                         document.body.setAttribute('data-topbar', 'dark');
                         document.body.setAttribute('data-sidebar', 'dark');
                         (body.hasAttribute("data-layout") && body.getAttribute("data-layout") == "horizontal") ? '' : document.body.setAttribute('data-sidebar', 'dark');
                         updateRadio('topbar-color-dark');
                         // updateRadio('sidebar-color-dark');
-                    } else if(e.target.value == "bordered") {
+                    } else if (e.target.value == "bordered") {
                         document.body.setAttribute('data-layout-mode', 'bordered');
                     }
                 }
@@ -528,11 +530,11 @@ File: Main Js File
                 if (e && e.target && e.target.value) {
                     if (e.target.value == "ltr") {
                         document.getElementsByTagName("html")[0].removeAttribute("dir");
-                        document.getElementById('bootstrap-style').setAttribute('href', 'assets/css/bootstrap.min.css');
-                        document.getElementById('app-style').setAttribute('href', 'assets/css/app.min.css');
+                        document.getElementById('bootstrap-style').setAttribute('href', assetUrl + '/assets/css/bootstrap.min.css');
+                        document.getElementById('app-style').setAttribute('href', assetUrl + '/assets/css/app.min.css');
                         sessionStorage.setItem("is_visited", "layout-direction-ltr");
                     } else {
-                        document.getElementById('app-style').setAttribute('href', 'assets/css/app.min.rtl.css');
+                        document.getElementById('app-style').setAttribute('href', assetUrl + '/assets/css/app.min.rtl.css');
                         document.getElementsByTagName("html")[0].setAttribute("dir", "rtl");
                         sessionStorage.setItem("is_visited", "layout-direction-rtl");
                     }

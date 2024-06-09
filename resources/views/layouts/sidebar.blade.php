@@ -79,7 +79,7 @@
                 </li>
 
                 <li>
-                    <a href="profile/user">
+                    <a href="{{route('profile')}}">
                         <i class="bx bx-user-circle icon nav-icon"></i>
                         <span class="menu-item" data-key="">Profile</span>
                     </a>
