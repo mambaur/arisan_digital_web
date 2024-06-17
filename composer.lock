@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "72ba6df9faf72bb83d5e8420a6327aba",
+    "content-hash": "824a371c2874643a3275d5b18fba50e8",
     "packages": [
         {
             "name": "barryvdh/laravel-dompdf",
@@ -6948,6 +6948,64 @@
                 "source": "https://github.com/webmozarts/assert/tree/1.11.0"
             },
             "time": "2022-06-03T18:03:27+00:00"
+        },
+        {
+            "name": "williamcruzme/laravel-fcm",
+            "version": "v1.0.11",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/williamcruzme/laravel-fcm.git",
+                "reference": "fde51ea1625b08d518c0359fd0d3ad0df6c9a910"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/williamcruzme/laravel-fcm/zipball/fde51ea1625b08d518c0359fd0d3ad0df6c9a910",
+                "reference": "fde51ea1625b08d518c0359fd0d3ad0df6c9a910",
+                "shasum": ""
+            },
+            "require": {
+                "guzzlehttp/guzzle": "*",
+                "illuminate/notifications": "*",
+                "php": "^7.1.3|^8.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "williamcruzme\\FCM\\FCMServiceProvider"
+                    ],
+                    "aliases": {
+                        "Device": "williamcruzme\\FCM\\Facades\\Device"
+                    }
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "williamcruzme\\FCM\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "williamcruzme",
+                    "email": "sv.johncruz@gmail.com",
+                    "homepage": "https://github.com/williamcruzme"
+                }
+            ],
+            "description": "A powerful Laravel package to send Push Notifications",
+            "keywords": [
+                "channels",
+                "laravel",
+                "notification"
+            ],
+            "support": {
+                "issues": "https://github.com/williamcruzme/laravel-fcm/issues",
+                "source": "https://github.com/williamcruzme/laravel-fcm/tree/v1.0.11"
+            },
+            "time": "2021-07-11T23:50:50+00:00"
         }
     ],
     "packages-dev": [
@@ -9406,5 +9464,5 @@
         "php": "^8.2.0"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.6.0"
+    "plugin-api-version": "2.3.0"
 }

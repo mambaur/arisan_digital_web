@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Notifications\ChargeNotification;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -22,5 +23,10 @@ class HomeController extends Controller
             return view($request->path());
         }
         return view('errors.404');
+    }
+
+    public function testNotification(Request $request)
+    {
+        auth()->user()->notify(new ChargeNotification('Hello world', 'Notification Description'));
     }
 }

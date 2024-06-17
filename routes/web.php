@@ -25,6 +25,8 @@ Auth::routes(['verify' => false, 'register' => false]);
 Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/', [HomeController::class, 'root'])->name('home');
 
+    Route::get('/test/notification', [HomeController::class, 'testNotification'])->name('test_notification');
+
     /**
      * Member
      * 
