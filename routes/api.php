@@ -5,6 +5,7 @@ use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\GroupController;
 use App\Http\Controllers\API\Guest\GroupController as GuestGroupController;
 use App\Http\Controllers\API\MemberController;
+use App\Http\Controllers\API\Notifications\NotificationController;
 use Illuminate\Support\Facades\Route;
 use williamcruzme\FCM\Facades\Device;
 
@@ -115,6 +116,17 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('/arisan-history/store', [ArisanHistoryController::class, 'store']);
 
     Route::post('/arisan-history/delete/{id}', [ArisanHistoryController::class, 'destroy']);
+
+    /*
+    |--------------------------------------------------------------------------
+    | Notifications Routes
+    |--------------------------------------------------------------------------
+    |
+    | Manage notification data API
+    |
+    */
+
+    Route::get('/notifications', [NotificationController::class, 'index']);
 });
 
 Route::get('/guest/group/{code}', [GuestGroupController::class, 'index']);
