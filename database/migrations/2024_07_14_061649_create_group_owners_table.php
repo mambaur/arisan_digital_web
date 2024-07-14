@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('group_id')->nullable()->index();
             $table->unsignedBigInteger('user_id')->nullable()->index();
-            $table->string('status_approval')->comment('approved|rejected|requested')->default('approved')->nullable()->after('is_owner');
+            $table->string('status_approval')->comment('approved|rejected|requested')->default('approved')->nullable();
             $table->timestamps();
         });
     }

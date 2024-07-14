@@ -36,4 +36,9 @@ class Group extends Model
     {
         return $this->belongsTo(User::class, 'created_by');
     }
+
+    public function owners()
+    {
+        return $this->hasMany(GroupOwner::class, 'group_id');
+    }
 }

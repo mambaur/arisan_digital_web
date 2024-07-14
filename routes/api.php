@@ -3,6 +3,7 @@
 use App\Http\Controllers\API\ArisanHistoryController;
 use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\GroupController;
+use App\Http\Controllers\API\GroupOwnerController;
 use App\Http\Controllers\API\Guest\GroupController as GuestGroupController;
 use App\Http\Controllers\API\MemberController;
 use App\Http\Controllers\API\Notifications\NotificationController;
@@ -104,6 +105,26 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::patch('/group/update/periods-date/{id}', [GroupController::class, 'updatePeriodsDate']);
 
     Route::delete('/group/delete/{id}', [GroupController::class, 'destroy']);
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Group Owner Routes
+    |--------------------------------------------------------------------------
+    |
+    | Manage group owner data API
+    |
+    */
+
+    Route::get('/group/owners/{id}', [GroupOwnerController::class, 'index']);
+
+    Route::get('/group/owners/init', [GroupOwnerController::class, 'initGroupOwner']);
+
+    Route::post('/group/owners/store', [GroupOwnerController::class, 'store']);
+
+    Route::delete('/group/owners/delete/{id}', [GroupOwnerController::class, 'destroy']);
+
+    Route::put('/group/owners/update-status/{id}', [GroupOwnerController::class, 'updateStatus']);
 
     /*
     |--------------------------------------------------------------------------
