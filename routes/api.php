@@ -6,6 +6,7 @@ use App\Http\Controllers\API\GroupController;
 use App\Http\Controllers\API\Guest\GroupController as GuestGroupController;
 use App\Http\Controllers\API\MemberController;
 use App\Http\Controllers\API\Notifications\NotificationController;
+use App\Http\Controllers\API\Payment\PaymentAccountController;
 use Illuminate\Support\Facades\Route;
 use williamcruzme\FCM\Facades\Device;
 
@@ -127,6 +128,23 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     */
 
     Route::get('/notifications', [NotificationController::class, 'index']);
+
+    /*
+    |--------------------------------------------------------------------------
+    | Payment Account Routes
+    |--------------------------------------------------------------------------
+    |
+    | Manage payment account data API
+    |
+    */
+
+    Route::get('/payment-accounts/{id}', [PaymentAccountController::class, 'index']);
+
+    Route::post('/payment-accounts/store', [PaymentAccountController::class, 'store']);
+
+    Route::put('/payment-accounts/update/{id}', [PaymentAccountController::class, 'update']);
+
+    Route::delete('/payment-accounts/delete/{id}', [PaymentAccountController::class, 'destroy']);
 });
 
 Route::get('/guest/group/{code}', [GuestGroupController::class, 'index']);

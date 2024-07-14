@@ -134,7 +134,6 @@ class GroupController extends Controller
             );
         }
 
-
         DB::beginTransaction();
 
         $group = Group::create([
