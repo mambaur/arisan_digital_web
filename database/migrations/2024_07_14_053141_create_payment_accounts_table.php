@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('account_name', 255)->nullable();
             $table->string('bank_name', 255)->nullable();
             $table->text('bank_number')->nullable();
+            $table->unsignedBigInteger('created_by')->nullable();
             $table->timestamps();
         });
     }
