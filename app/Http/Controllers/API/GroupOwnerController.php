@@ -11,27 +11,8 @@ use Illuminate\Support\Facades\Validator;
 
 class GroupOwnerController extends Controller
 {
-    public function initGroupOwner()
-    {
-        $groups = Group::paginate(50);
-        foreach ($groups as $item) {
-            if (!count($item->owners ?? [])) {
-                GroupOwner::create([
-                    'group_id' => $item->id,
-                    'user_id' => $item->created_by,
-                    'status_approval' => 'approved'
-                ]);
-            }
-        }
-
-        return response()->json([
-            "status" => "success",
-            "message" => "Pemilik groub berhasil di inisialisasi",
-        ], 200);
-    }
-
     /**
-     * Display a listing of the resource.
+     * List Group Owners
      */
     public function index($id)
     {
@@ -53,7 +34,7 @@ class GroupOwnerController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Create Group Owner
      */
     public function store(Request $request)
     {
@@ -93,6 +74,9 @@ class GroupOwnerController extends Controller
         ], 200);
     }
 
+    /**
+     * Update Group Owner Status
+     */
     public function updateStatus($id, Request $request)
     {
         $validate = Validator::make($request->all(), [
@@ -134,7 +118,7 @@ class GroupOwnerController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Remove Group Owner
      */
     public function destroy(string $id)
     {

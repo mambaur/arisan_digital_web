@@ -14,10 +14,11 @@ use Laravel\Socialite\Facades\Socialite;
 class AuthController extends Controller
 {
     /**
-     * Login by Google
+     * Login by Google (Old)
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
+     * @unauthenticated
      */
     public function login(Request $request)
     {
@@ -94,8 +95,16 @@ class AuthController extends Controller
         );
     }
 
+
+    /**
+     * Login by Google
+     * @unauthenticated
+     */
     public function loginWithGoogle(Request $request)
     {
+        $request->validate([
+            'token' => ['required'],
+        ]);
         // Getting the user from socialite using token from google
         $user = Socialite::driver('google')->stateless()->userFromToken($request->token);
 
@@ -121,10 +130,11 @@ class AuthController extends Controller
     }
 
     /**
-     * Login Manual
+     * Login with Email Password
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
+     * @unauthenticated
      */
     public function loginManual(Request $request)
     {
@@ -190,6 +200,7 @@ class AuthController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
+     * @unauthenticated
      */
     public function register(Request $request)
     {
@@ -234,7 +245,7 @@ class AuthController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Detail User
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
@@ -261,7 +272,7 @@ class AuthController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Logout
      *
      * @return \Illuminate\Http\Response
      */
@@ -282,7 +293,7 @@ class AuthController extends Controller
     }
 
     /**
-     * Handle a request verification email for user.
+     * Resend Verification Email
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
@@ -350,7 +361,7 @@ class AuthController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Forgot Password
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response

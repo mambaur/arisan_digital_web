@@ -10,7 +10,7 @@ use Illuminate\Http\Request;
 class GroupController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Detail Guest Group.
      *
      * @return \Illuminate\Http\Response
      */

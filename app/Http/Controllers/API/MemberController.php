@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Validator;
 class MemberController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * List All Members
      *
      * @return \Illuminate\Http\Response
      */
@@ -29,7 +29,7 @@ class MemberController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Create New Member
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
@@ -72,7 +72,7 @@ class MemberController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Detail Member
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
@@ -120,7 +120,7 @@ class MemberController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update Member
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
@@ -169,7 +169,7 @@ class MemberController extends Controller
     }
 
     /**
-     * Update status paid the specified resource in storage.
+     * Update Member Status Paid
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
@@ -218,7 +218,7 @@ class MemberController extends Controller
     }
 
     /**
-     * Update status paid the specified resource in storage.
+     * Update Member Activity Status
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
@@ -263,7 +263,7 @@ class MemberController extends Controller
     }
 
     /**
-     * Reset status paid the specified resource in storage.
+     * Reset Member Paid Status
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
@@ -295,7 +295,7 @@ class MemberController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Remove Member
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
@@ -322,7 +322,7 @@ class MemberController extends Controller
     }
 
     /**
-     * Send mail reminder.
+     * Send Mail Reminder to Member
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $group_id

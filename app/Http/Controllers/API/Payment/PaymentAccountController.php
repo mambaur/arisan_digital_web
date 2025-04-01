@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Validator;
 class PaymentAccountController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * List Payments
      */
     public function index($id)
     {
@@ -28,7 +28,7 @@ class PaymentAccountController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Create New Payment
      */
     public function store(Request $request)
     {
@@ -64,7 +64,7 @@ class PaymentAccountController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update Payment
      */
     public function update(Request $request, string $id)
     {
@@ -105,7 +105,7 @@ class PaymentAccountController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Remove Payment
      */
     public function destroy(string $id)
     {

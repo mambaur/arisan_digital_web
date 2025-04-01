@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Validator;
 class ArisanHistoryController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * List Arisan Histories
      *
      * @param  int  $id => Group ID
      * @return \Illuminate\Http\Response
@@ -62,8 +62,9 @@ class ArisanHistoryController extends Controller
             "data" => $data
         ], 200);
     }
+
     /**
-     * Store a newly created resource in storage.
+     * Create New Arisan History
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
@@ -139,7 +140,7 @@ class ArisanHistoryController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Detail Arisan History
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
@@ -197,7 +198,7 @@ class ArisanHistoryController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Delete Arisan History
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
