@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\API\Payment;
+namespace App\Http\Controllers\API\V2\Payment;
 
 use App\Http\Controllers\Controller;
 use App\Models\PaymentAccount;

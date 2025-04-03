@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\API\Notifications;
+namespace App\Http\Controllers\API\V2\Notifications;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;

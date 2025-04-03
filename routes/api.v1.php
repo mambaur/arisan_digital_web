@@ -1,13 +1,13 @@
 <?php
 
-use App\Http\Controllers\API\ArisanHistoryController;
-use App\Http\Controllers\API\AuthController;
-use App\Http\Controllers\API\GroupController;
-use App\Http\Controllers\API\GroupOwnerController;
-use App\Http\Controllers\API\Guest\GroupController as GuestGroupController;
-use App\Http\Controllers\API\MemberController;
-use App\Http\Controllers\API\Notifications\NotificationController;
-use App\Http\Controllers\API\Payment\PaymentAccountController;
+use App\Http\Controllers\API\V1\Histories\ArisanHistoryController;
+use App\Http\Controllers\API\V1\Auth\AuthController;
+use App\Http\Controllers\API\V1\Groups\GroupController;
+use App\Http\Controllers\API\V1\Groups\GroupOwnerController;
+use App\Http\Controllers\API\V1\Guest\GroupController as GuestGroupController;
+use App\Http\Controllers\API\V1\Members\MemberController;
+use App\Http\Controllers\API\V1\Notifications\NotificationController;
+use App\Http\Controllers\API\V1\Payment\PaymentAccountController;
 use Illuminate\Support\Facades\Route;
 use williamcruzme\FCM\Facades\Device;
 

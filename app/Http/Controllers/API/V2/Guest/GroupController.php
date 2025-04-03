@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\API\Guest;
+namespace App\Http\Controllers\API\V2\Guest;
 
 use App\Http\Controllers\Controller;
 use App\Models\Group;
