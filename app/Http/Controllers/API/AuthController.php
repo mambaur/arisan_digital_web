@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Models\Device;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Facades\RateLimiter;
@@ -104,9 +106,12 @@ class AuthController extends Controller
     {
         $request->validate([
             'token' => ['required'],
+            'device_token' => ['required'],
         ]);
         // Getting the user from socialite using token from google
         $user = Socialite::driver('google')->stateless()->userFromToken($request->token);
+
+        DB::beginTransaction();
 
         // Getting or creating user from db
         $userFromDb = User::firstOrCreate(
@@ -120,10 +125,16 @@ class AuthController extends Controller
             ]
         );
 
-        // Returning response
+        $token = $userFromDb->createToken($request->device_name ?? 'mobile');
+        $plainTextToken = $token->plainTextToken;
+        $token_id = $token->accessToken->id;
+        $this->storeDeviceToken($request, $request->device_token, $token_id);
+
+        DB::commit();
+
         return response()->json([
             'data' => [
-                'token' => $userFromDb->createToken($request->device_name)->plainTextToken,
+                'token' => $plainTextToken,
                 'user' => $userFromDb
             ]
         ], 200);
@@ -143,6 +154,7 @@ class AuthController extends Controller
             [
                 'email' => 'required|email',
                 'password' => 'required',
+                'device_token' => 'required',
             ]
         );
 
@@ -181,14 +193,17 @@ class AuthController extends Controller
         //     );
         // }
 
-        $token = $user->createToken($request->device_name ?? "android")->plainTextToken;
+        $token = $user->createToken($request->device_name ?? 'mobile');
+        $plainTextToken = $token->plainTextToken;
+        $token_id = $token->accessToken->id;
+        $this->storeDeviceToken($request, $request->device_token, $token_id);
 
         return response()->json(
             [
                 'status' => 'success',
                 'message' => 'Login berhasil.',
                 'data' => [
-                    'token' => $token,
+                    'token' => $plainTextToken,
                 ],
             ],
             200
@@ -278,10 +293,15 @@ class AuthController extends Controller
      */
     public function logout(Request $request)
     {
+        DB::beginTransaction();
+        $access_token_id = $request->user()->currentAccessToken()->id;
+        $this->removeDeviceToken($access_token_id);
+
         $request
             ->user()
             ->currentAccessToken()
             ->delete();
+        DB::commit();
 
         return response()->json(
             [
@@ -407,5 +427,21 @@ class AuthController extends Controller
                 ],
                 200
             );
+    }
+
+    private function storeDeviceToken(Request $request, string $device_token, string $access_token_id): void
+    {
+        Device::create([
+            'token' => $device_token,
+            'personal_access_token_id' => $access_token_id,
+            'user_id' => $request->user()->id,
+            'user_type' => 'App\Models\User',
+        ]);
+        
+    }
+
+    private function removeDeviceToken(string $access_token_id)
+    {
+        Device::where('personal_access_token_id', $access_token_id)->delete();
     }
 }
