@@ -45,7 +45,7 @@ class AuthController extends Controller
         $token = $userFromDb->createToken($request->device_name ?? 'mobile');
         $plainTextToken = $token->plainTextToken;
         $token_id = $token->accessToken->id;
-        $this->storeDeviceToken($request, $request->device_token, $token_id);
+        $this->storeDeviceToken($userFromDb->id, $request->device_token, $token_id);
 
         DB::commit();
 
@@ -113,7 +113,7 @@ class AuthController extends Controller
         $token = $user->createToken($request->device_name ?? 'mobile');
         $plainTextToken = $token->plainTextToken;
         $token_id = $token->accessToken->id;
-        $this->storeDeviceToken($request, $request->device_token, $token_id);
+        $this->storeDeviceToken($user->id, $request->device_token, $token_id);
 
         return response()->json(
             [
@@ -346,12 +346,12 @@ class AuthController extends Controller
             );
     }
 
-    private function storeDeviceToken(Request $request, string $device_token, string $access_token_id): void
+    private function storeDeviceToken(string $user_id, string $device_token, string $access_token_id): void
     {
         Device::create([
             'token' => $device_token,
             'personal_access_token_id' => $access_token_id,
-            'user_id' => $request->user()->id,
+            'user_id' => $user_id,
             'user_type' => 'App\Models\User',
         ]);
         
