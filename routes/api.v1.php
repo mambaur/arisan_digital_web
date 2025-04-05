@@ -9,7 +9,6 @@ use App\Http\Controllers\API\V1\Members\MemberController;
 use App\Http\Controllers\API\V1\Notifications\NotificationController;
 use App\Http\Controllers\API\V1\Payment\PaymentAccountController;
 use Illuminate\Support\Facades\Route;
-use williamcruzme\FCM\Facades\Device;
 
 /*
 |--------------------------------------------------------------------------
@@ -37,8 +36,6 @@ Route::post('/resend-verification', [AuthController::class, 'resendVerification'
 Route::post('/reset-password', [AuthController::class, 'resetPassword']);
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
-    Device::routes();
-
     /*
     |--------------------------------------------------------------------------
     | Auth Routes

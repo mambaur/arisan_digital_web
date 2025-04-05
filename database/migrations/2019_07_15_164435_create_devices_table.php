@@ -17,6 +17,7 @@ class CreateDevicesTable extends Migration
             $table->bigIncrements('id')->unsigned();
             $table->text('token');
             $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('personal_access_token_id');
             $table->string('user_type');
             $table->timestamps();
         });
