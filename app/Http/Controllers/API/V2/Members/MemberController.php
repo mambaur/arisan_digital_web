@@ -227,7 +227,7 @@ class MemberController extends Controller
     public function updateStatusActive(Request $request, $id)
     {
         $validate = Validator::make($request->all(), [
-            'status_active' => 'required',
+            'status_active' => 'required|in:active,rejected,inactive',
         ]);
 
         if ($validate->fails()) {

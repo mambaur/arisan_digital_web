@@ -13,7 +13,6 @@ return new class extends Migration
     {
         Schema::table('members', function (Blueprint $table) {
             $table->unsignedBigInteger('user_id')->after('id')->nullable();
-            $table->string('status')->default('active')->after('is_owner')->nullable();
         });
     }
 
@@ -24,7 +23,6 @@ return new class extends Migration
     {
         Schema::table('members', function (Blueprint $table) {
             $table->dropColumn('user_id');
-            $table->dropColumn('status');
         });
     }
 };

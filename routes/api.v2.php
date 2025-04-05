@@ -22,10 +22,6 @@ use williamcruzme\FCM\Facades\Device;
 |
 */
 
-// Auth::routes();
-
-Route::post('/login', [AuthController::class, 'login']);
-
 Route::post('/login-with-google', [AuthController::class, 'loginWithGoogle']);
 
 Route::post('/login-manual', [AuthController::class, 'loginManual']);
