@@ -24,9 +24,9 @@ class GroupController extends Controller
     public function index(Request $request)
     {
         $request->validate([
-            'page' => ['integer'],
-            'limit' => ['integer'],
-            'type' => ['string'], // invitation | owned | null
+            'page' => ['nullable'],
+            'limit' => ['nullable'],
+            'type' => ['nullable', 'string'], // invitation | owned | null
         ]);
 
         $groups = Group::latest();
