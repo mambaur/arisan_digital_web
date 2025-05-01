@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API\V2\Groups;
 use App\Http\Controllers\Controller;
 use App\Models\Group;
 use App\Models\GroupOwner;
+use App\Models\Member;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -58,19 +59,33 @@ class GroupOwnerController extends Controller
 
         if (!@$user) {
             return response()->json([
-                "message" => "User tidak ditemukan"
+                "message" => "Pengguna tidak ditemukan"
+            ], 404);
+        }
+
+        $member = Member::where('email', $request->email)->where('group_id', $request->group_id)->first();
+        if(!$member){
+            return response()->json([
+                "message" => "Pengguna belum terdaftar sebagai anggota grub arisan"
+            ], 404);
+        }
+
+        $owner = GroupOwner::where('group_id', $request->group_id)->where('user_id', $user->id)->first();
+        if($owner){
+            return response()->json([
+                "message" => "Anggota sudah diaftarkan sebagai pengelola"
             ], 404);
         }
 
         GroupOwner::create([
             'group_id' => $request->group_id,
             'user_id' => $user->id,
-            'status_approval' => 'requested'
+            'status_approval' => 'approved'
         ]);
 
         return response()->json([
             "status" => "success",
-            "message" => "Permintaan pemilik group berhasil dikirimkan ke $request->email.",
+            "message" => "Pengelola group berhasil ditambahkan.",
         ], 200);
     }
 
@@ -134,7 +149,7 @@ class GroupOwnerController extends Controller
 
         return response()->json([
             "status" => "success",
-            "message" => "Pemilik group berhasil dihapus.",
+            "message" => "Pemilik grub berhasil dihapus.",
         ], 200);
     }
 }

@@ -52,13 +52,8 @@ class GroupController extends Controller
 
         $data = [];
         foreach ($groups as $item) {
-            $total_balance = $this->totalBalanceArisan($item);
-
-            $total_targets = count($item->members) * $item->dues;
-            $total_not_dues = $total_targets - $total_balance;
-
-            $unpaid_member = Member::where('group_id', $item->id)->whereNull('date_paid')->first();
-            $get_reward = Member::where('group_id', $item->id)->where('is_get_reward', 0)->first();
+            $total_member = $item->members()->select('id')->where('status_active', 'active')->count();
+            $total_winner = $item->members()->select('id')->where('status_active', 'active')->where('is_get_reward', 1)->count();
 
             $data[] = [
                 'id' => $item->id,
@@ -71,11 +66,10 @@ class GroupController extends Controller
                 'target' => $item->target,
                 'notes' => $item->notes,
                 'status' => $item->status,
+                'total_member' => $total_member,
+                'total_winner' => $total_winner,
                 'created_by' => $item->created_by,
-                'is_owned' => in_array($user_id, $item->owners()->pluck('user_id')->toArray()) ,
-                'total_balance' => $total_balance,
-                'total_not_dues' => $total_not_dues,
-                'is_shuffle' => $unpaid_member ? false : ($get_reward ? true : false)
+                'is_owned' => in_array($user_id, $item->owners()->pluck('user_id')->toArray()),
             ];
         }
 
@@ -164,7 +158,7 @@ class GroupController extends Controller
                 "gender" => $item->gender,
                 "date_paid" => $item->date_paid,
                 "status_paid" => $item->status_paid,
-                "status" => $item->status,
+                "status" => $item->status_active,
                 "nominal_paid" => $item->nominal_paid,
                 "status_active" => $item->status_active,
                 "can_delete" => !in_array($item->user_id, $ownerIds),
@@ -262,6 +256,16 @@ class GroupController extends Controller
             );
         }
 
+        $total_balance = $this->totalBalanceArisan($group);
+
+        $total_targets = count($group->members) * $group->dues;
+        $total_not_dues = $total_targets - $total_balance;
+
+        $unpaid_member = $group->members()->where('group_id', $group->id)->whereNull('date_paid')->first();
+        $get_reward = $group->members()->where('group_id', $group->id)->where('is_get_reward', 0)->first();
+        $total_member = $group->members()->select('id')->where('status_active', 'active')->count();
+        $total_winner = $group->members()->select('id')->where('status_active', 'active')->where('is_get_reward', 1)->count();
+
         $data = [
             'id' => $group->id,
             'name' => $group->name,
@@ -272,8 +276,13 @@ class GroupController extends Controller
             'target' => $group->target,
             'notes' => $group->notes,
             'status' => $group->status,
-            'is_owned' => in_array($request->user()->id, $group->owners()->pluck('user_id')->toArray()) ,
-            'created_at' => $group->created_at->format('Y-m-d')
+            'is_owned' => in_array($request->user()->id, $group->owners()->pluck('user_id')->toArray()),
+            'total_balance' => $total_balance,
+            'total_not_dues' => $total_not_dues,
+            'total_member' => $total_member,
+            'total_winner' => $total_winner,
+            'is_shuffle' => $unpaid_member ? false : ($get_reward ? true : false),
+            'created_at' => $group->created_at->format('Y-m-d'),
         ];
 
         return response()->json([

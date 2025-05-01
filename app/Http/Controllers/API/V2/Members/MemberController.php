@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Mail\Remainder;
 use App\Models\Group;
 use App\Models\Member;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
@@ -17,14 +18,57 @@ class MemberController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request, $group_id)
     {
-        $members = Member::latest()->get();
+        $validate = Validator::make($request->all(), [
+            'page' => 'nullable',
+            'limit' => 'nullable',
+            'status_active' => 'nullable', // active, inactive, pending, reject
+        ]);
+
+        if ($validate->fails()) {
+            $error = $validate->errors()->first();
+            return response()->json(
+                [
+                    'status' => 'failed',
+                    'message' => $error,
+                ],
+                400
+            );
+        }
+
+        $members = Member::where('group_id', $group_id)->latest()->orderBy('name', 'asc');
+
+        if($request->status_active){
+            $members->where('status_active', $request->status_active);
+        }
+
+        $members = $members->get();
+
+        $data = [];
+        $ownerIds = Group::find($group_id)->owners()->pluck('user_id')->toArray();
+        foreach ($members as $item) {
+            $data[] = [
+                "id" => $item->id,
+                "name" => $item->name,
+                "no_telp" => $item->no_telp,
+                "no_whatsapp" => $item->no_whatsapp,
+                "email" => $item->email,
+                "gender" => $item->gender,
+                "date_paid" => $item->date_paid,
+                "status_paid" => $item->status_paid,
+                "status" => $item->status_active,
+                "nominal_paid" => $item->nominal_paid,
+                "status_active" => $item->status_active,
+                "can_delete" => !in_array($item->user_id, $ownerIds),
+                "is_get_reward" => $item->is_get_reward
+            ];
+        }
 
         return response()->json([
             "status" => "success",
             "message" => "Get data members success.",
-            "data" => $members
+            "data" => $data
         ], 200);
     }
 
@@ -39,6 +83,10 @@ class MemberController extends Controller
         $validate = Validator::make($request->all(), [
             'name' => 'required',
             'group_id' => 'required',
+            'no_telp' => 'nullable',
+            'no_whatsapp' => 'nullable',
+            'email' => 'nullable',
+            'gender' => 'nullable',
         ]);
 
         if ($validate->fails()) {
@@ -59,9 +107,7 @@ class MemberController extends Controller
             "no_whatsapp" => $request->no_whatsapp,
             "email" => $request->email,
             "gender" => $request->gender,
-            // "date_paid" => $request->date_paid,
             "status_paid" => 'unpaid',
-            // "nominal_paid" => $request->nominal_paid,
             "status_active" => 'active',
         ]);
 
@@ -69,6 +115,90 @@ class MemberController extends Controller
             "status" => "success",
             "message" => "Member baru berhasil ditambahkan.",
         ], 200);
+    }
+    
+    /**
+     * Create New Member by User Code
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function storeByUserCode(Request $request)
+    {
+        $validate = Validator::make($request->all(), [
+            'user_code' => 'required',
+            'group_id' => 'required',
+        ]);
+
+        if ($validate->fails()) {
+            $error = $validate->errors()->first();
+            return response()->json(
+                [
+                    'status' => 'failed',
+                    'message' => $error,
+                ],
+                200
+            );
+        }
+
+        $user = User::where('code', $request->user_code)->first();
+        if(!$user) return abort(404, 'Pengguna tidak ditemukan');
+
+        $member = Member::where('user_id', $user->id)->where('group_id', $request->group_id)->first();
+        if($member) return abort(400, 'Anggota sudah didaftarkan');
+
+        Member::create([
+            "group_id" => $request->group_id,
+            "user_id" => $user->id,
+            "name" => $user->name,
+            "email" => $user->email,
+            "status_paid" => 'unpaid',
+            "status_active" => 'pending',
+        ]);
+
+        return response()->json([
+            "status" => "success",
+            "message" => "Member baru berhasil ditambahkan. Permintaan anggota telah dikirimkan",
+        ], 200);
+    }
+
+    /**
+     * Count Member
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function countMember(Request $request, $group_id)
+    {
+        $validate = Validator::make($request->all(), [
+            'status_active' => 'nullable', // active | inactive | pending | reject
+        ]);
+
+        if ($validate->fails()) {
+            $error = $validate->errors()->first();
+            return response()->json(
+                [
+                    'status' => 'failed',
+                    'message' => $error,
+                ],
+                200
+            );
+        }
+
+        $count = Member::where('group_id', $group_id);
+        if($request->status_active){
+            $count->where('status_active', $request->status_active);
+        }
+
+        $count = $count->count();
+
+        return response()->json([
+            "status" => "success",
+            "message" => "Total anggota berhasil didapatkan.",
+            "data" => [
+                "total" => $count,
+            ],
+        ]);
     }
 
     /**
@@ -227,7 +357,7 @@ class MemberController extends Controller
     public function updateStatusActive(Request $request, $id)
     {
         $validate = Validator::make($request->all(), [
-            'status_active' => 'required|in:active,rejected,inactive',
+            'status_active' => 'required|in:active,reject,inactive',
         ]);
 
         if ($validate->fails()) {

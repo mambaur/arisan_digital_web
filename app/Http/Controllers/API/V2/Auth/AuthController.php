@@ -38,6 +38,7 @@ class AuthController extends Controller
                 'email' =>  $user->email,
                 'name' => $user->name,
                 "photo_url" => $request->photo_url,
+                'code' => User::generateUniqueCode(),
                 'password' => Hash::make('2y82lkskfs732lska8'),
             ]
         );
@@ -161,6 +162,7 @@ class AuthController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'photo_url' => 'https://cdn-icons-png.flaticon.com/512/149/149071.png',
+            'code' => User::generateUniqueCode(),
             'password' => Hash::make($request->password),
         ]);
 
@@ -200,6 +202,29 @@ class AuthController extends Controller
         return response()->json([
             "status" => "failed",
             "message" => "Data user tidak ditemukan."
+        ], 200);
+    }
+
+    /**
+     * Generate User Code
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function initGenerateCode(Request $request)
+    {
+        $users = User::whereNull('code')->paginate(1000);
+
+        foreach ($users as $item) {
+            if(!@$item->code){
+                $item->code = User::generateUniqueCode();
+                $item->save();
+            }
+        }
+
+        return response()->json([
+            "status" => "success",
+            "message" => count($users)." users code successfully generated."
         ], 200);
     }
 

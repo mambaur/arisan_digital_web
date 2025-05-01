@@ -4,10 +4,12 @@ use App\Http\Controllers\API\V2\Histories\ArisanHistoryController;
 use App\Http\Controllers\API\V2\Auth\AuthController;
 use App\Http\Controllers\API\V2\Groups\GroupController;
 use App\Http\Controllers\API\V2\Groups\GroupOwnerController;
-use App\Http\Controllers\API\V1\Guest\GroupController as GuestGroupController;
-use App\Http\Controllers\API\V1\Members\MemberController;
-use App\Http\Controllers\API\V1\Notifications\NotificationController;
-use App\Http\Controllers\API\V1\Payment\PaymentAccountController;
+use App\Http\Controllers\API\V2\Guest\GroupController as GuestGroupController;
+use App\Http\Controllers\API\V2\Members\MemberController;
+use App\Http\Controllers\API\V2\Notifications\NotificationController;
+use App\Http\Controllers\API\V2\Payment\PaymentAccountController;
+use App\Http\Controllers\API\V2\Articles\ArticleController;
+use App\Http\Controllers\API\V2\Settings\SettingController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -44,6 +46,8 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
     Route::get('/user', [AuthController::class, 'show']);
 
+    Route::get('/user/generate-code', [AuthController::class, 'initGenerateCode']);
+
     Route::post('/logout', [AuthController::class, 'logout']);
 
     /*
@@ -55,13 +59,17 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     |
     */
 
-    Route::get('/members', [MemberController::class, 'index']);
+    Route::get('/members/{group_id}', [MemberController::class, 'index']);
 
     Route::post('/members/mail/reminder/{group_id}', [MemberController::class, 'mailReminder']);
 
+    Route::get('/member/count/{group_id}', [MemberController::class, 'countMember']);
+
     Route::get('/member/{id}', [MemberController::class, 'show']);
 
-    Route::post('/member/store', [MemberController::class, 'store']);
+    Route::post('/member/store', [MemberController::class, 'storeByUserCode']);
+
+    Route::post('/member/store/user-code', [MemberController::class, 'store']);
 
     Route::patch('/member/update/{id}', [MemberController::class, 'update']);
 
@@ -72,6 +80,18 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::patch('/member/reset/status-paid/{id}', [MemberController::class, 'resetStatusPaid']);
 
     Route::delete('/member/delete/{id}', [MemberController::class, 'destroy']);
+    
+
+    /*
+    |--------------------------------------------------------------------------
+    | Settings Routes
+    |--------------------------------------------------------------------------
+    |
+    | Manage settings data API
+    |
+    */
+
+    Route::get('/setting/{key}', [SettingController::class, 'index']);
 
     /*
     |--------------------------------------------------------------------------
@@ -103,6 +123,18 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::patch('/group/update/periods-date/{id}', [GroupController::class, 'updatePeriodsDate']);
 
     Route::delete('/group/delete/{id}', [GroupController::class, 'destroy']);
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Groups Routes
+    |--------------------------------------------------------------------------
+    |
+    | Manage groups data API
+    |
+    */
+
+    Route::get('/articles', [ArticleController::class, 'index']);
 
 
     /*
