@@ -39,7 +39,7 @@ class GroupController extends Controller
                 $query->where('user_id', $user_id);
             });;
         }else if($request->type == 'invitation'){
-            $groups->whereHas('members', function ($query) use ($email) {
+            $groups->with(['members'])->whereHas('members', function ($query) use ($email) {
                 $query->where('email', $email)->where('status_active', 'pending');
             });
         }else{
