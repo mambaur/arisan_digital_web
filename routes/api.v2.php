@@ -67,9 +67,9 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
     Route::get('/member/{id}', [MemberController::class, 'show']);
 
-    Route::post('/member/store', [MemberController::class, 'storeByUserCode']);
+    Route::post('/member/store', [MemberController::class, 'store']);
 
-    Route::post('/member/store/user-code', [MemberController::class, 'store']);
+    Route::post('/member/store/user-code', [MemberController::class, 'storeByUserCode']);
 
     Route::patch('/member/update/{id}', [MemberController::class, 'update']);
 
