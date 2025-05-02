@@ -54,6 +54,7 @@ class GroupController extends Controller
         foreach ($groups as $item) {
             $total_member = $item->members()->select('id')->where('status_active', 'active')->count();
             $total_winner = $item->members()->select('id')->where('status_active', 'active')->where('is_get_reward', 1)->count();
+            $member = $item->members()->select('id')->where('user_id', $user_id)->first();
 
             $data[] = [
                 'id' => $item->id,
@@ -70,6 +71,7 @@ class GroupController extends Controller
                 'total_winner' => $total_winner,
                 'created_by' => $item->created_by,
                 'is_owned' => in_array($user_id, $item->owners()->pluck('user_id')->toArray()),
+                'user_member_id' => @$member->id,
             ];
         }
 
