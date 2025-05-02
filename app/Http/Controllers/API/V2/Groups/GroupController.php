@@ -40,7 +40,7 @@ class GroupController extends Controller
             });;
         }else if($request->type == 'invitation'){
             $groups->whereHas('members', function ($query) use ($email) {
-                $query->where('email', $email)->where('status', 'request');
+                $query->where('email', $email)->where('status_active', 'pending');
             });
         }else{
             $groups->with(['members'])->whereHas('members', function ($q) use ($email) {
