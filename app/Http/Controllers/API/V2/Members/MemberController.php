@@ -43,7 +43,7 @@ class MemberController extends Controller
             $members->where('status_active', $request->status_active);
         }
 
-        $members = $members->get();
+        $members = $members->paginate($request->limit ?? 10);
 
         $data = [];
         $ownerIds = Group::find($group_id)->owners()->pluck('user_id')->toArray();
