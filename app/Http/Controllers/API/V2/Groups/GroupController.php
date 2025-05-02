@@ -24,6 +24,7 @@ class GroupController extends Controller
     public function index(Request $request)
     {
         $request->validate([
+            'search' => ['nullable'],
             'page' => ['nullable'],
             'limit' => ['nullable'],
             'type' => ['nullable', 'string'], // invitation | owned | null
@@ -48,7 +49,7 @@ class GroupController extends Controller
             });
         }
 
-        $groups = $groups->paginate($request->limit ?? 10);
+        $groups = $groups->where('name', 'LIKE', "%$request->search%")->paginate($request->limit ?? 10);
 
         $data = [];
         foreach ($groups as $item) {
