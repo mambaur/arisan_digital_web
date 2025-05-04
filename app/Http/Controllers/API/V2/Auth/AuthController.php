@@ -192,6 +192,7 @@ class AuthController extends Controller
                 "message" => "Data user berhasil didapatkan.",
                 "data" => [
                     "id" => $request->user()->id,
+                    "code" => $request->user()->code,
                     "name" => $request->user()->name,
                     "email" => $request->user()->email,
                     "photo_url" => $request->user()->photo_url,
