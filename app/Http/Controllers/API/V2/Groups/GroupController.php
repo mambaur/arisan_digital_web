@@ -165,7 +165,12 @@ class GroupController extends Controller
                 "nominal_paid" => $item->nominal_paid,
                 "status_active" => $item->status_active,
                 "can_delete" => !in_array($item->user_id, $ownerIds),
-                "is_get_reward" => $item->is_get_reward
+                "is_get_reward" => $item->is_get_reward,
+                "user" => @$item->user ? [
+                    'id' => @$item->user->id,
+                    'code' => @$item->user->code,
+                    'name' => @$item->user->name,
+                ] : null,
             ];
         }
 
