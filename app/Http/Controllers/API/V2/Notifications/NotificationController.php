@@ -34,50 +34,29 @@ class NotificationController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Count Unread Notifications
      */
-    public function create()
+    public function count()
     {
-        //
+        $user = auth()->user();
+        $unreadCount = $user->unreadNotifications()->count();
+
+        return response()->json([
+            'unread_count' => $unreadCount,
+            'message' => 'Get unread notification count success'
+        ], 200);
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Mark All Notifications as Read
      */
-    public function store(Request $request)
+    public function markAllAsRead()
     {
-        //
-    }
+        $user = auth()->user();
+        $user->unreadNotifications->markAsRead();
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        return response()->json([
+            'message' => 'All notifications marked as read'
+        ], 200);
     }
 }
