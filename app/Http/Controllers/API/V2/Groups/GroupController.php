@@ -36,9 +36,11 @@ class GroupController extends Controller
         $email = $request->user()->email;
 
         if($request->type == 'owned'){
-            $groups->with(['owners'])->whereHas('owners', function($query) use($user_id){
+            $groups->with(['owners', 'members'])->whereHas('owners', function($query) use($user_id){
                 $query->where('user_id', $user_id);
-            });;
+            })->whereHas('members', function ($query) use ($email) {
+                $query->where('email', $email)->where('status_active', '<>', 'pending');
+            });
         }else if($request->type == 'invitation'){
             $groups->with(['members'])->whereHas('members', function ($query) use ($email) {
                 $query->where('email', $email)->where('status_active', 'pending');
@@ -148,7 +150,7 @@ class GroupController extends Controller
      */
     public function memberGroup(Request $request, $id)
     {
-        $members = Member::where('group_id', $id)->where('name', 'like', "%$request->q%")->orderBy('name', 'asc')->get();
+        $members = Member::where('group_id', $id)->where('name', 'like', "%$request->q%")->where('status_active', '<>', 'pending')->orderBy('name', 'asc')->get();
         $data = [];
         $ownerIds = Group::find($id)->owners()->pluck('user_id')->toArray();
         foreach ($members as $item) {
@@ -218,6 +220,7 @@ class GroupController extends Controller
             "target" => $request->target,
             "created_by" => $request->user()->id,
             "notes" => $request->notes,
+            "max_winner" => $request->max_winner,
         ]);
 
         $group->save();
@@ -278,8 +281,8 @@ class GroupController extends Controller
             'id' => $group->id,
             'name' => $group->name,
             'code' => $group->code,
-            'periods_type' => $group->periods_type,
-            'periods_date' => $group->periods_date,
+            'periods_date' => $group->periods_date->format('Y-m-d'),
+            'periods_date_en' => $group->periods_date->format('d F Y'),
             'dues' => $group->dues,
             'target' => $group->target,
             'notes' => $group->notes,
@@ -344,7 +347,7 @@ class GroupController extends Controller
             "periods_date" => $request->periods_date,
             "dues" => $request->dues,
             "target" => $request->target,
-            // "notes" => $request->notes,
+            "max_winner" => $request->max_winner,
         ]);
 
         return response()->json([

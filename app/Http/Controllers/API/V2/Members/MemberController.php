@@ -161,6 +161,96 @@ class MemberController extends Controller
             "message" => "Member baru berhasil ditambahkan. Permintaan anggota telah dikirimkan",
         ], 200);
     }
+    
+    /**
+     * Create New Member by Group Code
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function storeByGroupCode(Request $request)
+    {
+        $validate = Validator::make($request->all(), [
+            'group_code' => 'required',
+        ]);
+
+        if ($validate->fails()) {
+            $error = $validate->errors()->first();
+            return response()->json(
+                [
+                    'status' => 'failed',
+                    'message' => $error,
+                ],
+                200
+            );
+        }
+
+        $user = auth()->user();
+        $group = Group::where('code', $request->group_code)->first();
+        if(!$group) return abort(404, 'Grub tidak ditemukan');
+
+        $member = Member::where('user_id', $user->id)->where('group_id', $group->id)->first();
+        if($member) return abort(400, 'Anda sudah didaftarkan di grub');
+
+        Member::create([
+            "group_id" => $group->id,
+            "user_id" => $user->id,
+            "name" => $user->name,
+            "email" => $user->email,
+            "status_paid" => 'unpaid',
+            "status_active" => 'pending',
+        ]);
+
+        return response()->json([
+            "status" => "success",
+            "message" => "Permintaan anggota member anda berhasil dikirimkan, mohon tunggu pengelola arisan menyetujui permintaan anda.",
+        ], 200);
+    }
+    
+    /**
+     * Create New Member by User Email
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function storeByUserEmail(Request $request)
+    {
+        $validate = Validator::make($request->all(), [
+            'email' => 'required',
+            'group_id' => 'required',
+        ]);
+
+        if ($validate->fails()) {
+            $error = $validate->errors()->first();
+            return response()->json(
+                [
+                    'status' => 'failed',
+                    'message' => $error,
+                ],
+                200
+            );
+        }
+
+        $user = User::where('email', $request->email)->first();
+        if(!$user) return abort(404, 'Pengguna tidak ditemukan');
+
+        $member = Member::where('user_id', $user->id)->where('group_id', $request->group_id)->first();
+        if($member) return abort(400, 'Anggota sudah didaftarkan');
+
+        Member::create([
+            "group_id" => $request->group_id,
+            "user_id" => $user->id,
+            "name" => $user->name,
+            "email" => $user->email,
+            "status_paid" => 'unpaid',
+            "status_active" => 'pending',
+        ]);
+
+        return response()->json([
+            "status" => "success",
+            "message" => "Member baru berhasil ditambahkan. Permintaan anggota telah dikirimkan",
+        ], 200);
+    }
 
     /**
      * Count Member

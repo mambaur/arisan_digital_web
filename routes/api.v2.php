@@ -71,6 +71,10 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
     Route::post('/member/store/user-code', [MemberController::class, 'storeByUserCode']);
 
+    Route::post('/member/store/user-email', [MemberController::class, 'storeByUserEmail']);
+
+    Route::post('/member/store/group-code', [MemberController::class, 'storeByGroupCode']);
+
     Route::patch('/member/update/{id}', [MemberController::class, 'update']);
 
     Route::patch('/member/update/status-active/{id}', [MemberController::class, 'updateStatusActive']);
