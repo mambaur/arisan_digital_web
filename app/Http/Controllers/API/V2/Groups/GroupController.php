@@ -39,7 +39,7 @@ class GroupController extends Controller
             $groups->with(['owners', 'members'])->whereHas('owners', function($query) use($user_id){
                 $query->where('user_id', $user_id);
             })->whereHas('members', function ($query) use ($email) {
-                $query->where('email', $email)->where('status_active', '<>', 'pending');
+                $query->where('email', $email)->whereNotIn('status_active',  ['pending', 'reject']);
             });
         }else if($request->type == 'invitation'){
             $groups->with(['members'])->whereHas('members', function ($query) use ($email) {
@@ -150,7 +150,7 @@ class GroupController extends Controller
      */
     public function memberGroup(Request $request, $id)
     {
-        $members = Member::where('group_id', $id)->where('name', 'like', "%$request->q%")->where('status_active', '<>', 'pending')->orderBy('name', 'asc')->get();
+        $members = Member::where('group_id', $id)->where('name', 'like', "%$request->q%")->whereNotIn('status_active',  ['pending', 'reject'])->orderBy('name', 'asc')->get();
         $data = [];
         $ownerIds = Group::find($id)->owners()->pluck('user_id')->toArray();
         foreach ($members as $item) {
