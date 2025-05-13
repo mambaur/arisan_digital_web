@@ -60,6 +60,6 @@ class ChargeNotification extends Notification
             title: $this->title,
             body: $this->description,
         )))
-            ->data(['data' => $this->resource, 'type' => 'charge']);
+            ->data(['data' => json_encode($this->resource), 'type' => 'charge']);
     }
 }

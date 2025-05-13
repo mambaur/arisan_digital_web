@@ -70,6 +70,9 @@ class NotificationController extends Controller
     {
         $validate = Validator::make($request->all(), [
             'email' => 'required',
+            'title' => 'nullable',
+            'description' => 'nullable',
+            'data' => 'nullable',
         ]);
 
         if ($validate->fails()) {
@@ -88,7 +91,7 @@ class NotificationController extends Controller
             return abort(404, "Penguna tidak ditemukan");
         }
 
-        $user->notify(new TestNotification("Test Notifikasi", "Deskripsi Test Notifikasi", []));
+        $user->notify(new TestNotification($request->title ?? "Test Notifikasi", $request->description ?? "Deskripsi Test Notifikasi", $request->data ?? []));
 
         return response()->json([
             'message' => 'Test notifikasi berhasil dikirimkan'
