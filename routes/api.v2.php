@@ -186,6 +186,8 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
     Route::post('/notification/read', [NotificationController::class, 'markAllAsRead']);
 
+    Route::post('/notification/test', [NotificationController::class, 'test']);
+
     /*
     |--------------------------------------------------------------------------
     | Payment Account Routes

@@ -2,13 +2,13 @@
 
 namespace App\Notifications;
 
-use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
 use NotificationChannels\Fcm\FcmChannel;
 use NotificationChannels\Fcm\FcmMessage;
 use NotificationChannels\Fcm\Resources\Notification as FcmNotification;
 
-class ChargeNotification extends Notification 
+class TestNotification extends Notification
 {
     private $title;
     private $description;
@@ -60,6 +60,6 @@ class ChargeNotification extends Notification
             title: $this->title,
             body: $this->description,
         )))
-            ->data(['data' => $this->resource, 'type' => 'charge']);
+            ->data(['data' => $this->resource, 'type' => 'test']);
     }
 }

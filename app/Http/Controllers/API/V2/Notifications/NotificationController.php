@@ -3,7 +3,10 @@
 namespace App\Http\Controllers\API\V2\Notifications;
 
 use App\Http\Controllers\Controller;
+use App\Models\User;
+use App\Notifications\TestNotification;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class NotificationController extends Controller
 {
@@ -29,7 +32,7 @@ class NotificationController extends Controller
 
         return response()->json([
             'data' => $data,
-            'message' => 'Get notification data succeess'
+            'message' => 'Get notification data success'
         ], 200);
     }
 
@@ -57,6 +60,38 @@ class NotificationController extends Controller
 
         return response()->json([
             'message' => 'All notifications marked as read'
+        ], 200);
+    }
+
+    /**
+     * Test notification
+     */
+    public function test(Request $request)
+    {
+        $validate = Validator::make($request->all(), [
+            'email' => 'required',
+        ]);
+
+        if ($validate->fails()) {
+            $error = $validate->errors()->first();
+            return response()->json(
+                [
+                    'status' => 'failed',
+                    'message' => $error,
+                ],
+                400
+            );
+        }
+
+        $user = User::where('email', $request->email)->first();
+        if(!$user){
+            return abort(404, "Penguna tidak ditemukan");
+        }
+
+        $user->notify(new TestNotification("Test Notifikasi", "Deskripsi Test Notifikasi", null));
+
+        return response()->json([
+            'message' => 'Test notifikasi berhasil dikirimkan'
         ], 200);
     }
 }
