@@ -60,6 +60,6 @@ class TestNotification extends Notification
             title: $this->title,
             body: $this->description,
         )))
-            ->data(['data' => $this->resource, 'type' => 'test']);
+            ->data(['data' => json_encode($this->resource), 'type' => 'test']);
     }
 }
