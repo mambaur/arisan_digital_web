@@ -72,7 +72,7 @@ class GroupController extends Controller
                 'status' => $item->status,
                 'total_member' => $total_member,
                 'total_winner' => $total_winner,
-                'created_by' => $item->created_by,
+                'created_by' => (int) $item->created_by,
                 'is_owned' => in_array($user_id, $item->owners()->pluck('user_id')->toArray()),
                 'user_member_id' => @$member->id,
             ];
