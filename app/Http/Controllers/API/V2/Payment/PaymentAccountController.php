@@ -18,7 +18,13 @@ class PaymentAccountController extends Controller
 
         $data = [];
         foreach ($payments as $item) {
-            $data[] = $item;
+            $data[] = [
+                "id" => $item->id,
+                "group_id" => (int) $item->group_id,
+                "account_name" => (int) $item->account_name,
+                "bank_name" => (int) $item->bank_name,
+                "bank_number" => (int) $item->bank_number,
+            ];
         }
 
         return response()->json(
