@@ -21,9 +21,9 @@ class PaymentAccountController extends Controller
             $data[] = [
                 "id" => $item->id,
                 "group_id" => (int) $item->group_id,
-                "account_name" => (int) $item->account_name,
-                "bank_name" => (int) $item->bank_name,
-                "bank_number" => (int) $item->bank_number,
+                "account_name" => $item->account_name,
+                "bank_name" => $item->bank_name,
+                "bank_number" =>  $item->bank_number,
             ];
         }
 
