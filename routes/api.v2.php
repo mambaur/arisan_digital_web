@@ -167,7 +167,11 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     |
     */
 
+    Route::get('/arisan-history/init-winners', [ArisanHistoryController::class, 'initWinner']);
+
     Route::post('/arisan-history/store', [ArisanHistoryController::class, 'store']);
+
+    Route::post('/arisan-history/store-winner', [ArisanHistoryController::class, 'storeWinner']);
 
     Route::post('/arisan-history/delete/{id}', [ArisanHistoryController::class, 'destroy']);
 

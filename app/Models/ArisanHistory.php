@@ -25,4 +25,9 @@ class ArisanHistory extends Model
     {
         return $this->hasMany(ArisanHistoryDetail::class, 'arisan_history_id');
     }
+
+    public function winners()
+    {
+        return $this->hasMany(ArisanHistoryWinner::class, 'arisan_history_id');
+    }
 }
