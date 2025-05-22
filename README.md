@@ -14,5 +14,16 @@ Jalankan ini untuk memulai migrasi ke versi terbaru
 - Jalankan generate winners ke tabel baru: http://localhost:8000/api/v2
 /arisan-history/init-winners
 
-###
+### Notes
 - Kolom owner_id di tabel members tidak digunakan lagi
+
+## Notifications
+Kirim ke anggota
+- Undangan masuk ke grub dan reminder notifikasi manual
+- Tagih bayar arisan
+- Didaftarkan atau dihapus sebagai pengelola
+- Pemenang arisan
+- Dihapus dari anggota
+
+Kirim ke pengelola
+- Anggota menerima undangan
