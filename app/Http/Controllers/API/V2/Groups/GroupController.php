@@ -227,6 +227,7 @@ class GroupController extends Controller
         $group->save();
 
         Member::create([
+            "user_id" => $request->user()->id,
             "group_id" => $group->id,
             "name" => $request->user()->name,
             "email" => $request->user()->email,
