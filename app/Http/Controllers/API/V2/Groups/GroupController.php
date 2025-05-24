@@ -285,6 +285,7 @@ class GroupController extends Controller
             'id' => $group->id,
             'name' => $group->name,
             'code' => $group->code,
+            'periods_type' => $group->periods_type,
             'periods_date' => $group->periods_date->format('Y-m-d'),
             'periods_date_en' => $group->periods_date->format('d F Y'),
             'dues' => (int) $group->dues,
