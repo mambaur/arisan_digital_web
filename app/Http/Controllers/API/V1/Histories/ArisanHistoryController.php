@@ -103,7 +103,7 @@ class ArisanHistoryController extends Controller
         if ($group->periods_type == 'monthly') {
             $periods_day = 30; // per bulan
         }
-        if ($group->periods_type == 'annual') {
+        if ($group->periods_type == 'annual' || $group->periods_type == 'yearly') {
             $periods_day = 365; // per tahun
         }
         $group->periods_date = $group->periods_date->addDays($periods_day);
