@@ -301,7 +301,10 @@ class ArisanHistoryController extends Controller
     public function show($id)
     {
         $arisan_history = ArisanHistory::with([
-            'member' => function ($query) {
+            'arisanHistoryDetails.member' => function ($query) {
+                $query->withTrashed();
+            },
+            'winners.member' => function ($query) {
                 $query->withTrashed();
             }
         ])->where('id', $id)->first();
