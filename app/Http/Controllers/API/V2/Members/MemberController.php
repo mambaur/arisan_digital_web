@@ -436,7 +436,7 @@ class MemberController extends Controller
     {
         $validate = Validator::make($request->all(), [
             // 'date_paid' => 'required',
-            'status_paid' => 'required',
+            'status_paid' => 'required|in:unpaid,paid,skip,cancel',
             // 'nominal_paid' => 'required',
         ]);
 

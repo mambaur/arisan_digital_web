@@ -89,6 +89,7 @@ class GroupController extends Controller
     private function totalBalanceArisan(Group $group)
     {
         return $group->members()
+            ->where('status_active', 'active')
             ->where('status_paid', 'paid')
             ->count() * $group->dues;
     }
@@ -271,7 +272,7 @@ class GroupController extends Controller
 
         $total_balance = $this->totalBalanceArisan($group);
 
-        $total_targets = count($group->members) * $group->dues;
+        $total_targets = count($group->members()->where('status_active', 'active')->whereIn('status_paid', ['unpaid', 'paid'])->get()) * $group->dues;
         $total_not_dues = $total_targets - $total_balance;
 
         $members = $group->members()->where('group_id', $group->id)->where('is_get_reward', 0)->where('status_active', 'active')->get();
