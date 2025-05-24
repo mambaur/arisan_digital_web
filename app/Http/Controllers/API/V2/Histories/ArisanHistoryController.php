@@ -25,7 +25,10 @@ class ArisanHistoryController extends Controller
     public function index($id)
     {
         $arisan_histories = ArisanHistory::with([
-            'member' => function ($query) {
+            'arisanHistoryDetails.member' => function ($query) {
+                $query->withTrashed();
+            },
+            'winners.member' => function ($query) {
                 $query->withTrashed();
             }
         ])->where('group_id', $id)->latest()->get();
