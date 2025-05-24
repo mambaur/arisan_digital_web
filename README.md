@@ -19,11 +19,13 @@ Jalankan ini untuk memulai migrasi ke versi terbaru
 
 ## Notifications
 Kirim ke anggota
-- Undangan masuk ke grub dan reminder notifikasi manual
-- Tagih bayar arisan
-- Didaftarkan atau dihapus sebagai pengelola
-- Pemenang arisan
-- Dihapus dari anggota
+- (done) Undangan masuk ke grub
+- (done) reminder request invitation member notifikasi manual
+- (done) Tagih bayar arisan
+- (done) Didaftarkan atau dihapus sebagai pengelola
+- (done) Pemenang arisan
+- (done) Dihapus dari anggota
 
 Kirim ke pengelola
-- Anggota menerima undangan
+- (done) Anggota menerima undangan
+- (done) Request daftar sebagai member dari anggota

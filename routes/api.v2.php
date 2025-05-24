@@ -63,6 +63,10 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
     Route::post('/members/mail/reminder/{group_id}', [MemberController::class, 'mailReminder']);
 
+    Route::post('/members/notification/reminder/payment/{group_id}', [MemberController::class, 'paymentNotificationReminder']);
+
+    Route::post('/members/notification/reminder/invitation/{member_id}', [MemberController::class, 'invitationNotificationReminder']);
+
     Route::get('/member/count/{group_id}', [MemberController::class, 'countMember']);
 
     Route::get('/member/{id}', [MemberController::class, 'show']);

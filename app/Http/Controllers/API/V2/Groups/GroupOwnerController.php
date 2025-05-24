@@ -7,6 +7,8 @@ use App\Models\Group;
 use App\Models\GroupOwner;
 use App\Models\Member;
 use App\Models\User;
+use App\Notifications\ArisanNotification;
+use App\NotificationType\NotificationType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -83,6 +85,16 @@ class GroupOwnerController extends Controller
             'status_approval' => 'approved'
         ]);
 
+        try {
+            $data = [
+                'member' => $member,
+                'group' => @$member->group,
+            ];
+            $member->user->notify(new ArisanNotification("Selamat! Kamu jadi pengelola grup 🎊", "Kamu telah dipercaya menjadi pengelola grup {$member->group->name}. Yuk, bantu jalankan arisan dengan lancar!", NotificationType::GROUP_OWNER_INVITATION, $data));
+        } catch (\Throwable $th) {
+            //throw $th;
+        }
+
         return response()->json([
             "status" => "success",
             "message" => "Pengelola group berhasil ditambahkan.",
@@ -138,6 +150,8 @@ class GroupOwnerController extends Controller
     public function destroy(string $id)
     {
         $group_owner = GroupOwner::find($id);
+        $group = @$group_owner->group;
+        $user = @$group_owner->user;
 
         if (!@$group_owner) {
             return response()->json([
@@ -146,6 +160,16 @@ class GroupOwnerController extends Controller
         }
 
         $group_owner->delete();
+
+        try {
+            $data = [
+                'user' => $user,
+                'group' => @$group,
+            ];
+            $user->notify(new ArisanNotification("Peran pengelola kamu sudah selesai", "Kamu sudah tidak lagi bertugas sebagai pengelola di grup $group->name. Terima kasih atas bantuannya, ya!", NotificationType::GROUP_OWNER_REMOVAL, $data));
+        } catch (\Throwable $th) {
+            //throw $th;
+        }
 
         return response()->json([
             "status" => "success",

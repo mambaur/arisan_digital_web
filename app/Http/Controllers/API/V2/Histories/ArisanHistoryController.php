@@ -8,6 +8,8 @@ use App\Models\ArisanHistoryDetail;
 use App\Models\ArisanHistoryWinner;
 use App\Models\Group;
 use App\Models\Member;
+use App\Notifications\ArisanNotification;
+use App\NotificationType\NotificationType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
@@ -22,7 +24,12 @@ class ArisanHistoryController extends Controller
      */
     public function index($id)
     {
-        $arisan_histories = ArisanHistory::where('group_id', $id)->latest()->get();
+        $arisan_histories = ArisanHistory::with([
+            'member' => function ($query) {
+                $query->withTrashed();
+            }
+        ])->where('group_id', $id)->latest()->get();
+
         $data = [];
         foreach ($arisan_histories as $item) {
             $history_details = [];
@@ -235,11 +242,26 @@ class ArisanHistoryController extends Controller
                 'member_id' => $member_id,
             ]);
 
-            Member::find($member_id)->update([
-                'is_get_reward' => 1
-            ]);
-        }
+            $member_winner = Member::find($member_id);
+            if(@$member_winner){
+                @$member_winner->update([
+                    'is_get_reward' => 1
+                ]);
 
+                if(@$member_winner->user){
+                    try {
+                        $data = [
+                            'member' => $member_winner,
+                            'group' => @$group,
+                        ];
+                        $member_winner->user->notify(new ArisanNotification("Selamat! Kamu menang arisan! 🎉", "Kocokan di grup $group->name sudah selesai, dan kamu keluar sebagai pemenangnya. Siap-siap terima dana arisan ya!", NotificationType::GROUP_WINNER, $data));
+                    } catch (\Throwable $th) {
+                        //throw $th;
+                    }
+                }
+            }
+
+        }
 
         $members = Member::where('group_id', $arisan_history->group_id)->get();
         foreach ($members as $item) {
@@ -275,7 +297,12 @@ class ArisanHistoryController extends Controller
      */
     public function show($id)
     {
-        $arisan_history = ArisanHistory::find($id);
+        $arisan_history = ArisanHistory::with([
+            'member' => function ($query) {
+                $query->withTrashed();
+            }
+        ])->where('id', $id)->first();
+    
         if (!$arisan_history) {
             return response()->json(
                 [
