@@ -603,6 +603,7 @@ class MemberController extends Controller
 
         $user = $member->user;
         $temp_member = $member;
+        $temp_group = $member->group;
         $group_name = @$member->group->name;
 
         $member = Member::destroy($id);
@@ -610,6 +611,7 @@ class MemberController extends Controller
         try {
             $data = [
                 'member' => $temp_member,
+                'group' => $temp_group,
             ];
             $user->notify(new ArisanNotification("Kamu sudah dikeluarkan dari grup arisan", "Pengelola grup $group_name sudah mengeluarkan kamu dari keanggotaan. Kalau ada pertanyaan, coba hubungi pengelola, ya!", NotificationType::MEMBER_REMOVAL, $data));
         } catch (\Throwable $th) {
