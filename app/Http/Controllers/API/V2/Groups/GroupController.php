@@ -4,6 +4,8 @@ namespace App\Http\Controllers\API\V2\Groups;
 
 
 use App\Http\Controllers\Controller;
+use App\MemberStatusActive\MemberStatusActive;
+use App\MemberStatusPaid\MemberStatusPaid;
 use App\Models\Group;
 use App\Models\GroupOwner;
 use App\Models\Member;
@@ -27,7 +29,7 @@ class GroupController extends Controller
             'search' => ['nullable'],
             'page' => ['nullable'],
             'limit' => ['nullable'],
-            'type' => ['nullable', 'string'], // invitation | owned | null
+            'type' => ['nullable', 'string'], // invitation | join | owned | null
         ]);
 
         $groups = Group::latest();
@@ -39,11 +41,15 @@ class GroupController extends Controller
             $groups->with(['owners', 'members'])->whereHas('owners', function($query) use($user_id){
                 $query->where('user_id', $user_id);
             })->whereHas('members', function ($query) use ($email) {
-                $query->where('email', $email)->whereNotIn('status_active',  ['pending', 'reject']);
+                $query->where('email', $email)->whereNotIn('status_active',  [MemberStatusActive::REQUEST_INVITATION, MemberStatusActive::REQUEST_JOIN, MemberStatusActive::REJECT]);
             });
         }else if($request->type == 'invitation'){
             $groups->with(['members'])->whereHas('members', function ($query) use ($email) {
-                $query->where('email', $email)->where('status_active', 'pending');
+                $query->where('email', $email)->where('status_active', MemberStatusActive::REQUEST_INVITATION);
+            });
+        }else if($request->type == 'join'){
+            $groups->with(['members'])->whereHas('members', function ($query) use ($email) {
+                $query->where('email', $email)->where('status_active', MemberStatusActive::REQUEST_JOIN);
             });
         }else{
             $groups->with(['members'])->whereHas('members', function ($q) use ($email) {
@@ -55,8 +61,8 @@ class GroupController extends Controller
 
         $data = [];
         foreach ($groups as $item) {
-            $total_member = $item->members()->select('id')->where('status_active', 'active')->count();
-            $total_winner = $item->members()->select('id')->where('status_active', 'active')->where('is_get_reward', 1)->count();
+            $total_member = $item->members()->select('id')->where('status_active', MemberStatusActive::ACTIVE)->count();
+            $total_winner = $item->members()->select('id')->where('status_active', MemberStatusActive::ACTIVE)->where('is_get_reward', 1)->count();
             $member = $item->members()->select('id')->where('user_id', $user_id)->first();
 
             $data[] = [
@@ -89,8 +95,8 @@ class GroupController extends Controller
     private function totalBalanceArisan(Group $group)
     {
         return $group->members()
-            ->where('status_active', 'active')
-            ->where('status_paid', 'paid')
+            ->where('status_active', MemberStatusActive::ACTIVE)
+            ->where('status_paid', MemberStatusPaid::PAID)
             ->count() * $group->dues;
     }
 
@@ -152,7 +158,7 @@ class GroupController extends Controller
      */
     public function memberGroup(Request $request, $id)
     {
-        $members = Member::where('group_id', $id)->where('name', 'like', "%$request->q%")->whereNotIn('status_active',  ['pending', 'reject'])->orderBy('name', 'asc')->get();
+        $members = Member::where('group_id', $id)->where('name', 'like', "%$request->q%")->whereNotIn('status_active',  [MemberStatusActive::REQUEST_INVITATION, MemberStatusActive::REQUEST_JOIN, MemberStatusActive::REJECT])->orderBy('name', 'asc')->get();
         $data = [];
         $ownerIds = Group::find($id)->owners()->pluck('user_id')->toArray();
         foreach ($members as $item) {
@@ -233,8 +239,8 @@ class GroupController extends Controller
             "name" => $request->user()->name,
             "email" => $request->user()->email,
             "gender" => 'male',
-            "status_paid" => 'unpaid',
-            "status_active" => 'active',
+            "status_paid" => MemberStatusPaid::UNPAID,
+            "status_active" => MemberStatusActive::ACTIVE,
             "is_owner" => true
         ]);
 
@@ -272,14 +278,14 @@ class GroupController extends Controller
 
         $total_balance = $this->totalBalanceArisan($group);
 
-        $total_targets = count($group->members()->where('status_active', 'active')->whereIn('status_paid', ['unpaid', 'paid'])->get()) * $group->dues;
+        $total_targets = count($group->members()->where('status_active', MemberStatusActive::ACTIVE)->whereIn('status_paid', [MemberStatusPaid::UNPAID, MemberStatusPaid::PAID])->get()) * $group->dues;
         $total_not_dues = $total_targets - $total_balance;
 
-        $members = $group->members()->where('group_id', $group->id)->where('is_get_reward', 0)->where('status_active', 'active')->get();
-        $unpaid_member = $group->members()->where('group_id', $group->id)->where('status_active', 'active')->where('status_paid', 'unpaid')->first();
-        $get_reward = $group->members()->where('group_id', $group->id)->where('status_active', 'active')->where('status_paid', 'paid')->where('is_get_reward', 0)->first();
-        $total_member = $group->members()->select('id')->where('status_active', 'active')->count();
-        $total_winner = $group->members()->select('id')->where('status_active', 'active')->where('is_get_reward', 1)->count();
+        $members = $group->members()->where('group_id', $group->id)->where('is_get_reward', 0)->where('status_active', MemberStatusActive::ACTIVE)->get();
+        $unpaid_member = $group->members()->where('group_id', $group->id)->where('status_active', MemberStatusActive::ACTIVE)->where('status_paid', MemberStatusPaid::UNPAID)->first();
+        $get_reward = $group->members()->where('group_id', $group->id)->where('status_active', MemberStatusActive::ACTIVE)->where('status_paid', MemberStatusPaid::PAID)->where('is_get_reward', 0)->first();
+        $total_member = $group->members()->select('id')->where('status_active', MemberStatusActive::ACTIVE)->count();
+        $total_winner = $group->members()->select('id')->where('status_active', MemberStatusActive::ACTIVE)->where('is_get_reward', 1)->count();
 
         $data = [
             'id' => $group->id,

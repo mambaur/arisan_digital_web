@@ -4,6 +4,8 @@ namespace App\Http\Controllers\API\V2\Members;
 
 use App\Http\Controllers\Controller;
 use App\Mail\Remainder;
+use App\MemberStatusActive\MemberStatusActive;
+use App\MemberStatusPaid\MemberStatusPaid;
 use App\Models\Group;
 use App\Models\Member;
 use App\Models\User;
@@ -25,7 +27,7 @@ class MemberController extends Controller
         $validate = Validator::make($request->all(), [
             'page' => 'nullable',
             'limit' => 'nullable',
-            'status_active' => 'nullable', // active, inactive, pending, reject
+            'status_active' => 'nullable',
         ]);
 
         if ($validate->fails()) {
@@ -109,8 +111,8 @@ class MemberController extends Controller
             "no_whatsapp" => $request->no_whatsapp,
             "email" => $request->email,
             "gender" => $request->gender,
-            "status_paid" => 'unpaid',
-            "status_active" => 'active',
+            "status_paid" => MemberStatusPaid::UNPAID,
+            "status_active" => MemberStatusActive::ACTIVE,
         ]);
 
         return response()->json([
@@ -154,8 +156,8 @@ class MemberController extends Controller
             "user_id" => $user->id,
             "name" => $user->name,
             "email" => $user->email,
-            "status_paid" => 'unpaid',
-            "status_active" => 'pending',
+            "status_paid" => MemberStatusPaid::UNPAID,
+            "status_active" => MemberStatusActive::REQUEST_INVITATION,
         ]);
 
         try {
@@ -210,8 +212,8 @@ class MemberController extends Controller
             "user_id" => $user->id,
             "name" => $user->name,
             "email" => $user->email,
-            "status_paid" => 'unpaid',
-            "status_active" => 'pending',
+            "status_paid" => MemberStatusPaid::UNPAID,
+            "status_active" => MemberStatusActive::REQUEST_JOIN,
         ]);
 
         try {
@@ -268,8 +270,8 @@ class MemberController extends Controller
             "user_id" => $user->id,
             "name" => $user->name,
             "email" => $user->email,
-            "status_paid" => 'unpaid',
-            "status_active" => 'pending',
+            "status_paid" => MemberStatusPaid::UNPAID,
+            "status_active" => MemberStatusActive::REQUEST_INVITATION,
         ]);
 
         try {
@@ -298,7 +300,7 @@ class MemberController extends Controller
     public function countMember(Request $request, $group_id)
     {
         $validate = Validator::make($request->all(), [
-            'status_active' => 'nullable', // active | inactive | pending | reject
+            'status_active' => 'nullable',
         ]);
 
         if ($validate->fails()) {
@@ -416,7 +418,7 @@ class MemberController extends Controller
             "no_telp" => $request->no_telp,
             "no_whatsapp" => $request->no_whatsapp,
             "gender" => $request->gender,
-            "email" => $request->email,
+            // "email" => $request->email,
         ]);
 
         return response()->json([
@@ -435,9 +437,8 @@ class MemberController extends Controller
     public function updateStatusPaid(Request $request, $id)
     {
         $validate = Validator::make($request->all(), [
-            // 'date_paid' => 'required',
-            'status_paid' => 'required|in:unpaid,paid,skip,cancel',
-            // 'nominal_paid' => 'required',
+            'date_paid' => 'nullable',
+            'status_paid' => "required|in:" . MemberStatusPaid::validation(),
         ]);
 
         if ($validate->fails()) {
@@ -465,7 +466,6 @@ class MemberController extends Controller
         $member->update([
             "date_paid" => $request->date_paid,
             "status_paid" => $request->status_paid,
-            // "nominal_paid" => $request->nominal_paid,
         ]);
 
         return response()->json([
@@ -484,7 +484,7 @@ class MemberController extends Controller
     public function updateStatusActive(Request $request, $id)
     {
         $validate = Validator::make($request->all(), [
-            'status_active' => 'required|in:active,reject,inactive',
+            'status_active' => 'required|in:' . MemberStatusActive::validation(),
         ]);
 
         if ($validate->fails()) {
@@ -515,7 +515,7 @@ class MemberController extends Controller
             "status_active" => $request->status_active,
         ]);
 
-        if($previous_status == 'pending'){
+        if(MemberStatusActive::isRequest($previous_status)){
             try {
                 $data = [
                     'member' => $member,
@@ -526,12 +526,12 @@ class MemberController extends Controller
                 $title = '';
                 $description = '';
 
-                if($request->status_active == 'active'){
+                if($request->status_active == MemberStatusActive::ACTIVE){
                     $title = "Sip, $member->name sudah join!";
                     $description = "$member->name sudah gabung di grup arisan {$member->group->name}. Semoga makin seru ya!";
                 }
 
-                if($request->status_active == 'reject'){
+                if($request->status_active == MemberStatusActive::REJECT){
                     $title = "Yah, $member->name batal gabung!";
                     $description = "Sayang banget, $member->name belum bisa gabung ke grup {$member->group->name}.";
                 }
@@ -572,7 +572,7 @@ class MemberController extends Controller
 
         $member->update([
             "date_paid" => null,
-            "status_paid" => 'unpaid',
+            "status_paid" => MemberStatusPaid::UNPAID,
             "nominal_paid" => null,
         ]);
 
@@ -670,7 +670,7 @@ class MemberController extends Controller
      */
     public function paymentNotificationReminder($group_id)
     {
-        $members = Member::where('group_id', $group_id)->where('status_active', 'active')->whereNull('date_paid')->get();
+        $members = Member::where('group_id', $group_id)->where('status_active', MemberStatusActive::ACTIVE)->whereNull('date_paid')->get();
 
         if (!count($members)) {
             return response()->json([

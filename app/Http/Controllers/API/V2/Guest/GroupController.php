@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\API\V2\Guest;
 
 use App\Http\Controllers\Controller;
+use App\MemberStatusActive\MemberStatusActive;
+use App\MemberStatusPaid\MemberStatusPaid;
 use App\Models\Group;
 use App\Models\Member;
 use Illuminate\Http\Request;
@@ -28,13 +30,13 @@ class GroupController extends Controller
         $data = [];
         $total_balance = $this->totalBalanceArisan($group);
 
-        $members = Member::where('group_id', $group->id)->latest()->get();
+        $members = Member::where('group_id', $group->id)->where('status_active', MemberStatusActive::ACTIVE)->latest()->get();
 
-        $total_targets = count($group->members) * $group->dues;
+        $total_targets = count($group->members()->where('status_active', MemberStatusActive::ACTIVE)->whereIn('status_paid', [MemberStatusPaid::UNPAID, MemberStatusPaid::PAID])) * $group->dues;
         $total_not_dues = $total_targets - $total_balance;
 
-        $unpaid_member = Member::where('group_id', $group->id)->whereNull('date_paid')->first();
-        $get_reward = Member::where('group_id', $group->id)->where('is_get_reward', 0)->first();
+        $unpaid_member = Member::where('group_id', $group->id)->where('status_active', MemberStatusActive::ACTIVE)->where('status_paid', MemberStatusPaid::UNPAID)->first();
+        $get_reward = Member::where('group_id', $group->id)->where('status_active', MemberStatusActive::ACTIVE)->where('status_paid', MemberStatusPaid::PAID)->where('is_get_reward', 0)->first();
 
         $data = [
             'id' => $group->id,
@@ -63,13 +65,9 @@ class GroupController extends Controller
 
     private function totalBalanceArisan(Group $group)
     {
-        $total = 0;
-        foreach ($group->members as $item) {
-            if ($item->status_paid == 'paid') {
-                $total += $group->dues;
-            }
-        }
-
-        return $total;
+        return $group->members()
+            ->where('status_active', MemberStatusActive::ACTIVE)
+            ->where('status_paid', MemberStatusPaid::PAID)
+            ->count() * $group->dues;
     }
 }
