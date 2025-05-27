@@ -91,7 +91,7 @@ class NotificationController extends Controller
             return abort(404, "Penguna tidak ditemukan");
         }
 
-        $user->notify(new TestNotification($request->title ?? "Test Notifikasi", $request->description ?? "Deskripsi Test Notifikasi", $request->data ?? []));
+        $user->notify(new TestNotification($request->title ?? "Test Notifikasi", $request->description ?? "Deskripsi Test Notifikasi", $request->data ?? null));
 
         return response()->json([
             'message' => 'Test notifikasi berhasil dikirimkan'
