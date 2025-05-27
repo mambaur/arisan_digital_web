@@ -2,13 +2,12 @@
 
 namespace App\Http\Controllers\API\V2\Groups;
 
+use App\Constants\NotificationType;
 use App\Http\Controllers\Controller;
-use App\Models\Group;
 use App\Models\GroupOwner;
 use App\Models\Member;
 use App\Models\User;
 use App\Notifications\ArisanNotification;
-use App\NotificationType\NotificationType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 

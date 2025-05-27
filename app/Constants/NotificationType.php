@@ -1,6 +1,6 @@
 <?php
 
-namespace App\NotificationType;
+namespace App\Constants;
 
 class NotificationType
 {

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API\V2\Histories;
 
+use App\Constants\NotificationType;
 use App\Http\Controllers\Controller;
 use App\Models\ArisanHistory;
 use App\Models\ArisanHistoryDetail;
@@ -9,7 +10,6 @@ use App\Models\ArisanHistoryWinner;
 use App\Models\Group;
 use App\Models\Member;
 use App\Notifications\ArisanNotification;
-use App\NotificationType\NotificationType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;

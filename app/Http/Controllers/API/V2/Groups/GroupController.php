@@ -2,10 +2,9 @@
 
 namespace App\Http\Controllers\API\V2\Groups;
 
-
+use App\Constants\MemberStatusActive;
+use App\Constants\MemberStatusPaid;
 use App\Http\Controllers\Controller;
-use App\MemberStatusActive\MemberStatusActive;
-use App\MemberStatusPaid\MemberStatusPaid;
 use App\Models\Group;
 use App\Models\GroupOwner;
 use App\Models\Member;

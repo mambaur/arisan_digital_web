@@ -1,6 +1,6 @@
 <?php
 
-namespace App\MemberStatusActive;
+namespace App\Constants;
 
 class MemberStatusActive
 {

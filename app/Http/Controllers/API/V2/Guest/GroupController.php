@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\API\V2\Guest;
 
+use App\Constants\MemberStatusActive;
+use App\Constants\MemberStatusPaid;
 use App\Http\Controllers\Controller;
-use App\MemberStatusActive\MemberStatusActive;
-use App\MemberStatusPaid\MemberStatusPaid;
 use App\Models\Group;
 use App\Models\Member;
 use Illuminate\Http\Request;
