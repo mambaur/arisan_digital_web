@@ -37,10 +37,12 @@ class GroupController extends Controller
         $email = $request->user()->email;
 
         if($request->type == 'owned'){
-            $groups->with(['owners', 'members'])->whereHas('owners', function($query) use($user_id){
-                $query->where('user_id', $user_id);
-            })->whereHas('members', function ($query) use ($email) {
-                $query->where('email', $email)->whereNotIn('status_active',  [MemberStatusActive::REQUEST_INVITATION, MemberStatusActive::REQUEST_JOIN, MemberStatusActive::REJECT]);
+            $groups->with(['members'])
+            // ->whereHas('owners', function($query) use($user_id){
+            //     $query->where('user_id', $user_id);
+            // })
+            ->whereHas('members', function ($query) use ($user_id) {
+                $query->where('user_id', $user_id)->where('status_active',  MemberStatusActive::ACTIVE);
             });
         }else if($request->type == 'invitation'){
             $groups->with(['members'])->whereHas('members', function ($query) use ($email) {
