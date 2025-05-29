@@ -58,6 +58,10 @@ class MemberController extends Controller
                 "no_telp" => $item->no_telp,
                 "no_whatsapp" => $item->no_whatsapp,
                 "email" => $item->email,
+                "group" => @$item->group ? [
+                    "id" => @$item->group->id,
+                    "name" => @$item->group->name,
+                ] : null,
                 "gender" => $item->gender,
                 "date_paid" => $item->date_paid,
                 "status_paid" => $item->status_paid,
@@ -721,7 +725,9 @@ class MemberController extends Controller
                 'member' => $member,
                 'group' => @$member->group,
             ];
-            $member->user->notify(new ArisanNotification("Yuk, bayar iuran arisannya!", "Jangan lupa bayar iuran arisan di grup {$member->group->name} ya. Biar arisannya tetap lancar dan tepat waktu!", NotificationType::MEMBER_INVITATION_REMINDER, $data));
+
+            $user_sender = auth()->user();
+            $member->user->notify(new ArisanNotification("Kamu diajak gabung arisan nih!", "$user_sender->name ngajak kamu masuk ke grup arisan {$member->group->name}. Mau ikutan nggak? ", NotificationType::MEMBER_INVITATION_REMINDER, $data));
         } catch (\Throwable $th) {
             //throw $th;
         }

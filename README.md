@@ -16,6 +16,7 @@ Jalankan ini untuk memulai migrasi ke versi terbaru
 
 ### Notes
 - Kolom owner_id di tabel members tidak digunakan lagi
+- Kirim ulang invitation member yang ditolak
 
 ## Notifications
 Kirim ke anggota
