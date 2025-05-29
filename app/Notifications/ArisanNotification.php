@@ -45,7 +45,7 @@ class ArisanNotification extends Notification
         return [
             'title' => $this->title,
             'description' => $this->description,
-            'type' => 'charge',
+            'type' => $this->type,
             'resource' => $this->resource,
         ];
     }
