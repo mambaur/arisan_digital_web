@@ -59,7 +59,7 @@ class NotificationController extends Controller
         $user->unreadNotifications->markAsRead();
 
         return response()->json([
-            'message' => 'All notifications marked as read'
+            'message' => 'Semua notifikasi telah ditandai sebagai terbaca'
         ], 200);
     }
 

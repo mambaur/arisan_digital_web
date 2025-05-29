@@ -519,6 +519,9 @@ class MemberController extends Controller
             "status_active" => $request->status_active,
         ]);
 
+        $title = null;
+        $description = null;
+
         if(MemberStatusActive::isRequest($previous_status)){
             try {
                 $data = [
@@ -526,9 +529,6 @@ class MemberController extends Controller
                     'group' => @$member->group,
                     'status_active' => $request->status_active,
                 ];
-
-                $title = '';
-                $description = '';
 
                 if($request->status_active == MemberStatusActive::ACTIVE){
                     $title = "Sip, $member->name sudah join!";
@@ -550,7 +550,48 @@ class MemberController extends Controller
 
         return response()->json([
             "status" => "success",
-            "message" => "Status aktif anggota berhasil diupdate.",
+            "message" => $title ?? "Status aktif anggota berhasil diupdate.",
+        ], 200);
+    }
+    
+    /**
+     * Reinvit Member Activity Status
+     */
+    public function reinvit($member_id)
+    {
+
+        $member = Member::find($member_id);
+
+        if (!$member) {
+            return response()->json(
+                [
+                    'status' => 'failed',
+                    'message' => 'Data anggota tidak ditemukan.',
+                ],
+                200
+            );
+        }
+
+        $member->update([
+            "status_active" => MemberStatusActive::REQUEST_INVITATION,
+        ]);
+
+        try {
+            $data = [
+                'member' => $member,
+                'group' => @$member->group,
+                'status_active' => MemberStatusActive::REQUEST_INVITATION,
+            ];
+
+            $user_sender = auth()->user();
+            $member->user->notify(new ArisanNotification("Kamu diajak gabung arisan lagi nih!", "$user_sender->name ngajak kamu masuk ke grup arisan {$member->group->name}. Mau ikutan nggak? ", NotificationType::MEMBER_INVITATION_REQUEST, $data));
+        } catch (\Throwable $th) {
+            //throw $th;
+        }
+
+        return response()->json([
+            "status" => "success",
+            "message" => "Undangan berhasil dikirimkan ulang",
         ], 200);
     }
 
