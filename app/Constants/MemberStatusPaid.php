@@ -22,6 +22,6 @@ class MemberStatusPaid
     static function validation():string
     {
         $list_string = implode(',', MemberStatusPaid::toArray());
-        return "in:$list_string";
+        return $list_string;
     }
 }

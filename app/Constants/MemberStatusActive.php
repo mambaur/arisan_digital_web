@@ -24,7 +24,7 @@ class MemberStatusActive
     static function validation():string
     {
         $list_string = implode(',', MemberStatusActive::toArray());
-        return "in:$list_string";
+        return $list_string;
     }
 
     static function isRequest($status):bool
