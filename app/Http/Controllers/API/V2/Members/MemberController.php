@@ -543,7 +543,7 @@ class MemberController extends Controller
 
                 $owners = GroupOwner::where('group_id', @$member->group_id)->get();
                 
-                foreach ($owners->owners() ?? [] as $item) {
+                foreach ($owners ?? [] as $item) {
                     $item->user->notify(new ArisanNotification($title, $description, NotificationType::MEMBER_JOIN_RESPONSE, $data));
                 }
             } catch (\Throwable $th) {
