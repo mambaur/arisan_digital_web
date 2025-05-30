@@ -8,6 +8,7 @@ use App\Constants\NotificationType;
 use App\Http\Controllers\Controller;
 use App\Mail\Remainder;
 use App\Models\Group;
+use App\Models\GroupOwner;
 use App\Models\Member;
 use App\Models\User;
 use App\Notifications\ArisanNotification;
@@ -539,8 +540,10 @@ class MemberController extends Controller
                     $title = "Yah, $member->name batal gabung!";
                     $description = "Sayang banget, $member->name belum bisa gabung ke grup {$member->group->name}.";
                 }
+
+                $owners = GroupOwner::where('group_id', @$member->group_id)->get();
                 
-                foreach ($member->group->owners() ?? [] as $item) {
+                foreach ($owners->owners() ?? [] as $item) {
                     $item->user->notify(new ArisanNotification($title, $description, NotificationType::MEMBER_JOIN_RESPONSE, $data));
                 }
             } catch (\Throwable $th) {
