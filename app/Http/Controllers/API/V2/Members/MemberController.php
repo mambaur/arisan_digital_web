@@ -227,7 +227,7 @@ class MemberController extends Controller
                 'group' => @$group,
             ];
 
-            foreach ($group->owners() ?? [] as $item) {
+            foreach (@$group->owners ?? [] as $item) {
                 $item->user->notify(new ArisanNotification("Boleh gabung nggak nih?", "$user->name mau jadi bagian dari arisan $group->name. Cek dulu dan kasih keputusan, ya", NotificationType::MEMBER_JOIN_REQUEST, $data));
             }
         } catch (\Throwable $th) {

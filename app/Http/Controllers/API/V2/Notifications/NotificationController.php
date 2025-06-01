@@ -25,8 +25,8 @@ class NotificationController extends Controller
                 'description' => @$item->data['description'],
                 'type' => @$item->data['type'],
                 'resource' => @$item->data['resource'],
-                'read_at' => @$item->read_at ? @$item->read_at->format('d F Y H:i:s') : null,
-                'created_at' => @$item->created_at->format('d F Y H:i:s'),
+                'read_at' => @$item->read_at ? @$item->read_at->format('d F Y H:i') : null,
+                'created_at' => @$item->created_at->format('d F Y H:i'),
             ];
         }
 
