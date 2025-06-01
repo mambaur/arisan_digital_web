@@ -277,6 +277,12 @@ class GroupController extends Controller
             );
         }
 
+        $member = Member::where('group_id', $id)->whereIn('status_active', [MemberStatusActive::ACTIVE, MemberStatusActive::REQUEST_INVITATION, MemberStatusActive::REQUEST_JOIN])->where('user_id', auth()->user()->id)->first();
+        
+        if(!@$member){
+            return abort(404, "Anda belum tergabung dalam grub");
+        }
+
         $total_balance = $this->totalBalanceArisan($group);
 
         $total_targets = count($group->members()->where('status_active', MemberStatusActive::ACTIVE)->whereIn('status_paid', [MemberStatusPaid::UNPAID, MemberStatusPaid::PAID])->get()) * $group->dues;
