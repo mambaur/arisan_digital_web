@@ -541,6 +541,10 @@ class MemberController extends Controller
                     $description = "Sayang banget, $member->name belum bisa gabung ke grup {$member->group->name}.";
                 }
 
+                if($previous_status == MemberStatusActive::REQUEST_JOIN){
+                    @$member->user->notify(new ArisanNotification($title, $description, NotificationType::MEMBER_JOIN_RESPONSE, $data));
+                }
+
                 $owners = GroupOwner::where('group_id', @$member->group_id)->get();
                 
                 foreach ($owners ?? [] as $item) {
