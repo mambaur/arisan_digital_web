@@ -49,7 +49,7 @@ class GroupController extends Controller
             'target' => (int) $group->target,
             'notes' => $group->notes,
             'status' => $group->status,
-            'created_by' => $group->created_by,
+            'created_by' => (int) $group->created_by,
             'total_balance' => (int) $total_balance,
             'total_not_dues' => (int) $total_not_dues,
             'members' => $members,
