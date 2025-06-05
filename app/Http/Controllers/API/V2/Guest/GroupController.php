@@ -45,13 +45,13 @@ class GroupController extends Controller
             'periods_type' => $group->periods_type,
             'periods_date' => $group->periods_date->format('Y-m-d'),
             'periods_date_en' => $group->periods_date->format('d F Y'),
-            'dues' => $group->dues,
-            'target' => $group->target,
+            'dues' => (int) $group->dues,
+            'target' => (int) $group->target,
             'notes' => $group->notes,
             'status' => $group->status,
             'created_by' => $group->created_by,
-            'total_balance' => $total_balance,
-            'total_not_dues' => $total_not_dues,
+            'total_balance' => (int) $total_balance,
+            'total_not_dues' => (int) $total_not_dues,
             'members' => $members,
             'is_shuffle' => $unpaid_member ? false : ($get_reward ? true : false)
         ];
