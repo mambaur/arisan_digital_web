@@ -32,7 +32,7 @@ class GroupController extends Controller
 
         $members = Member::where('group_id', $group->id)->where('status_active', MemberStatusActive::ACTIVE)->latest()->get();
 
-        $total_targets = count($group->members()->where('status_active', MemberStatusActive::ACTIVE)->whereIn('status_paid', [MemberStatusPaid::UNPAID, MemberStatusPaid::PAID])) * $group->dues;
+        $total_targets = count($group->members()->where('status_active', MemberStatusActive::ACTIVE)->whereIn('status_paid', [MemberStatusPaid::UNPAID, MemberStatusPaid::PAID])->get()) * $group->dues;
         $total_not_dues = $total_targets - $total_balance;
 
         $unpaid_member = Member::where('group_id', $group->id)->where('status_active', MemberStatusActive::ACTIVE)->where('status_paid', MemberStatusPaid::UNPAID)->first();
