@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API\V2\Members;
 
+use App\Constants\Gender;
 use App\Constants\MemberStatusActive;
 use App\Constants\MemberStatusPaid;
 use App\Constants\NotificationType;
@@ -161,6 +162,7 @@ class MemberController extends Controller
             "user_id" => $user->id,
             "name" => $user->name,
             "email" => $user->email,
+            "gender" => Gender::MALE,
             "status_paid" => MemberStatusPaid::UNPAID,
             "status_active" => MemberStatusActive::REQUEST_INVITATION,
         ]);
@@ -217,6 +219,7 @@ class MemberController extends Controller
             "user_id" => $user->id,
             "name" => $user->name,
             "email" => $user->email,
+            "gender" => Gender::MALE,
             "status_paid" => MemberStatusPaid::UNPAID,
             "status_active" => MemberStatusActive::REQUEST_JOIN,
         ]);
@@ -275,6 +278,7 @@ class MemberController extends Controller
             "user_id" => $user->id,
             "name" => $user->name,
             "email" => $user->email,
+            "gender" => Gender::MALE,
             "status_paid" => MemberStatusPaid::UNPAID,
             "status_active" => MemberStatusActive::REQUEST_INVITATION,
         ]);

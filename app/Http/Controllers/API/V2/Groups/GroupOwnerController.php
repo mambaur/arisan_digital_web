@@ -60,7 +60,7 @@ class GroupOwnerController extends Controller
 
         if (!@$user) {
             return response()->json([
-                "message" => "Pengguna tidak ditemukan"
+                "message" => "Anggota belum terdaftar sebagai pengguna aplikasi"
             ], 404);
         }
 
@@ -172,7 +172,7 @@ class GroupOwnerController extends Controller
 
         return response()->json([
             "status" => "success",
-            "message" => "Pemilik grub berhasil dihapus.",
+            "message" => "Pengelola grub berhasil dihapus.",
         ], 200);
     }
 }
