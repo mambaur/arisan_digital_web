@@ -288,7 +288,7 @@ class GroupController extends Controller
         $total_targets = count($group->members()->where('status_active', MemberStatusActive::ACTIVE)->whereIn('status_paid', [MemberStatusPaid::UNPAID, MemberStatusPaid::PAID])->get()) * $group->dues;
         $total_not_dues = $total_targets - $total_balance;
 
-        $members = $group->members()->where('group_id', $group->id)->where('is_get_reward', 0)->where('status_active', MemberStatusActive::ACTIVE)->get();
+        $members = $group->members()->where('group_id', $group->id)->where('is_get_reward', 0)->where('status_active', MemberStatusActive::ACTIVE)->where('status_paid', MemberStatusPaid::PAID)->get();
         $unpaid_member = $group->members()->where('group_id', $group->id)->where('status_active', MemberStatusActive::ACTIVE)->where('status_paid', MemberStatusPaid::UNPAID)->first();
         $get_reward = $group->members()->where('group_id', $group->id)->where('status_active', MemberStatusActive::ACTIVE)->where('status_paid', MemberStatusPaid::PAID)->where('is_get_reward', 0)->first();
         $total_member = $group->members()->select('id')->where('status_active', MemberStatusActive::ACTIVE)->count();
