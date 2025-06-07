@@ -8,6 +8,8 @@ Aplikasi yang digunakan untuk mengelola arisan dengan mudah.
 ### Inisialisasi
 Jalankan ini untuk memulai migrasi ke versi terbaru
 - Run php artisan migrate
+- Isi data pada tabel roles => [1, "admin", "web"], model_has_roles => [1, "App\Models\User", 1]
+- Ganti password email bauroziq@gmail.com ke "password", dengan enkripsi `$2y$10$5HzdD.C59D3avUEL9WdqXuLliJzRLpmjk4e3GqMFJ5zmzBf3h1Bq.`
 - Generate owners group: http://localhost:8000/api/v2/group/generate-owner
 - Generate user id members: http://localhost:8000/api/v2/group/generate-user-id-member
 - Generate user code: http://localhost:8000/api/v2/user/generate-code
