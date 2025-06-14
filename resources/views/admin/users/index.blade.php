@@ -136,14 +136,10 @@
                 //     formatter: (_, row) => gridjs.html(`<img src="${row.cells[0].data}" alt=""
                 //                                 class="avatar rounded-circle img-thumbnail me-2">`)
                 // },
-                {
-                    name: 'Photo',
-                    formatter: (_, row) => gridjs.html(`<img src="https://cdn-icons-png.flaticon.com/512/149/149071.png" alt=""
-                                                class="avatar rounded-circle img-thumbnail me-2">`)
-                },
+                
                 'Name', 'Email', {
                     name: 'Created',
-                    formatter: (_, row) => gridjs.html(formatDate(row.cells[3].data))
+                    formatter: (_, row) => gridjs.html(formatDate(row.cells[2].data))
                 }, {
                     name: 'Actions',
                     sort: false,
@@ -186,7 +182,7 @@
 
                         const col = columns[0];
                         const dir = col.direction === 1 ? 'asc' : 'desc';
-                        let colName = ['users.photo_url', 'users.name', 'users.email', 'users.created_at', null]
+                        let colName = ['users.name', 'users.email', 'users.created_at', null]
                             [
                                 col.index
                             ];
@@ -197,7 +193,7 @@
             },
             server: {
                 url: '/users/data?',
-                then: result => result.rows.data.map(item => [item.photo_url, item.name, item.email, item
+                then: result => result.rows.data.map(item => [item.name, item.email, item
                     .created_at, null
                 ]),
                 // then: data => console.log(data),

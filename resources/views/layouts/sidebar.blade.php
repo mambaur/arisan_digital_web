@@ -68,6 +68,36 @@
                         <span class="menu-item" data-key="">Members</span>
                     </a>
                 </li>
+                
+                <li>
+                    <a href="{{ route('feedback') }}">
+                        <i class="bx bx-message-dots icon nav-icon"></i>
+                        <span class="menu-item" data-key="">Feedback</span>
+                    </a>
+                </li>
+                
+                <li>
+                    <a href="/subscription">
+                        <i class="bx bx-gift icon nav-icon"></i>
+                        <span class="menu-item" data-key="">Subscription</span>
+                    </a>
+                </li>
+
+                <li class="menu-title" data-key="t-layouts">Settings</li>
+
+                <li>
+                    <a href="/settings">
+                        <i class="bx bx-cog icon nav-icon"></i>
+                        <span class="menu-item" data-key="">Configuration</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="/info">
+                        <i class="bx bx-info-circle icon nav-icon"></i>
+                        <span class="menu-item" data-key="">About & Info</span>
+                    </a>
+                </li>
 
                 <li class="menu-title" data-key="t-layouts">Account</li>
 

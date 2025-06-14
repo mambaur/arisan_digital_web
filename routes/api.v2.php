@@ -9,6 +9,7 @@ use App\Http\Controllers\API\V2\Members\MemberController;
 use App\Http\Controllers\API\V2\Notifications\NotificationController;
 use App\Http\Controllers\API\V2\Payment\PaymentAccountController;
 use App\Http\Controllers\API\V2\Articles\ArticleController;
+use App\Http\Controllers\API\V2\Feedback\FeedbackController;
 use App\Http\Controllers\API\V2\Settings\SettingController;
 use Illuminate\Support\Facades\Route;
 
@@ -180,6 +181,19 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('/arisan-history/store-winner', [ArisanHistoryController::class, 'storeWinner']);
 
     Route::post('/arisan-history/delete/{id}', [ArisanHistoryController::class, 'destroy']);
+
+    /*
+    |--------------------------------------------------------------------------
+    | Feedback Routes
+    |--------------------------------------------------------------------------
+    |
+    | Manage feedback data API
+    |
+    */
+
+    Route::get('/feedback', [FeedbackController::class, 'index']);
+
+    Route::post('/feedback', [FeedbackController::class, 'store']);
 
     /*
     |--------------------------------------------------------------------------

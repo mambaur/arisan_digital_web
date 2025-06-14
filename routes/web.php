@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\Feedback\FeedbackController;
 use App\Http\Controllers\Admin\Group\GroupController;
 use App\Http\Controllers\Admin\Member\MemberController;
 use App\Http\Controllers\Admin\Profile\ProfileController;
@@ -35,6 +36,19 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/members', [MemberController::class, 'index'])->name('members');
 
     Route::get('/members/data', [MemberController::class, 'data'])->name('member_data');
+
+    /**
+     * Feedback
+     * 
+     */
+
+    Route::get('/feedback', [FeedbackController::class, 'index'])->name('feedback');
+
+    Route::get('/feedback/data', [FeedbackController::class, 'data'])->name('feedback_data');
+
+    Route::post('/feedback/comment', [FeedbackController::class, 'updateComment'])->name('feedback_update_comment');
+
+    Route::delete('/feedback/delete/{id}', [FeedbackController::class, 'destroy'])->name('feedback_delete');
 
     /**
      * User

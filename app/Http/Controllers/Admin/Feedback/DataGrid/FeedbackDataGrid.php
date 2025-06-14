@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\Admin\User\DataGrid;
+namespace App\Http\Controllers\Admin\Feedback\DataGrid;
 
-use App\Models\User;
+use App\Models\Feedback;
 use WdevRs\LaravelDatagrid\DataGrid\DataGrid;
 
-class UserDataGrid extends DataGrid
+class FeedbackDataGrid extends DataGrid
 {
 
     /**
@@ -13,12 +13,14 @@ class UserDataGrid extends DataGrid
      */
     public function __construct()
     {
-        $this->fromQuery(User::query())
-            ->column('users.id', 'id')
-            ->column('users.photo_url', 'photo_url')
-            ->column('users.email', 'email')
-            ->column('users.created_at', 'created_at')
-            ->column('users.name', 'name');
+        $this->fromQuery(Feedback::with(['user'])->select('feedback.*')->join('users', 'users.id', 'feedback.user_id'))
+            ->column('feedback.id', 'id')
+            ->column('users.name', 'users.name')
+            ->column('feedback.title', 'title')
+            ->column('feedback.feedback', 'feedback')
+            ->column('feedback.file_url', 'file_url')
+            ->column('feedback.created_at', 'created_at')
+            ->column('feedback.comment', 'comment');
     }
 
     public function render(string $view = 'laravel-datagrid::datagrid')
