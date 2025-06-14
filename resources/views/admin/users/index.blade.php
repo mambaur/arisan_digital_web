@@ -130,9 +130,15 @@
 
     <script>
         new gridjs.Grid({
-            columns: [{
+            columns: [
+                // {
+                //     name: 'Photo',
+                //     formatter: (_, row) => gridjs.html(`<img src="${row.cells[0].data}" alt=""
+                //                                 class="avatar rounded-circle img-thumbnail me-2">`)
+                // },
+                {
                     name: 'Photo',
-                    formatter: (_, row) => gridjs.html(`<img src="${row.cells[0].data}" alt=""
+                    formatter: (_, row) => gridjs.html(`<img src="https://cdn-icons-png.flaticon.com/512/149/149071.png" alt=""
                                                 class="avatar rounded-circle img-thumbnail me-2">`)
                 },
                 'Name', 'Email', {
