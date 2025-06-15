@@ -157,17 +157,27 @@
 
                                         <div class="flex-grow-1 ms-3">
                                             <h6 class="mb-0 font-size-15">Total Subscription</h6>
-                                            <div class="">(Coming soon)</div>
+                                            <div class="">Sebulan Terakhir</div>
                                         </div>
                                     </div>
 
                                     <div>
-                                        <h4 class="mt-4 pt-1 mb-0 font-size-22">0 <span
-                                                class="text-success fw-medium font-size-13 align-middle"> <i
-                                                    class="mdi mdi-arrow-down"></i> 0% </span> </h4>
+                                        <h4 class="mt-4 pt-1 mb-0 font-size-22">{{$total_subscription['last_30_days']}}
+                                            @if ($total_subscription['percent'] >= 0)
+                                                <span
+                                                    class="text-success fw-medium font-size-13 align-middle"> <i
+                                                        class="mdi mdi-arrow-up"></i> {{$total_subscription['percent']}}% </span>
+                                            @else
+                                                <span
+                                                class="text-danger fw-medium font-size-13 align-middle"> <i
+                                                    class="mdi mdi-arrow-down"></i> {{$total_subscription['percent']}}% </span>
+                                            @endif
+                                        </h4>
                                         <div class="d-flex mt-1 align-items-end overflow-hidden">
                                             <div class="flex-grow-1">
-                                                <p class="text-muted mb-0 text-truncate">Total Bulan sebelumnya -</p>
+                                                <p class="text-muted mb-0 text-truncate">Total bulan sebelumnya <b>{{$total_subscription['prev_30_start_days']}}</b>
+                                                    <br>
+                                                    Total hari ini <b>{{$total_subscription['today']}}</b></p>
                                             </div>
                                         </div>
                                     </div>
