@@ -77,7 +77,7 @@
                 </li>
                 
                 <li>
-                    <a href="/subscription">
+                    <a href="{{ route('subscriptions') }}">
                         <i class="bx bx-gift icon nav-icon"></i>
                         <span class="menu-item" data-key="">Subscription</span>
                     </a>
@@ -86,7 +86,7 @@
                 <li class="menu-title" data-key="t-layouts">Settings</li>
 
                 <li>
-                    <a href="/settings">
+                    <a href="{{route('setting_configurations')}}">
                         <i class="bx bx-cog icon nav-icon"></i>
                         <span class="menu-item" data-key="">Configuration</span>
                     </a>

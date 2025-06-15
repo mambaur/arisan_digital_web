@@ -29,7 +29,7 @@ class FeedbackController extends Controller
      * Store a newly created resource in storage.
      */
     public function updateComment(Request $request)
-    {   
+    {
         $request->validate([
             'id' => 'required',
             'comment' => 'required'

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\Subscription\SubscriptionController;
 use App\Http\Controllers\API\V2\Histories\ArisanHistoryController;
 use App\Http\Controllers\API\V2\Auth\AuthController;
 use App\Http\Controllers\API\V2\Groups\GroupController;
@@ -11,6 +12,7 @@ use App\Http\Controllers\API\V2\Payment\PaymentAccountController;
 use App\Http\Controllers\API\V2\Articles\ArticleController;
 use App\Http\Controllers\API\V2\Feedback\FeedbackController;
 use App\Http\Controllers\API\V2\Settings\SettingController;
+use App\Http\Controllers\API\V2\Subscription\SubcriptionController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -46,6 +48,8 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     */
 
     Route::get('/user', [AuthController::class, 'show']);
+
+    Route::post('/user/update-last-seen', [AuthController::class, 'updateLastSeen']);
 
     Route::get('/user/generate-code', [AuthController::class, 'initGenerateCode']);
 
@@ -181,6 +185,17 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('/arisan-history/store-winner', [ArisanHistoryController::class, 'storeWinner']);
 
     Route::post('/arisan-history/delete/{id}', [ArisanHistoryController::class, 'destroy']);
+
+    /*
+    |--------------------------------------------------------------------------
+    | Subscription Routes
+    |--------------------------------------------------------------------------
+    |
+    | Manage subscriptions data API
+    |
+    */
+
+    Route::post('/subscription/store', [SubcriptionController::class, 'store']);
 
     /*
     |--------------------------------------------------------------------------

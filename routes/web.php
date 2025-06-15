@@ -4,6 +4,8 @@ use App\Http\Controllers\Admin\Feedback\FeedbackController;
 use App\Http\Controllers\Admin\Group\GroupController;
 use App\Http\Controllers\Admin\Member\MemberController;
 use App\Http\Controllers\Admin\Profile\ProfileController;
+use App\Http\Controllers\Admin\Setting\ConfigurationController;
+use App\Http\Controllers\Admin\Subscription\SubscriptionController;
 use App\Http\Controllers\Admin\User\UserController;
 use App\Http\Controllers\CLIController;
 use App\Http\Controllers\HomeController;
@@ -38,6 +40,15 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/members/data', [MemberController::class, 'data'])->name('member_data');
 
     /**
+     * Subscription
+     * 
+     */
+
+    Route::get('/subscriptions', [SubscriptionController::class, 'index'])->name('subscriptions');
+
+    Route::get('/subscriptions/data', [SubscriptionController::class, 'data'])->name('subscription_data');
+
+    /**
      * Feedback
      * 
      */
@@ -49,6 +60,15 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::post('/feedback/comment', [FeedbackController::class, 'updateComment'])->name('feedback_update_comment');
 
     Route::delete('/feedback/delete/{id}', [FeedbackController::class, 'destroy'])->name('feedback_delete');
+
+    /**
+     * Setting
+     * 
+     */
+
+    Route::get('/setting/configurations', [ConfigurationController::class, 'index'])->name('setting_configurations');
+
+    Route::post('/setting/configurations', [ConfigurationController::class, 'store'])->name('setting_configuration_store');
 
     /**
      * User

@@ -68,7 +68,6 @@ class FeedbackController extends Controller
             'feedback' => $request->feedback,
         ]);
 
-        
         return response()->json([
             "status" => "success",
             "message" => "Feedback anda berhasil dikirimkan, terimakasih telah membantu memberikan masukan untuk pengembangan Arisan Digital. Kami akan menindak lanjut feedback anda segera.",

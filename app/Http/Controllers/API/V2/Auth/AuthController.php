@@ -178,6 +178,23 @@ class AuthController extends Controller
             200
         );
     }
+    
+    /**
+     * Update Last Seen
+     */
+    public function updateLastSeen(Request $request)
+    {
+        $request->user()->last_seen_at = now();
+        $request->user()->save();
+
+        return response()->json(
+            [
+                'status' => 'success',
+                'message' => 'Update last seen user berhasil.'
+            ],
+            200
+        );
+    }
 
     /**
      * Detail User
