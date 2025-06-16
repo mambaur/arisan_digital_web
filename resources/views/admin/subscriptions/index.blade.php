@@ -37,7 +37,7 @@
             columns: [
                 {
                     name: 'ID',
-                    // hidden: true
+                    hidden: true
                 },
                 {
                     name: 'User',
@@ -61,12 +61,17 @@
                 {
                     name: 'Description',
                     formatter: (_, row) => gridjs.html(
-                        `<span class="text-success" title="${row.cells[5].data}">${truncateText(row.cells[5].data, 20)}</span>`)
+                        `<span title="${row.cells[5].data}">${truncateText(row.cells[5].data, 20)}</span>`)
                 },
                 {
                     name: 'Price',
                     formatter: (_, row) => gridjs.html(
-                        `<span class="text-success" title="${row.cells[6].data}">${truncateText(row.cells[6].data, 20)}</span>`)
+                        `<span class="text-success" title="${row.cells[6].data}">
+                            ${Number(row.cells[6].data).toLocaleString('en-US', {
+                            minimumFractionDigits: 0,
+                            maximumFractionDigits: 0
+                            })}
+                        </span>`)
                 },
                 {
                     name: 'Created',
@@ -93,7 +98,7 @@
                 }
             },
             server: {
-                url: '/subscription/data?',
+                url: '/subscriptions/data?',
                 then: result => result.rows.data.map(item => [item.id, item.user.name, item.user.email, item.identifier, item.name, item.description, item.price, item
                     .created_at, null
                 ]),
