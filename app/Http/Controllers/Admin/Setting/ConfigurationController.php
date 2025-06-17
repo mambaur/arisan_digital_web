@@ -23,7 +23,7 @@ class ConfigurationController extends Controller
 
         $setting_types = SettingType::toArray();
 
-        return view('settings.configuration', compact('data', 'setting_types'));
+        return view('admin.settings.configuration', compact('data', 'setting_types'));
     }
 
     /**

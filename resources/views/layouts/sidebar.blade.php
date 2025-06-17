@@ -93,7 +93,7 @@
                 </li>
 
                 <li>
-                    <a href="/info">
+                    <a href="{{route('setting_about_info')}}">
                         <i class="bx bx-info-circle icon nav-icon"></i>
                         <span class="menu-item" data-key="">About & Info</span>
                     </a>

@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\Feedback\FeedbackController;
 use App\Http\Controllers\Admin\Group\GroupController;
 use App\Http\Controllers\Admin\Member\MemberController;
 use App\Http\Controllers\Admin\Profile\ProfileController;
+use App\Http\Controllers\Admin\Setting\AboutInfoController;
 use App\Http\Controllers\Admin\Setting\ConfigurationController;
 use App\Http\Controllers\Admin\Subscription\SubscriptionController;
 use App\Http\Controllers\Admin\User\UserController;
@@ -67,8 +68,10 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
      */
 
     Route::get('/setting/configurations', [ConfigurationController::class, 'index'])->name('setting_configurations');
-
+    
     Route::post('/setting/configurations', [ConfigurationController::class, 'store'])->name('setting_configuration_store');
+
+    Route::get('/setting/setting-about-info', [AboutInfoController::class, 'index'])->name('setting_about_info');
 
     /**
      * User
