@@ -1,55 +1,52 @@
 @extends('layouts.master')
 
 @section('title')
-Configuration
+    Configuration
 @endsection
 
 @section('page-title')
-Configuration
+    Configuration
 @endsection
 
 @section('content')
     <div class="row">
-        {{ Breadcrumbs::render('profile') }}
-        <div class="col-xl-6">
+        <div class="col-12">
             <div class="card">
                 <div class="card-body">
-                    <form action="{{ route('profile_update', $user->id) }}" method="post">
+                    <form action="{{route('setting_configuration_store')}}" method="POST">
                         @csrf
-                        @method('put')
-                        <div class="mb-3">
-                            <label for="formrow-firstname-input" class="form-label">Name</label>
-                            <input type="text" class="form-control @error('name') is-invalid @enderror" name="name"
-                                placeholder="Name" value="{{ old('name') ?? @$user->name }}" id="formrow-firstname-input">
-                            @error('name')
-                                <div class="text-danger">{{ $message }}</div>
-                            @enderror
-                        </div>
-                        
-                        <div class="mb-3">
-                            <label for="formrow-firstname-input" class="form-label">Email</label>
-                            <input type="email" class="form-control @error('email') is-invalid @enderror" name="email" readonly
-                                placeholder="Email" value="{{ old('email') ?? @$user->email }}">
-                            @error('email')
-                                <div class="text-danger">{{ $message }}</div>
-                            @enderror
-                        </div>
-
-                        <div class="mt-4">
-                            <button type="submit" class="btn btn-primary w-md">Submit</button>
-                        </div>
+                        @foreach ($data as $index => $item)
+                            @if (@$item['key'] == App\Constants\SettingType::IS_MAINTENANCE)    
+                                <div class="mb-3 row">
+                                    <label for="example-text-input" class="col-md-2 col-form-label">{{@$item['title']}}</label>
+                                    <div class="col-md-10">
+                                        <div class="form-check form-switch form-switch-lg" dir="ltr">
+                                            <input type="hidden" name="keys[{{$index}}]" value="{{@$item['key']}}">
+                                            <input type="checkbox" class="form-check-input" name="values[{{$index}}]" value="1" @if(@$item['value'] == '1') checked @endif>
+                                            <label class="form-check-label" for="customSwitchsizelg">Ya</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            @else
+                                <div class="mb-3 row">
+                                    <label for="example-text-input" class="col-md-2 col-form-label">{{@$item['title']}}</label>
+                                    <div class="col-md-10">
+                                        <input type="hidden" name="keys[{{$index}}]" value="{{@$item['key']}}">
+                                        <input class="form-control" type="text" name="values[{{$index}}]" value="{{@$item['value']}}" id="example-text-input">
+                                    </div>
+                                </div>
+                            @endif
+                        @endforeach
+    
+                        <button type="submit" class="btn btn-primary text-end px-4">Submit</button>
                     </form>
                 </div>
-                <!-- end card body -->
             </div>
-            <!-- end card -->
-        </div>
-        <!-- end col -->
-    </div>
-    <!-- end col -->
+        </div> <!-- end col -->
     </div>
     <!-- end row -->
 @endsection
+
 @section('scripts')
     <!-- App js -->
     <script src="{{ asset('assets/js/app.js') }}"></script>

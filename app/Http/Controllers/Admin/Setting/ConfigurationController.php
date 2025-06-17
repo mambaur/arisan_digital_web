@@ -15,15 +15,14 @@ class ConfigurationController extends Controller
      */
     public function index()
     {
-        $settings = Setting::all();
+        $settings = Setting::where('main_configuration', '0')->get();
         $data = [];
+
         foreach ($settings as $item) {
-            $data[$item->key] = $item->value;
+            $data[] = $item;
         }
 
-        $setting_types = SettingType::toArray();
-
-        return view('admin.settings.configuration', compact('data', 'setting_types'));
+        return view('admin.settings.configuration', compact('data'));
     }
 
     /**
@@ -33,28 +32,20 @@ class ConfigurationController extends Controller
     {
         $keys = $request->keys ?? [];
         $values = $request->values ?? [];
-        $descriptions = $request->descriptions ?? [];
 
         DB::beginTransaction();
 
         foreach ($keys as $index => $item) {
             $setting = Setting::where('key', $item)->first();
-            if($setting){
-                $setting->value = $values[$index];
-                $setting->description = $descriptions[$index];
+            if (@$setting) {
+                $setting->value = @$values[$index];
                 $setting->save();
-            }else if(in_array($item, SettingType::toArray())){
-                Setting::create([
-                    'key' => $item,
-                    'value' => $values[$index],
-                    'description' => $descriptions[$index]
-                ]);
             }
         }
 
         DB::commit();
 
-        session()->flash('success', 'Configuration successfully updated');
+        session()->flash('success', 'Configurations successfully updated');
         return redirect()->back();
     }
 }

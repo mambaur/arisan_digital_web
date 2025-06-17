@@ -68,10 +68,12 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
      */
 
     Route::get('/setting/configurations', [ConfigurationController::class, 'index'])->name('setting_configurations');
-    
+
     Route::post('/setting/configurations', [ConfigurationController::class, 'store'])->name('setting_configuration_store');
 
     Route::get('/setting/setting-about-info', [AboutInfoController::class, 'index'])->name('setting_about_info');
+
+    Route::post('/setting/setting-about-info', [AboutInfoController::class, 'store'])->name('setting_about_info_store');
 
     /**
      * User

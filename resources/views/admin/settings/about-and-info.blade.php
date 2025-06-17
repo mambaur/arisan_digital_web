@@ -12,115 +12,34 @@
     <div class="row">
         <div class="col-12">
             <div class="card">
-                <div class="card-header">
-                    <h4 class="card-title">Textual inputs</h4>
-                    <p class="card-title-desc">Here are examples of <code>.form-control</code> applied to each
-                        textual HTML5 <code>&lt;input&gt;</code> <code>type</code>.</p>
-                </div>
                 <div class="card-body">
-
-                    <div class="mb-3 row">
-                        <label for="example-text-input" class="col-md-2 col-form-label">Text</label>
-                        <div class="col-md-10">
-                            <input class="form-control" type="text" value="Artisanal kale" id="example-text-input">
-                        </div>
-                    </div>
-                    <div class="mb-3 row">
-                        <label for="example-search-input" class="col-md-2 col-form-label">Search</label>
-                        <div class="col-md-10">
-                            <input class="form-control" type="search" value="How do I shoot web" id="example-search-input">
-                        </div>
-                    </div>
-                    <div class="mb-3 row">
-                        <label for="example-email-input" class="col-md-2 col-form-label">Email</label>
-                        <div class="col-md-10">
-                            <input class="form-control" type="email" value="bootstrap@example.com" id="example-email-input">
-                        </div>
-                    </div>
-                    <div class="mb-3 row">
-                        <label for="example-url-input" class="col-md-2 col-form-label">URL</label>
-                        <div class="col-md-10">
-                            <input class="form-control" type="url" value="https://getbootstrap.com" id="example-url-input">
-                        </div>
-                    </div>
-                    <div class="mb-3 row">
-                        <label for="example-tel-input" class="col-md-2 col-form-label">Telephone</label>
-                        <div class="col-md-10">
-                            <input class="form-control" type="tel" value="1-(555)-555-5555" id="example-tel-input">
-                        </div>
-                    </div>
-                    <div class="mb-3 row">
-                        <label for="example-password-input" class="col-md-2 col-form-label">Password</label>
-                        <div class="col-md-10">
-                            <input class="form-control" type="password" value="hunter2" id="example-password-input">
-                        </div>
-                    </div>
-                    <div class="mb-3 row">
-                        <label for="example-number-input" class="col-md-2 col-form-label">Number</label>
-                        <div class="col-md-10">
-                            <input class="form-control" type="number" value="42" id="example-number-input">
-                        </div>
-                    </div>
-                    <div class="mb-3 row">
-                        <label for="example-datetime-local-input" class="col-md-2 col-form-label">Date and time</label>
-                        <div class="col-md-10">
-                            <input class="form-control" type="datetime-local" value="2019-08-19T13:45:00" id="example-datetime-local-input">
-                        </div>
-                    </div>
-                    <div class="mb-3 row">
-                        <label for="example-date-input" class="col-md-2 col-form-label">Date</label>
-                        <div class="col-md-10">
-                            <input class="form-control" type="date" value="2019-08-19" id="example-date-input">
-                        </div>
-                    </div>
-                    <div class="mb-3 row">
-                        <label for="example-month-input" class="col-md-2 col-form-label">Month</label>
-                        <div class="col-md-10">
-                            <input class="form-control" type="month" value="2019-08" id="example-month-input">
-                        </div>
-                    </div>
-                    <div class="mb-3 row">
-                        <label for="example-week-input" class="col-md-2 col-form-label">Week</label>
-                        <div class="col-md-10">
-                            <input class="form-control" type="week" value="2019-W33" id="example-week-input">
-                        </div>
-                    </div>
-                    <div class="mb-3 row">
-                        <label for="example-time-input" class="col-md-2 col-form-label">Time</label>
-                        <div class="col-md-10">
-                            <input class="form-control" type="time" value="13:45:00" id="example-time-input">
-                        </div>
-                    </div>
-                    <div class="mb-3 row">
-                        <label for="example-color-input" class="col-md-2 col-form-label">Color picker</label>
-                        <div class="col-md-10">
-                        <input type="color" class="form-control form-control-color" id="exampleColorInput" value="#1f58c7" title="Choose your color">
-                        </div>
-                    </div>
-                    <div class="mb-3 row">
-                        <label class="col-md-2 col-form-label">Select</label>
-                        <div class="col-md-10">
-                            <select class="form-select">
-                                <option>Select</option>
-                                <option>Large select</option>
-                                <option>Small select</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <label for="exampleDataList" class="col-md-2 col-form-label">Datalist</label>
-                        <div class="col-md-10">
-                            <input class="form-control" list="datalistOptions" id="exampleDataList" placeholder="Type to search...">
-                            <datalist id="datalistOptions">
-                                <option value="San Francisco">
-                                <option value="New York">
-                                <option value="Seattle">
-                                <option value="Los Angeles">
-                                <option value="Chicago">
-                            </datalist>
-                        </div>
-                    </div>
+                    <form action="{{route('setting_about_info_store')}}" method="POST">
+                        @csrf
+                        @foreach ($data as $index => $item)
+                            @if (@$item['key'] == App\Constants\SettingType::IS_MAINTENANCE)    
+                                <div class="mb-3 row">
+                                    <label for="example-text-input" class="col-md-2 col-form-label">{{@$item['title']}}</label>
+                                    <div class="col-md-10">
+                                        <div class="form-check form-switch form-switch-lg" dir="ltr">
+                                            <input type="hidden" name="keys[{{$index}}]" value="{{@$item['key']}}">
+                                            <input type="checkbox" class="form-check-input" name="values[{{$index}}]" value="1" @if(@$item['value'] == '1') checked @endif>
+                                            <label class="form-check-label" for="customSwitchsizelg">Ya</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            @else
+                                <div class="mb-3 row">
+                                    <label for="example-text-input" class="col-md-2 col-form-label">{{@$item['title']}}</label>
+                                    <div class="col-md-10">
+                                        <input type="hidden" name="keys[{{$index}}]" value="{{@$item['key']}}">
+                                        <input class="form-control" type="text" name="values[{{$index}}]" value="{{@$item['value']}}" id="example-text-input">
+                                    </div>
+                                </div>
+                            @endif
+                        @endforeach
+    
+                        <button type="submit" class="btn btn-primary text-end px-4">Submit</button>
+                    </form>
                 </div>
             </div>
         </div> <!-- end col -->

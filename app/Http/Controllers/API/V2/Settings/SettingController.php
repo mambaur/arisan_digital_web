@@ -32,13 +32,37 @@ class SettingController extends Controller
         }
 
         $setting = Setting::select('id', 'key', 'value', 'description')->where('key', $key)->first();
-        if(!$setting){
+        if (!$setting) {
             return abort(404, 'Pengaturan tidak ditemukan');
         }
 
         return response()->json([
             'message' => 'Pengaturan berhasil didapatkan.',
             'data' => $setting
+        ]);
+    }
+
+
+    /**
+     * Get All Settings
+     */
+    public function all()
+    {
+        $settings = Setting::all();
+        $data = null;
+        foreach ($settings as $item) {
+            $data[$item->key] = [
+                'id' => $item->id,
+                'title' => $item->title,
+                'key' => $item->key,
+                'value' => $item->value,
+                'description' => $item->description,
+            ];
+        }
+
+        return response()->json([
+            'message' => 'Pengaturan berhasil didapatkan.',
+            'data' => $data
         ]);
     }
 }

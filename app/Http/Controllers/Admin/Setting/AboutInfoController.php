@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers\Admin\Setting;
 
+use App\Constants\SettingType;
 use App\Http\Controllers\Controller;
+use App\Models\Setting;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class AboutInfoController extends Controller
 {
@@ -12,15 +15,14 @@ class AboutInfoController extends Controller
      */
     public function index()
     {
-        return view('admin.settings.about-and-info');
-    }
+        $settings = Setting::where('main_configuration', '1')->get();
+        $data = [];
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+        foreach ($settings as $item) {
+            $data[] = $item;
+        }
+
+        return view('admin.settings.about-and-info', compact('data'));
     }
 
     /**
@@ -28,7 +30,23 @@ class AboutInfoController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $keys = $request->keys ?? [];
+        $values = $request->values ?? [];
+
+        DB::beginTransaction();
+
+        foreach ($keys as $index => $item) {
+            $setting = Setting::where('key', $item)->first();
+            if (@$setting) {
+                $setting->value = @$values[$index];
+                $setting->save();
+            }
+        }
+
+        DB::commit();
+
+        session()->flash('success', 'About & Info successfully updated');
+        return redirect()->back();
     }
 
     /**
