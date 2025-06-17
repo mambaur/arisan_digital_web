@@ -16,6 +16,7 @@ class Group extends Model
 
     protected $casts = [
         'periods_date' => 'datetime',
+        'last_notified_at' => 'datetime',
     ];
 
     public function members()
