@@ -95,7 +95,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::patch('/member/reset/status-paid/{id}', [MemberController::class, 'resetStatusPaid']);
 
     Route::delete('/member/delete/{id}', [MemberController::class, 'destroy']);
-    
+
 
     /*
     |--------------------------------------------------------------------------
@@ -105,6 +105,8 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     | Manage settings data API
     |
     */
+
+    Route::get('/setting/all', [SettingController::class, 'all']);
 
     Route::get('/setting/{key}', [SettingController::class, 'index']);
 

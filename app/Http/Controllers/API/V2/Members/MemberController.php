@@ -13,6 +13,7 @@ use App\Models\GroupOwner;
 use App\Models\Member;
 use App\Models\User;
 use App\Notifications\ArisanNotification;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
@@ -45,7 +46,7 @@ class MemberController extends Controller
 
         $members = Member::where('group_id', $group_id)->latest()->orderBy('name', 'asc');
 
-        if($request->status_active){
+        if ($request->status_active) {
             $members->where('status_active', $request->status_active);
         }
 
@@ -126,7 +127,7 @@ class MemberController extends Controller
             "message" => "Member baru berhasil ditambahkan.",
         ], 200);
     }
-    
+
     /**
      * Create New Member by User Code
      *
@@ -152,10 +153,10 @@ class MemberController extends Controller
         }
 
         $user = User::where('code', $request->user_code)->first();
-        if(!$user) return abort(404, 'Pengguna tidak ditemukan');
+        if (!$user) return abort(404, 'Pengguna tidak ditemukan');
 
         $member = Member::where('user_id', $user->id)->where('group_id', $request->group_id)->first();
-        if($member) return abort(400, 'Anggota sudah didaftarkan');
+        if ($member) return abort(400, 'Anggota sudah didaftarkan');
 
         $member = Member::create([
             "group_id" => $request->group_id,
@@ -183,7 +184,7 @@ class MemberController extends Controller
             "message" => "Member baru berhasil ditambahkan. Permintaan anggota telah dikirimkan",
         ], 200);
     }
-    
+
     /**
      * Create New Member by Group Code
      *
@@ -209,10 +210,10 @@ class MemberController extends Controller
 
         $user = auth()->user();
         $group = Group::where('code', $request->group_code)->first();
-        if(!$group) return abort(404, 'Grub tidak ditemukan');
+        if (!$group) return abort(404, 'Grub tidak ditemukan');
 
         $member = Member::where('user_id', $user->id)->where('group_id', $group->id)->first();
-        if($member) return abort(400, 'Anda sudah didaftarkan di grub');
+        if ($member) return abort(400, 'Anda sudah didaftarkan di grub');
 
         $member = Member::create([
             "group_id" => $group->id,
@@ -242,7 +243,7 @@ class MemberController extends Controller
             "message" => "Permintaan anggota member anda berhasil dikirimkan, mohon tunggu pengelola arisan menyetujui permintaan anda.",
         ], 200);
     }
-    
+
     /**
      * Create New Member by User Email
      *
@@ -268,10 +269,10 @@ class MemberController extends Controller
         }
 
         $user = User::where('email', $request->email)->first();
-        if(!$user) return abort(404, 'Pengguna tidak ditemukan');
+        if (!$user) return abort(404, 'Pengguna tidak ditemukan');
 
         $member = Member::where('user_id', $user->id)->where('group_id', $request->group_id)->first();
-        if($member) return abort(400, 'Anggota sudah didaftarkan');
+        if ($member) return abort(400, 'Anggota sudah didaftarkan');
 
         $member = Member::create([
             "group_id" => $request->group_id,
@@ -324,7 +325,7 @@ class MemberController extends Controller
         }
 
         $count = Member::where('group_id', $group_id);
-        if($request->status_active){
+        if ($request->status_active) {
             $count->where('status_active', $request->status_active);
         }
 
@@ -527,7 +528,7 @@ class MemberController extends Controller
         $title = null;
         $description = null;
 
-        if(MemberStatusActive::isRequest($previous_status)){
+        if (MemberStatusActive::isRequest($previous_status)) {
             try {
                 $data = [
                     'member' => $member,
@@ -535,22 +536,22 @@ class MemberController extends Controller
                     'status_active' => $request->status_active,
                 ];
 
-                if($request->status_active == MemberStatusActive::ACTIVE){
+                if ($request->status_active == MemberStatusActive::ACTIVE) {
                     $title = "Sip, $member->name sudah join!";
                     $description = "$member->name sudah gabung di grup arisan {$member->group->name}. Semoga makin seru ya!";
                 }
 
-                if($request->status_active == MemberStatusActive::REJECT){
+                if ($request->status_active == MemberStatusActive::REJECT) {
                     $title = "Yah, $member->name batal gabung!";
                     $description = "Sayang banget, $member->name belum bisa gabung ke grup {$member->group->name}.";
                 }
 
-                if($previous_status == MemberStatusActive::REQUEST_JOIN){
+                if ($previous_status == MemberStatusActive::REQUEST_JOIN) {
                     @$member->user->notify(new ArisanNotification($title, $description, NotificationType::MEMBER_JOIN_RESPONSE, $data));
                 }
 
                 $owners = GroupOwner::where('group_id', @$member->group_id)->get();
-                
+
                 foreach ($owners ?? [] as $item) {
                     $item->user->notify(new ArisanNotification($title, $description, NotificationType::MEMBER_JOIN_RESPONSE, $data));
                 }
@@ -564,7 +565,7 @@ class MemberController extends Controller
             "message" => $title ?? "Status aktif anggota berhasil diupdate.",
         ], 200);
     }
-    
+
     /**
      * Reinvit Member Activity Status
      */
@@ -716,7 +717,7 @@ class MemberController extends Controller
             "data" => $data,
         ], 200);
     }
-    
+
     /**
      * Send Payment Notification Reminder to Member
      *
@@ -726,6 +727,27 @@ class MemberController extends Controller
      */
     public function paymentNotificationReminder($group_id)
     {
+        $group = Group::find($group_id);
+
+        if (!$group) {
+            return abort(404, 'Grub tidak ditemukan');
+        }
+
+        $minute = 3;
+
+        if ($group->last_notified_at) {
+            $now = Carbon::now();
+            $can_send = Carbon::parse($group->last_notified_at)->addMinutes($minute)->lte($now);
+            if (!@$can_send) {
+                $nextAllowed = Carbon::parse($group->last_notified_at)->addMinutes($minute);
+                $minutesRemaining = number_format($now->diffInMinutes($nextAllowed), 1);
+                return response()->json([
+                    "status" => "failed",
+                    "message" => "Notifikasi sudah dikirim sebelumnya. Silakan coba lagi dalam $minutesRemaining menit.",
+                ], 400);
+            }
+        }
+
         $members = Member::where('group_id', $group_id)->where('status_active', MemberStatusActive::ACTIVE)->whereNull('date_paid')->get();
 
         if (!count($members)) {
@@ -744,16 +766,18 @@ class MemberController extends Controller
                 ];
                 $item->user->notify(new ArisanNotification("Yuk, bayar iuran arisannya!", "Jangan lupa bayar iuran arisan di grup {$item->group->name} ya. Biar arisannya tetap lancar dan tepat waktu!", NotificationType::MEMBER_PAYMENT_REMINDER, $data));
             } catch (\Throwable $th) {
-                //throw $th;
             }
         }
+
+        $group->last_notified_at = now();
+        $group->save();
 
         return response()->json([
             "status" => "success",
             "message" => "Notifikasi penagihan pembayaran iuran arisan berhasil di kirim.",
         ], 200);
     }
-    
+
     /**
      * Send Invitation Notification Reminder to Member
      *

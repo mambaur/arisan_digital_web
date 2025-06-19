@@ -8,21 +8,21 @@ use App\Models\Setting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
-class ConfigurationController extends Controller
+class AboutInfoController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $settings = Setting::where('main_configuration', '0')->get();
+        $settings = Setting::where('main_configuration', '1')->get();
         $data = [];
 
         foreach ($settings as $item) {
             $data[] = $item;
         }
 
-        return view('admin.settings.configuration', compact('data'));
+        return view('admin.settings.about-and-info', compact('data'));
     }
 
     /**
@@ -45,7 +45,39 @@ class ConfigurationController extends Controller
 
         DB::commit();
 
-        session()->flash('success', 'Configurations successfully updated');
+        session()->flash('success', 'About & Info successfully updated');
         return redirect()->back();
+    }
+
+    /**
+     * Display the specified resource.
+     */
+    public function show(string $id)
+    {
+        //
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit(string $id)
+    {
+        //
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(Request $request, string $id)
+    {
+        //
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(string $id)
+    {
+        //
     }
 }

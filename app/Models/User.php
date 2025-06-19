@@ -39,6 +39,7 @@ class User extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'last_seen_at' => 'datetime',
     ];
 
     /**
@@ -69,5 +70,4 @@ class User extends Authenticatable
         } while (User::where(DB::raw('BINARY `code`'), $key)->exists());
         return $key;
     }
-
 }
