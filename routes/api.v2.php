@@ -66,6 +66,8 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
     Route::get('/members/{group_id}', [MemberController::class, 'index']);
 
+    Route::get('/members/generate/member-from-created-by-group', [MemberController::class, 'generateMemberFromCreatedByGroup']);
+
     Route::post('/members/mail/reminder/{group_id}', [MemberController::class, 'mailReminder']);
 
     Route::post('/members/notification/reminder/payment/{group_id}', [MemberController::class, 'paymentNotificationReminder']);
