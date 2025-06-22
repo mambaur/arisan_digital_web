@@ -32,3 +32,6 @@ Kirim ke anggota
 Kirim ke pengelola
 - (done) Anggota menerima undangan
 - (done) Request daftar sebagai member dari anggota
+
+## Deleted soon
+- /members/generate/member-from-created-by-group

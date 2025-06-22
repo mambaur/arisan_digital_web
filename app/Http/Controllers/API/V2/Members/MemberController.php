@@ -15,6 +15,7 @@ use App\Models\User;
 use App\Notifications\ArisanNotification;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 
@@ -811,6 +812,46 @@ class MemberController extends Controller
         return response()->json([
             "status" => "success",
             "message" => "Notifikasi undangan anggota arisan berhasil di kirim.",
+        ], 200);
+    }
+
+    /**
+     * Generate Member from created_by Group
+     *
+     * Deleted soon (fix issue)
+     */
+    public function generateMemberFromCreatedByGroup()
+    {
+        $groups = Group::whereDoesntHave('members', function ($query) {
+            $query->whereColumn('user_id', 'groups.created_by');
+        })->get();
+
+        DB::beginTransaction();
+
+        foreach ($groups as $item) {
+            $user = User::find($item->created_by);
+            if ($user) {
+                $member = Member::where('group_id', $item->id)->where('user_id', $user->id)->first();
+                if (!@$member) {
+                    Member::create([
+                        "group_id" => $item->id,
+                        "user_id" => $user->id,
+                        "name" => $user->name,
+                        "email" => $user->email,
+                        "gender" => Gender::MALE,
+                        "status_paid" => MemberStatusPaid::UNPAID,
+                        "status_active" => MemberStatusActive::ACTIVE,
+                        "is_owner" => 1,
+                    ]);
+                }
+            }
+        }
+
+        DB::commit();
+
+        return response()->json([
+            "status" => "success",
+            "message" => "Generate member from created by group done, total: " . count($groups ?? []),
         ], 200);
     }
 }
