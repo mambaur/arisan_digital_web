@@ -36,23 +36,30 @@ class GroupController extends Controller
         $user_id = $request->user()->id;
         $email = $request->user()->email;
 
-        if($request->type == 'owned'){
+        if ($request->type == 'owned') {
             $groups->with(['members'])
-            // ->whereHas('owners', function($query) use($user_id){
-            //     $query->where('user_id', $user_id);
-            // })
-            ->whereHas('members', function ($query) use ($user_id) {
-                $query->where('user_id', $user_id)->where('status_active',  MemberStatusActive::ACTIVE);
-            });
-        }else if($request->type == 'invitation'){
+                ->where(function ($query) use ($user_id) {
+                    $query->whereHas('owners', function ($query) use ($user_id) {
+                        $query->where('user_id', $user_id);
+                    })
+                        ->orWhereHas('members', function ($query) use ($user_id) {
+                            $query->where('user_id', $user_id)->where('status_active',  MemberStatusActive::ACTIVE);
+                        });
+                });
+
+            // ->whereHas('members', function ($query) use ($user_id) {
+            //     $query->where('user_id', $user_id)->where('status_active',  MemberStatusActive::ACTIVE);
+            // });
+
+        } else if ($request->type == 'invitation') {
             $groups->with(['members'])->whereHas('members', function ($query) use ($email) {
                 $query->where('email', $email)->where('status_active', MemberStatusActive::REQUEST_INVITATION);
             });
-        }else if($request->type == 'join'){
+        } else if ($request->type == 'join') {
             $groups->with(['members'])->whereHas('members', function ($query) use ($email) {
                 $query->where('email', $email)->where('status_active', MemberStatusActive::REQUEST_JOIN);
             });
-        }else{
+        } else {
             $groups->with(['members'])->whereHas('members', function ($q) use ($email) {
                 $q->where('email', $email);
             });
@@ -101,7 +108,7 @@ class GroupController extends Controller
             ->count() * $group->dues;
     }
 
-    
+
     /**
      * Generate Owners Groups
      */
@@ -111,7 +118,7 @@ class GroupController extends Controller
         foreach ($groups as $item) {
             $owner = GroupOwner::where('group_id', $item->id)->where('user_id', $item->created_by)->first();
 
-            if(!$owner){
+            if (!$owner) {
                 GroupOwner::create([
                     'group_id' => $item->id,
                     'user_id' => $item->created_by,
@@ -124,7 +131,7 @@ class GroupController extends Controller
             "message" => "Generate group owner success",
         ], 200);
     }
-    
+
     /**
      * Generate UserID Members
      */
@@ -132,13 +139,13 @@ class GroupController extends Controller
     {
         $members = Member::get();
         foreach ($members as $item) {
-            if($item->user_id){
+            if ($item->user_id) {
                 continue;
             }
 
             $user = User::where('email', $item->email)->first();
 
-            if($user){
+            if ($user) {
                 $item->user_id = $user->id;
                 $item->save();
             }
@@ -278,8 +285,8 @@ class GroupController extends Controller
         }
 
         $member = Member::where('group_id', $id)->whereIn('status_active', [MemberStatusActive::ACTIVE, MemberStatusActive::REQUEST_INVITATION, MemberStatusActive::REQUEST_JOIN])->where('user_id', auth()->user()->id)->first();
-        
-        if(!@$member){
+
+        if (!@$member) {
             return abort(404, "Anda belum tergabung dalam grub");
         }
 
