@@ -284,7 +284,12 @@ class GroupController extends Controller
             );
         }
 
-        $member = Member::where('group_id', $id)->whereIn('status_active', [MemberStatusActive::ACTIVE, MemberStatusActive::REQUEST_INVITATION, MemberStatusActive::REQUEST_JOIN])->where('user_id', auth()->user()->id)->first();
+        $member = Member::where('group_id', $id)
+            ->where(function ($query) {
+                $query->where('is_owner', 1)
+                    ->orWhereIn('status_active', [MemberStatusActive::ACTIVE, MemberStatusActive::REQUEST_INVITATION, MemberStatusActive::REQUEST_JOIN]);
+            })->where('user_id', auth()->user()->id)
+            ->first();
 
         if (!@$member) {
             return abort(404, "Anda belum tergabung dalam grub");
