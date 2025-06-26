@@ -27,7 +27,7 @@ class SettingController extends Controller
                     'status' => 'failed',
                     'message' => $error,
                 ],
-                200
+                400
             );
         }
 

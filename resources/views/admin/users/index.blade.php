@@ -131,43 +131,44 @@
     <script>
         new gridjs.Grid({
             columns: [
-                // {
-                //     name: 'Photo',
-                //     formatter: (_, row) => gridjs.html(`<img src="${row.cells[0].data}" alt=""
-                //                                 class="avatar rounded-circle img-thumbnail me-2">`)
-                // },
-                
-                'Name', 'Email', {
+                'Name',
+                'Email',
+                {
                     name: 'Created',
                     formatter: (_, row) => gridjs.html(formatDate(row.cells[2].data))
-                }, {
+                },
+                {
+                    name: 'Last Seen',
+                    formatter: (_, row) => gridjs.html(row.cells[3].data == null ? '' : formatDateTime(row.cells[3].data))
+                },
+                {
                     name: 'Actions',
                     sort: false,
                     formatter: (_, row) => gridjs.html(`
-                <ul class="list-inline mb-0">
-                                                <li class="list-inline-item">
-                                                    <a href="javascript:void(0);" data-bs-toggle="tooltip"
-                                                        data-bs-placement="top" title="Edit" class="px-2 text-primary"><i
-                                                            class="bx bx-pencil font-size-18"></i></a>
-                                                </li>
-                                                <li class="list-inline-item">
-                                                    <a href="javascript:void(0);" data-bs-toggle="tooltip"
-                                                        data-bs-placement="top" title="Delete" class="px-2 text-danger"><i
-                                                            class="bx bx-trash-alt font-size-18"></i></a>
-                                                </li>
-                                                <li class="list-inline-item dropdown">
-                                                    <a class="text-muted dropdown-toggle font-size-18 px-2" href="#"
-                                                        role="button" data-bs-toggle="dropdown" aria-haspopup="true">
-                                                        <i class="bx bx-dots-vertical-rounded"></i>
-                                                    </a>
+                        <ul class="list-inline mb-0">
+                            <li class="list-inline-item">
+                                <a href="javascript:void(0);" data-bs-toggle="tooltip"
+                                    data-bs-placement="top" title="Edit" class="px-2 text-primary"><i
+                                        class="bx bx-pencil font-size-18"></i></a>
+                            </li>
+                            <li class="list-inline-item">
+                                <a href="javascript:void(0);" data-bs-toggle="tooltip"
+                                    data-bs-placement="top" title="Delete" class="px-2 text-danger"><i
+                                        class="bx bx-trash-alt font-size-18"></i></a>
+                            </li>
+                            <li class="list-inline-item dropdown">
+                                <a class="text-muted dropdown-toggle font-size-18 px-2" href="#"
+                                    role="button" data-bs-toggle="dropdown" aria-haspopup="true">
+                                    <i class="bx bx-dots-vertical-rounded"></i>
+                                </a>
 
-                                                    <div class="dropdown-menu dropdown-menu-end">
-                                                        <a class="dropdown-item" href="#">Action</a>
-                                                        <a class="dropdown-item" href="#">Another action</a>
-                                                        <a class="dropdown-item" href="#">Something else here</a>
-                                                    </div>
-                                                </li>
-                                            </ul>
+                                <div class="dropdown-menu dropdown-menu-end">
+                                    <a class="dropdown-item" href="#">Action</a>
+                                    <a class="dropdown-item" href="#">Another action</a>
+                                    <a class="dropdown-item" href="#">Something else here</a>
+                                </div>
+                            </li>
+                        </ul>
                 `)
                 },
             ],
@@ -182,7 +183,7 @@
 
                         const col = columns[0];
                         const dir = col.direction === 1 ? 'asc' : 'desc';
-                        let colName = ['users.name', 'users.email', 'users.created_at', null]
+                        let colName = ['users.name', 'users.email', 'users.created_at', 'users.last_seen_at', null]
                             [
                                 col.index
                             ];
@@ -194,7 +195,7 @@
             server: {
                 url: '/users/data?',
                 then: result => result.rows.data.map(item => [item.name, item.email, item
-                    .created_at, null
+                    .created_at, item.last_seen_at, null
                 ]),
                 // then: data => console.log(data),
                 handle: (res) => {
@@ -226,6 +227,19 @@
                 day: '2-digit',
                 month: 'long',
                 year: 'numeric'
+            };
+            return new Intl.DateTimeFormat('en-GB', options).format(date);
+        }
+
+        function formatDateTime(dateString) {
+            const date = new Date(dateString);
+            const options = {
+                day: '2-digit',
+                month: 'long',
+                year: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit',
+                hour12: false
             };
             return new Intl.DateTimeFormat('en-GB', options).format(date);
         }

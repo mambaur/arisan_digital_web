@@ -20,7 +20,7 @@ class FeedbackController extends Controller
             'limit' => ['nullable'],
         ]);
 
-        
+
         $feedback = Feedback::where('title', 'LIKE', "%$request->search%")->latest()->paginate($request->limit ?? 10);
         $data = [];
 
@@ -58,7 +58,7 @@ class FeedbackController extends Controller
                     'status' => 'failed',
                     'message' => $error,
                 ],
-                200
+                400
             );
         }
 

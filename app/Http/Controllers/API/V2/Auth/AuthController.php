@@ -84,7 +84,7 @@ class AuthController extends Controller
                     'status' => 'failed',
                     'message' => $error,
                 ],
-                200
+                400
             );
         }
 
@@ -155,7 +155,7 @@ class AuthController extends Controller
                     'status' => 'failed',
                     'message' => $error,
                 ],
-                200
+                400
             );
         }
 
@@ -178,7 +178,7 @@ class AuthController extends Controller
             200
         );
     }
-    
+
     /**
      * Update Last Seen
      */
@@ -235,7 +235,7 @@ class AuthController extends Controller
         $users = User::whereNull('code')->paginate(1000);
 
         foreach ($users as $item) {
-            if(!@$item->code){
+            if (!@$item->code) {
                 $item->code = User::generateUniqueCode();
                 $item->save();
             }
@@ -243,7 +243,7 @@ class AuthController extends Controller
 
         return response()->json([
             "status" => "success",
-            "message" => count($users)." users code successfully generated."
+            "message" => count($users) . " users code successfully generated."
         ], 200);
     }
 
@@ -295,7 +295,7 @@ class AuthController extends Controller
                     'status' => 'failed',
                     'message' => $error,
                 ],
-                200
+                400
             );
         }
         $user = User::where('email', $request->email)->first();
@@ -315,7 +315,7 @@ class AuthController extends Controller
                             ' detik',
                         'data' => null,
                     ],
-                    200
+                    400
                 );
             } else {
                 RateLimiter::hit($key, $decay);
@@ -363,7 +363,7 @@ class AuthController extends Controller
                     'status' => 'failed',
                     'message' => $error,
                 ],
-                200
+                400
             );
         }
         // We will send the password reset link to this user. Once we have attempted
@@ -386,7 +386,7 @@ class AuthController extends Controller
                     'message' =>
                     'Kamu telah meminta reset password beberapa waktu yang lalu, silakan periksa email kamu kembali.',
                 ],
-                200
+                400
             );
     }
 
@@ -398,7 +398,6 @@ class AuthController extends Controller
             'user_id' => $user_id,
             'user_type' => 'App\Models\User',
         ]);
-        
     }
 
     private function removeDeviceToken(string $access_token_id)

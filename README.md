@@ -19,6 +19,7 @@ Jalankan ini untuk memulai migrasi ke versi terbaru
 ### Notes
 - Kolom owner_id di tabel members tidak digunakan lagi
 - Kirim ulang invitation member yang ditolak
+- Fitur reset arisan yang semua sudah pernah jadi pemenang
 
 ## Notifications
 Kirim ke anggota

@@ -221,7 +221,7 @@ class GroupController extends Controller
                     'status' => 'failed',
                     'message' => $error,
                 ],
-                200
+                400
             );
         }
 
@@ -280,7 +280,7 @@ class GroupController extends Controller
                     'status' => 'failed',
                     'message' => 'Data group tidak ditemukan.',
                 ],
-                200
+                400
             );
         }
 
@@ -358,7 +358,7 @@ class GroupController extends Controller
                     'status' => 'failed',
                     'message' => $error,
                 ],
-                200
+                400
             );
         }
 
@@ -369,7 +369,7 @@ class GroupController extends Controller
                     'status' => 'failed',
                     'message' => 'Data group tidak ditemukan.',
                 ],
-                200
+                404
             );
         }
 
@@ -408,7 +408,7 @@ class GroupController extends Controller
                     'status' => 'failed',
                     'message' => $error,
                 ],
-                200
+                400
             );
         }
 
@@ -419,7 +419,7 @@ class GroupController extends Controller
                     'status' => 'failed',
                     'message' => 'Data group tidak ditemukan.',
                 ],
-                200
+                404
             );
         }
 
@@ -453,7 +453,7 @@ class GroupController extends Controller
                     'status' => 'failed',
                     'message' => $error,
                 ],
-                200
+                400
             );
         }
 
@@ -464,7 +464,7 @@ class GroupController extends Controller
                     'status' => 'failed',
                     'message' => 'Data group tidak ditemukan.',
                 ],
-                200
+                404
             );
         }
 
@@ -498,7 +498,7 @@ class GroupController extends Controller
                     'status' => 'failed',
                     'message' => $error,
                 ],
-                200
+                400
             );
         }
 
@@ -509,7 +509,7 @@ class GroupController extends Controller
                     'status' => 'failed',
                     'message' => 'Data group tidak ditemukan.',
                 ],
-                200
+                404
             );
         }
 
@@ -538,7 +538,7 @@ class GroupController extends Controller
                     'status' => 'failed',
                     'message' => 'Data group tidak ditemukan.',
                 ],
-                200
+                400
             );
         }
 

@@ -18,6 +18,7 @@ class UserDataGrid extends DataGrid
             ->column('users.photo_url', 'photo_url')
             ->column('users.email', 'email')
             ->column('users.created_at', 'created_at')
+            ->column('users.last_seen_at', 'last_seen_at')
             ->column('users.name', 'name');
     }
 

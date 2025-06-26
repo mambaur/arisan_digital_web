@@ -122,3 +122,7 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 
     Route::get('/clear', [CLIController::class, 'index']);
 });
+
+Route::get('/reset-password/success', function () {
+    return view('auth.passwords.reset-success');
+});

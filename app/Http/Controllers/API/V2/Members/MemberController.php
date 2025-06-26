@@ -108,7 +108,7 @@ class MemberController extends Controller
                     'status' => 'failed',
                     'message' => $error,
                 ],
-                200
+                400
             );
         }
 
@@ -149,7 +149,7 @@ class MemberController extends Controller
                     'status' => 'failed',
                     'message' => $error,
                 ],
-                200
+                400
             );
         }
 
@@ -205,7 +205,7 @@ class MemberController extends Controller
                     'status' => 'failed',
                     'message' => $error,
                 ],
-                200
+                400
             );
         }
 
@@ -265,7 +265,7 @@ class MemberController extends Controller
                     'status' => 'failed',
                     'message' => $error,
                 ],
-                200
+                400
             );
         }
 
@@ -321,7 +321,7 @@ class MemberController extends Controller
                     'status' => 'failed',
                     'message' => $error,
                 ],
-                200
+                400
             );
         }
 
@@ -356,7 +356,7 @@ class MemberController extends Controller
                     'status' => 'failed',
                     'message' => 'Data anggota tidak ditemukan.',
                 ],
-                200
+                400
             );
         }
 
@@ -409,7 +409,7 @@ class MemberController extends Controller
                     'status' => 'failed',
                     'message' => $error,
                 ],
-                200
+                400
             );
         }
 
@@ -420,7 +420,7 @@ class MemberController extends Controller
                     'status' => 'failed',
                     'message' => 'Data anggota tidak ditemukan.',
                 ],
-                200
+                400
             );
         }
 
@@ -459,7 +459,7 @@ class MemberController extends Controller
                     'status' => 'failed',
                     'message' => $error,
                 ],
-                200
+                400
             );
         }
 
@@ -470,7 +470,7 @@ class MemberController extends Controller
                     'status' => 'failed',
                     'message' => 'Data anggota tidak ditemukan.',
                 ],
-                200
+                400
             );
         }
 
@@ -505,7 +505,7 @@ class MemberController extends Controller
                     'status' => 'failed',
                     'message' => $error,
                 ],
-                200
+                400
             );
         }
 
@@ -518,7 +518,7 @@ class MemberController extends Controller
                     'status' => 'failed',
                     'message' => 'Data anggota tidak ditemukan.',
                 ],
-                200
+                400
             );
         }
 
@@ -581,7 +581,7 @@ class MemberController extends Controller
                     'status' => 'failed',
                     'message' => 'Data anggota tidak ditemukan.',
                 ],
-                200
+                400
             );
         }
 
@@ -624,7 +624,7 @@ class MemberController extends Controller
                     'status' => 'failed',
                     'message' => 'Data anggota tidak ditemukan.',
                 ],
-                200
+                400
             );
         }
 
@@ -655,7 +655,7 @@ class MemberController extends Controller
                     'status' => 'failed',
                     'message' => 'Data anggota tidak ditemukan.',
                 ],
-                200
+                400
             );
         }
 
@@ -697,7 +697,7 @@ class MemberController extends Controller
             return response()->json([
                 "status" => "failed",
                 "message" => "Tidak ada email yang harus dikirimkan.",
-            ], 200);
+            ], 400);
         }
 
         $data = [];
@@ -734,14 +734,14 @@ class MemberController extends Controller
             return abort(404, 'Grub tidak ditemukan');
         }
 
-        $minute = 3;
+        $minute = 5;
 
         if ($group->last_notified_at) {
             $now = Carbon::now();
             $can_send = Carbon::parse($group->last_notified_at)->addMinutes($minute)->lte($now);
             if (!@$can_send) {
                 $nextAllowed = Carbon::parse($group->last_notified_at)->addMinutes($minute);
-                $minutesRemaining = number_format($now->diffInMinutes($nextAllowed), 1);
+                $minutesRemaining = number_format($now->diffInMinutes($nextAllowed));
                 return response()->json([
                     "status" => "failed",
                     "message" => "Notifikasi sudah dikirim sebelumnya. Silakan coba lagi dalam $minutesRemaining menit.",
@@ -755,7 +755,7 @@ class MemberController extends Controller
             return response()->json([
                 "status" => "failed",
                 "message" => "Tidak ada anggota yang harus ditagih.",
-            ], 200);
+            ], 400);
         }
 
         $data = [];

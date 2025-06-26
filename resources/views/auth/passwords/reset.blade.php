@@ -1,9 +1,9 @@
 @extends('layouts.master-without-nav')
 @section('title')
-    Register
+    Reset Password
 @endsection
 @section('page-title')
-    Register
+    Reset Password
 @endsection
 @section('body')
 
@@ -18,7 +18,7 @@
                         <div class="col-md-8 col-lg-6 col-xl-5">
 
                             <div class="mb-4 pb-2">
-                                <a href="index" class="d-block auth-logo">
+                                <a href="/" class="d-block auth-logo">
                                     <img src="{{ URL::asset('assets/images/logo-dark.png') }}" alt="" height="30"
                                         class="auth-logo-dark me-start">
                                     <img src="{{ URL::asset('assets/images/logo-light.png') }}" alt=""
@@ -39,7 +39,7 @@
                                                 <label for="email" class="form-label">Email Address <span
                                                         class="text-danger">*</span></label>
                                                 <input id="email" type="email"
-                                                    class="form-control @error('email') is-invalid @enderror" name="email"
+                                                    class="form-control @error('email') is-invalid @enderror" name="email" readonly
                                                     value="{{ $email ?? old('email') }}" required autocomplete="email"
                                                     autofocus>
                                                 @error('email')

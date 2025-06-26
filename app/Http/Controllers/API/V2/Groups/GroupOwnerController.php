@@ -9,6 +9,7 @@ use App\Models\Member;
 use App\Models\User;
 use App\Notifications\ArisanNotification;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
 class GroupOwnerController extends Controller
@@ -64,15 +65,20 @@ class GroupOwnerController extends Controller
             ], 404);
         }
 
-        $member = Member::where('email', $request->email)->where('group_id', $request->group_id)->first();
-        if(!$member){
+        $member = Member::where('user_id', $user->id)->where('group_id', $request->group_id)->first();
+        if (!$member) {
             return response()->json([
                 "message" => "Pengguna belum terdaftar sebagai anggota grub arisan"
             ], 404);
         }
 
+        DB::beginTransaction();
+
+        $member->is_owner = 1;
+        $member->save();
+
         $owner = GroupOwner::where('group_id', $request->group_id)->where('user_id', $user->id)->first();
-        if($owner){
+        if ($owner) {
             return response()->json([
                 "message" => "Anggota sudah diaftarkan sebagai pengelola"
             ], 404);
@@ -83,6 +89,8 @@ class GroupOwnerController extends Controller
             'user_id' => $user->id,
             'status_approval' => 'approved'
         ]);
+
+        DB::commit();
 
         try {
             $data = [
@@ -158,7 +166,17 @@ class GroupOwnerController extends Controller
             ], 404);
         }
 
+        DB::beginTransaction();
+
+        $member = Member::where('user_id', $user->id)->where('group_id', $group->id)->first();
+        if ($member) {
+            $member->is_owner = 0;
+            $member->save();
+        }
+
         $group_owner->delete();
+
+        DB::commit();
 
         try {
             $data = [

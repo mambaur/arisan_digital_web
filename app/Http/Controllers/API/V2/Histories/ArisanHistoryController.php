@@ -54,7 +54,7 @@ class ArisanHistoryController extends Controller
 
             $winners = [];
             foreach (@$item->winners ?? [] as $row) {
-                if(@$row->member){
+                if (@$row->member) {
                     $winners[] = [
                         "id" => @$row->member->id,
                         "name" => @$row->member->name,
@@ -110,7 +110,7 @@ class ArisanHistoryController extends Controller
                     'status' => 'failed',
                     'message' => $error,
                 ],
-                200
+                400
             );
         }
 
@@ -163,7 +163,7 @@ class ArisanHistoryController extends Controller
             "message" => "Hasil pemenang arisan berhasil disimpan.",
         ], 200);
     }
-    
+
     /**
      * Init Arisan History Winner
      *
@@ -187,7 +187,7 @@ class ArisanHistoryController extends Controller
 
         return response()->json([
             "status" => "success",
-            "message" => "Init winner berhasil: ". count($arisan_histories ?? []),
+            "message" => "Init winner berhasil: " . count($arisan_histories ?? []),
         ], 200);
     }
 
@@ -213,7 +213,7 @@ class ArisanHistoryController extends Controller
                     'status' => 'failed',
                     'message' => $error,
                 ],
-                200
+                400
             );
         }
 
@@ -246,12 +246,12 @@ class ArisanHistoryController extends Controller
             ]);
 
             $member_winner = Member::find($member_id);
-            if(@$member_winner){
+            if (@$member_winner) {
                 @$member_winner->update([
                     'is_get_reward' => 1
                 ]);
 
-                if(@$member_winner->user){
+                if (@$member_winner->user) {
                     try {
                         $data = [
                             'member' => $member_winner,
@@ -263,7 +263,6 @@ class ArisanHistoryController extends Controller
                     }
                 }
             }
-
         }
 
         $members = Member::where('group_id', $arisan_history->group_id)->get();
@@ -308,7 +307,7 @@ class ArisanHistoryController extends Controller
                 $query->withTrashed();
             }
         ])->where('id', $id)->first();
-    
+
         if (!$arisan_history) {
             return response()->json(
                 [
@@ -337,11 +336,9 @@ class ArisanHistoryController extends Controller
             ];
         }
 
-        
-
         $winners = [];
         foreach (@$arisan_history->winners ?? [] as $row) {
-            if(@$row->member){
+            if (@$row->member) {
                 $winners[] = [
                     "id" => @$row->member->id,
                     "name" => @$row->member->name,
@@ -389,7 +386,7 @@ class ArisanHistoryController extends Controller
                     'status' => 'failed',
                     'message' => 'Data riwayat arisan tidak ditemukan.',
                 ],
-                200
+                400
             );
         }
 

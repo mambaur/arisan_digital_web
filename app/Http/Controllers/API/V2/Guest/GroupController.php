@@ -24,7 +24,7 @@ class GroupController extends Controller
             return response()->json([
                 "status" => "failed",
                 "message" => "Data group tidak ditemukan.",
-            ], 200);
+            ], 400);
         }
 
         $data = [];
