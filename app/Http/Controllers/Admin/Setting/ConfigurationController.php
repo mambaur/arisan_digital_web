@@ -15,7 +15,7 @@ class ConfigurationController extends Controller
      */
     public function index()
     {
-        $settings = Setting::where('main_configuration', '0')->get();
+        $settings = Setting::where('main_configuration', '1')->get();
         $data = [];
 
         foreach ($settings as $item) {
