@@ -35,6 +35,7 @@
                                     <div class="p-2 mt-4">
                                         <form method="POST" action="{{ route('password.update') }}" class="auth-input">
                                             @csrf
+                                            <input type="hidden" name="token" value="{{$token}}">
                                             <div class="mb-3">
                                                 <label for="email" class="form-label">Email Address <span
                                                         class="text-danger">*</span></label>

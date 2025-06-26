@@ -55,7 +55,8 @@ class AuthController extends Controller
             'data' => [
                 'token' => $plainTextToken,
                 'user' => $userFromDb
-            ]
+            ],
+            'message' => 'Login berhasil.',
         ], 200);
     }
 
