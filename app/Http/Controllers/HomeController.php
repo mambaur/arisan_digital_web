@@ -195,7 +195,7 @@ class HomeController extends Controller
         $last30Start = $now->copy()->subDays(30);
         $last30End = $now;
 
-        $today = User::whereDate('created_at', Carbon::today())->count();
+        $today = User::whereDate('last_seen_at', Carbon::today())->count();
 
         $total_last_30_days = User::whereBetween('last_seen_at', [$last30Start, $last30End])->count();
 
