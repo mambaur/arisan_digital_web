@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\Member\MemberController;
 use App\Http\Controllers\Admin\Profile\ProfileController;
 use App\Http\Controllers\Admin\Setting\AboutInfoController;
 use App\Http\Controllers\Admin\Setting\ConfigurationController;
+use App\Http\Controllers\Admin\Setting\StaticWebController;
 use App\Http\Controllers\Admin\Subscription\SubscriptionController;
 use App\Http\Controllers\Admin\User\UserController;
 use App\Http\Controllers\CLIController;
@@ -126,3 +127,6 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 Route::get('/reset-password/success', function () {
     return view('auth.passwords.reset-success');
 });
+
+Route::get('/info/kebijakan-privasi', [StaticWebController::class, 'privacy']);
+Route::get('/info/syarat-dan-ketentuan', [StaticWebController::class, 'termCondition']);

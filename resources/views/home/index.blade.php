@@ -185,6 +185,79 @@
                             </div>
                         </div>
                     </div>
+                    
+                    <div class="col-xl-3">
+                        <div class="card">
+                            <div class="card-body">
+                                <div>
+                                    <div class="d-flex align-items-center">
+                                        <div class="avatar">
+                                            <div class="avatar-title rounded bg-soft-primary">
+                                                <i class="bx bx-message-dots font-size-24 mb-0 text-primary"></i>
+                                            </div>
+                                        </div>
+
+                                        <div class="flex-grow-1 ms-3">
+                                            <h6 class="mb-0 font-size-15">Total Feedback</h6>
+                                            <div class="">Sebulan Terakhir</div>
+                                        </div>
+                                    </div>
+
+                                    <div>
+                                        <h4 class="mt-4 pt-1 mb-0 font-size-22">{{$total_feedback['last_30_days']}}
+                                            @if ($total_feedback['percent'] >= 0)
+                                                <span
+                                                    class="text-success fw-medium font-size-13 align-middle"> <i
+                                                        class="mdi mdi-arrow-up"></i> {{$total_feedback['percent']}}% </span>
+                                            @else
+                                                <span
+                                                class="text-danger fw-medium font-size-13 align-middle"> <i
+                                                    class="mdi mdi-arrow-down"></i> {{$total_feedback['percent']}}% </span>
+                                            @endif
+                                        </h4>
+                                        <div class="d-flex mt-1 align-items-end overflow-hidden">
+                                            <div class="flex-grow-1">
+                                                <p class="text-muted mb-0 text-truncate">Total bulan sebelumnya <b>{{$total_feedback['prev_30_start_days']}}</b>
+                                                    <br>
+                                                    Total hari ini <b>{{$total_feedback['today']}}</b></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-xl-3">
+                        <div class="card">
+                            <div class="card-body">
+                                <div>
+                                    <div class="d-flex align-items-center">
+                                        <div class="avatar">
+                                            <div class="avatar-title rounded bg-soft-primary">
+                                                <i class="bx bx-show font-size-24 mb-0 text-primary"></i>
+                                            </div>
+                                        </div>
+
+                                        <div class="flex-grow-1 ms-3">
+                                            <h6 class="mb-0 font-size-15">Total Last Seen</h6>
+                                            <div class="">Sebulan Terakhir</div>
+                                        </div>
+                                    </div>
+
+                                    <div>
+                                        <h4 class="mt-4 pt-1 mb-0 font-size-22">{{$total_last_seen['last_30_days']}}
+                                        </h4>
+                                        <div class="d-flex mt-1 align-items-end overflow-hidden">
+                                            <div class="flex-grow-1">
+                                                <p class="text-muted mb-0 text-truncate">Total hari ini <b>{{$total_last_seen['today']}}</b></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
