@@ -21,7 +21,7 @@ class FeedbackController extends Controller
         ]);
 
 
-        $feedback = Feedback::where('title', 'LIKE', "%$request->search%")->latest()->paginate($request->limit ?? 10);
+        $feedback = Feedback::where('title', 'LIKE', "%$request->search%")->where('user_id', auth()->user()->id)->latest()->paginate($request->limit ?? 10);
         $data = [];
 
         foreach ($feedback as $item) {
