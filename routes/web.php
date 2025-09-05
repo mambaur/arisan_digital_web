@@ -130,3 +130,6 @@ Route::get('/reset-password/success', function () {
 
 Route::get('/info/kebijakan-privasi', [StaticWebController::class, 'privacy']);
 Route::get('/info/syarat-dan-ketentuan', [StaticWebController::class, 'termCondition']);
+Route::get('/info/apa-itu-arisan', [StaticWebController::class, 'whatIsArisan']);
+Route::get('/info/tentang-arisan', [StaticWebController::class, 'aboutArisan']);
+Route::get('/info/tips-arisan', [StaticWebController::class, 'tipsArisan']);

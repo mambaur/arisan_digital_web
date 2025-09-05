@@ -22,4 +22,28 @@ class StaticWebController extends Controller
     {
         return view('statics.term-condition');
     }
+    
+    /**
+     * Display a listing of the resource.
+     */
+    public function whatIsArisan()
+    {
+        return view('statics.what-is-arisan');
+    }
+    
+    /**
+     * Display a listing of the resource.
+     */
+    public function aboutArisan()
+    {
+        return view('statics.about-arisan');
+    }
+    
+    /**
+     * Display a listing of the resource.
+     */
+    public function tipsArisan()
+    {
+        return view('statics.tips-arisan');
+    }
 }
