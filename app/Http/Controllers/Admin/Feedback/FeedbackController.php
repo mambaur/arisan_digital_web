@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers\Admin\Feedback;
 
+use App\Constants\NotificationType;
 use App\Http\Controllers\Admin\Feedback\DataGrid\FeedbackDataGrid;
 use App\Http\Controllers\Controller;
 use App\Models\Feedback;
+use App\Notifications\ArisanNotification;
 use Illuminate\Http\Request;
 
 class FeedbackController extends Controller
@@ -43,6 +45,14 @@ class FeedbackController extends Controller
 
         $feedback->comment = $request->comment;
         $feedback->save();
+
+        try {
+            $data = [
+                'feedback' => $feedback
+            ];
+            $feedback->user->notify(new ArisanNotification("Balasan Kritik & Saran Kamu!", $request->comment, NotificationType::FEEDBACK_HISTORY, $data));
+        } catch (\Throwable $th) {
+        }
 
         session()->flash('success', 'Your comment successfully updated');
         return redirect()->route('feedback');

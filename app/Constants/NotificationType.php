@@ -19,4 +19,7 @@ class NotificationType
     
     // GROUP
     public const GROUP_WINNER= 'group_winner';
+
+    // FEEDBACK
+    public const FEEDBACK_HISTORY= 'feedback_history';
 }
