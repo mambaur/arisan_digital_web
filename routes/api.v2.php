@@ -98,20 +98,6 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
     Route::delete('/member/delete/{id}', [MemberController::class, 'destroy']);
 
-
-    /*
-    |--------------------------------------------------------------------------
-    | Settings Routes
-    |--------------------------------------------------------------------------
-    |
-    | Manage settings data API
-    |
-    */
-
-    Route::get('/setting/all', [SettingController::class, 'all']);
-
-    Route::get('/setting/{key}', [SettingController::class, 'index']);
-
     /*
     |--------------------------------------------------------------------------
     | Groups Routes
@@ -248,6 +234,28 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
     Route::delete('/payment-accounts/delete/{id}', [PaymentAccountController::class, 'destroy']);
 });
+
+/*
+|--------------------------------------------------------------------------
+| Settings Routes
+|--------------------------------------------------------------------------
+|
+| Manage settings data API
+|
+*/
+
+Route::get('/setting/all', [SettingController::class, 'all']);
+
+Route::get('/setting/{key}', [SettingController::class, 'index']);
+
+/*
+|--------------------------------------------------------------------------
+| Guest Routes
+|--------------------------------------------------------------------------
+|
+| Manage guest data API
+|
+*/
 
 Route::get('/guest/group/{code}', [GuestGroupController::class, 'index']);
 
