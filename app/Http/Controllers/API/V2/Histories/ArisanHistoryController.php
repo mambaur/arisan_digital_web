@@ -26,7 +26,10 @@ class ArisanHistoryController extends Controller
     {
         $arisan_histories = ArisanHistory::with([
             'arisanHistoryDetails.member' => function ($query) {
-                $query->withTrashed()->whereNotIn('status_active', ['request_invitation', 'request_join']);
+                $query->withTrashed();
+            },
+            'arisanHistoryDetails' => function ($query) {
+                $query->whereNotIn('status_active', ['request_invitation', 'request_join']);
             },
             'winners.member' => function ($query) {
                 $query->withTrashed();
