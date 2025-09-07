@@ -48,7 +48,7 @@ class ArisanHistoryController extends Controller
                     ] : null,
                     "status_paid" => $row->status_paid,
                     "nominal_paid" => $row->nominal_paid,
-                    "date_paid" => $row->date_paid->format('d F Y')
+                    "date_paid" => @$row->date_paid ? $row->date_paid->format('d F Y') : null
                 ];
             }
 
