@@ -720,7 +720,7 @@ class MemberController extends Controller
     }
 
     /**
-     * Send Payment Notification Reminder to Member
+     * Send Payment Notification Reminder to All Member
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $group_id
@@ -731,7 +731,7 @@ class MemberController extends Controller
         $group = Group::find($group_id);
 
         if (!$group) {
-            return abort(404, 'Grub tidak ditemukan');
+            return abort(404, 'Grup tidak ditemukan');
         }
 
         $minute = 5;
@@ -760,6 +760,7 @@ class MemberController extends Controller
 
         $data = [];
         foreach ($members as $item) {
+            if(!@$item->user) continue;
             try {
                 $data = [
                     'member' => $item,
@@ -778,6 +779,48 @@ class MemberController extends Controller
             "message" => "Notifikasi penagihan pembayaran iuran arisan berhasil di kirim.",
         ], 200);
     }
+
+     /**
+     * Send Payment Notification Reminder to Member
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $member_id
+     * @return \Illuminate\Http\Response
+     */
+    public function singlePaymentNotificationReminder($member_id)
+    {
+        $member = Member::find($member_id);
+
+        if (!$member) {
+            return abort(404, 'Anggota tidak ditemukan');
+        }
+
+        if(!$member->user){
+            return response()->json([
+                "status" => "failed",
+                "message" => "Anggota tidak terdaftar sebagai pengguna aplikasi.",
+            ], 400);
+        }
+
+        try {
+            $data = [
+                'member' => $member,
+                'group' => @$member->group,
+            ];
+            $member->user->notify(new ArisanNotification("Yuk, bayar iuran arisannya!", "Jangan lupa bayar iuran arisan di grup {$member->group->name} ya. Biar arisannya tetap lancar dan tepat waktu!", NotificationType::MEMBER_PAYMENT_REMINDER, $data));
+        } catch (\Throwable $th) {
+            return response()->json([
+                "status" => "failed",
+                "message" => "Terjadi kesalahan saat mengirimkan notifikasi, silahkan coba kembali.",
+            ], 500);
+        }
+
+        return response()->json([
+            "status" => "success",
+            "message" => "Notifikasi penagihan pembayaran iuran arisan berhasil di kirim.",
+        ], 200);
+    }
+
 
     /**
      * Send Invitation Notification Reminder to Member
@@ -851,7 +894,7 @@ class MemberController extends Controller
 
         return response()->json([
             "status" => "success",
-            "message" => "Generate member from created by group done, total: " . count($groups ?? []),
+            "message" => "Generate member from created by grup done, total: " . count($groups ?? []),
         ], 200);
     }
 }

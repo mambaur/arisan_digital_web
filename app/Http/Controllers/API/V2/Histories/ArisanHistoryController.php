@@ -127,14 +127,27 @@ class ArisanHistoryController extends Controller
         ]);
 
         $group = Group::find($request->group_id);
-        $periods_day = 7; // default weekly
-        if ($group->periods_type == 'monthly') {
-            $periods_day = 30; // per bulan
+
+        $value = $group->periods_value;
+
+        switch ($group->periods_name) {
+            case 'week':
+                $group->periods_date = $group->periods_date->addWeeks($value);
+                break;
+
+            case 'month':
+                $group->periods_date = $group->periods_date->addMonths($value);
+                break;
+
+            case 'year':
+                $group->periods_date = $group->periods_date->addYears($value);
+                break;
+
+            default:
+                $group->periods_date = $group->periods_date->addMonths(1);
+                break;
         }
-        if ($group->periods_type == 'annual') {
-            $periods_day = 365; // per tahun
-        }
-        $group->periods_date = $group->periods_date->addDays($periods_day);
+
         $group->save();
 
         Member::find($request->member_id)->update([
@@ -232,14 +245,24 @@ class ArisanHistoryController extends Controller
         ]);
 
         $group = Group::find($request->group_id);
-        $periods_day = 7; // default weekly
-        if ($group->periods_type == 'monthly') {
-            $periods_day = 30; // per bulan
+        $value = $group->periods_value;
+        switch ($group->periods_name) {
+            case 'week':
+                $group->periods_date = $group->periods_date->addWeeks($value);
+                break;
+
+            case 'month':
+                $group->periods_date = $group->periods_date->addMonths($value);
+                break;
+
+            case 'year':
+                $group->periods_date = $group->periods_date->addYears($value);
+                break;
+
+            default:
+                $group->periods_date = $group->periods_date->addMonths(1);
+                break;
         }
-        if ($group->periods_type == 'annual') {
-            $periods_day = 365; // per tahun
-        }
-        $group->periods_date = $group->periods_date->addDays($periods_day);
         $group->save();
 
         foreach ($member_ids as $member_id) {

@@ -104,7 +104,7 @@ class GroupOwnerController extends Controller
 
         return response()->json([
             "status" => "success",
-            "message" => "Pengelola group berhasil ditambahkan.",
+            "message" => "Pengelola grup berhasil ditambahkan.",
         ], 200);
     }
 
@@ -138,7 +138,7 @@ class GroupOwnerController extends Controller
 
         if (!@$group_owner) {
             return response()->json([
-                "message" => "Pemilik group tidak ditemukan"
+                "message" => "Pemilik grup tidak ditemukan"
             ], 404);
         }
 
@@ -147,7 +147,7 @@ class GroupOwnerController extends Controller
 
         return response()->json([
             "status" => "success",
-            "message" => "Status pemilik group berhasil diubah.",
+            "message" => "Status pemilik grup berhasil diubah.",
         ], 200);
     }
 
@@ -162,7 +162,7 @@ class GroupOwnerController extends Controller
 
         if (!@$group_owner) {
             return response()->json([
-                "message" => "Pemilik group tidak ditemukan"
+                "message" => "Pemilik grup tidak ditemukan"
             ], 404);
         }
 
@@ -190,7 +190,7 @@ class GroupOwnerController extends Controller
 
         return response()->json([
             "status" => "success",
-            "message" => "Pengelola grub berhasil dihapus.",
+            "message" => "Pengelola grup berhasil dihapus.",
         ], 200);
     }
 }

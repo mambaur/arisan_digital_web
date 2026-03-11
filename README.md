@@ -19,20 +19,24 @@ Jalankan ini untuk memulai migrasi ke versi terbaru
 ### Notes
 - Kolom owner_id di tabel members tidak digunakan lagi
 - Kirim ulang invitation member yang ditolak
+
+### New Feature
 - Fitur reset arisan yang semua sudah pernah jadi pemenang
-
-## Notifications
-Kirim ke anggota
-- (done) Undangan masuk ke grub
-- (done) reminder request invitation member notifikasi manual
-- (done) Tagih bayar arisan
-- (done) Didaftarkan atau dihapus sebagai pengelola
-- (done) Pemenang arisan
-- (done) Dihapus dari anggota
-
-Kirim ke pengelola
-- (done) Anggota menerima undangan
-- (done) Request daftar sebagai member dari anggota
+- Single reminder payment member
 
 ## Deleted soon
 - /members/generate/member-from-created-by-group
+
+## Release new feature:
+
+1. Run `php artisan migrate`
+2. Run this sql
+
+UPDATE `groups`
+SET periods_name = 
+    CASE
+        WHEN periods_type = 'monthly' THEN 'month'
+        WHEN periods_type = 'weekly' THEN 'week'
+        WHEN periods_type = 'annual' THEN 'year'
+        ELSE periods_name
+    END;

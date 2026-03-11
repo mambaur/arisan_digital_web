@@ -77,6 +77,8 @@ class GroupController extends Controller
                 'id' => $item->id,
                 'name' => $item->name,
                 'code' => $item->code,
+                'periods_name' => $item->periods_name,
+                'periods_value' => $item->periods_value,
                 'periods_type' => $item->periods_type,
                 'periods_date' => $item->periods_date->format('Y-m-d'),
                 'periods_date_en' => $item->periods_date->format('d F Y'),
@@ -95,7 +97,7 @@ class GroupController extends Controller
 
         return response()->json([
             "status" => "success",
-            "message" => "Data group berhasil didapatkan.",
+            "message" => "Data grup berhasil didapatkan.",
             "data" => $data
         ], 200);
     }
@@ -128,7 +130,7 @@ class GroupController extends Controller
 
         return response()->json([
             "status" => "success",
-            "message" => "Generate group owner success",
+            "message" => "Generate grup owner success",
         ], 200);
     }
 
@@ -194,7 +196,7 @@ class GroupController extends Controller
 
         return response()->json([
             "status" => "success",
-            "message" => "Data member group berhasil didapatkan.",
+            "message" => "Data member grup berhasil didapatkan.",
             "data" => $data
         ], 200);
     }
@@ -212,6 +214,8 @@ class GroupController extends Controller
             'dues' => 'required',
             'periods_type' => 'required',
             'periods_date' => 'required',
+            'periods_name' => 'nullable',
+            'periods_value' => 'nullable'
         ]);
 
         if ($validate->fails()) {
@@ -230,6 +234,8 @@ class GroupController extends Controller
         $group = Group::create([
             "name" => $request->name,
             "code" => Group::generateUniqueKey(),
+            "periods_name" => $request->periods_name,
+            "periods_value" => $request->periods_value,
             "periods_type" => $request->periods_type,
             "periods_date" => $request->periods_date,
             "dues" => $request->dues,
@@ -261,7 +267,7 @@ class GroupController extends Controller
 
         return response()->json([
             "status" => "success",
-            "message" => "Group $request->name berhasil ditambahkan.",
+            "message" => "Grup $request->name berhasil ditambahkan.",
         ], 200);
     }
 
@@ -278,7 +284,7 @@ class GroupController extends Controller
             return response()->json(
                 [
                     'status' => 'failed',
-                    'message' => 'Data group tidak ditemukan.',
+                    'message' => 'Data grup tidak ditemukan.',
                 ],
                 400
             );
@@ -292,7 +298,7 @@ class GroupController extends Controller
             ->first();
 
         if (!@$member) {
-            return abort(404, "Anda belum tergabung dalam grub");
+            return abort(404, "Anda belum tergabung dalam grup");
         }
 
         $total_balance = $this->totalBalanceArisan($group);
@@ -310,6 +316,8 @@ class GroupController extends Controller
             'id' => $group->id,
             'name' => $group->name,
             'code' => $group->code,
+            'periods_name' => $group->periods_name,
+            'periods_value' => $group->periods_value,
             'periods_type' => $group->periods_type,
             'periods_date' => $group->periods_date->format('Y-m-d'),
             'periods_date_en' => $group->periods_date->format('d F Y'),
@@ -330,7 +338,7 @@ class GroupController extends Controller
 
         return response()->json([
             "status" => "success",
-            "message" => "Data group berhasil didapatkan.",
+            "message" => "Data grup berhasil didapatkan.",
             "data" => $data
         ], 200);
     }
@@ -349,6 +357,8 @@ class GroupController extends Controller
             'dues' => 'required',
             'periods_type' => 'required',
             'periods_date' => 'required',
+            'periods_name' => 'nullable',
+            'periods_value' => 'nullable'
         ]);
 
         if ($validate->fails()) {
@@ -367,7 +377,7 @@ class GroupController extends Controller
             return response()->json(
                 [
                     'status' => 'failed',
-                    'message' => 'Data group tidak ditemukan.',
+                    'message' => 'Data grup tidak ditemukan.',
                 ],
                 404
             );
@@ -375,6 +385,8 @@ class GroupController extends Controller
 
         $group->update([
             "name" => $request->name,
+            "periods_name" => $request->periods_name,
+            "periods_value" => $request->periods_value,
             "periods_type" => $request->periods_type,
             "periods_date" => $request->periods_date,
             "dues" => $request->dues,
@@ -384,7 +396,7 @@ class GroupController extends Controller
 
         return response()->json([
             "status" => "success",
-            "message" => "Data group berhasil diupdate.",
+            "message" => "Data grup berhasil diupdate.",
         ], 200);
     }
 
@@ -417,7 +429,7 @@ class GroupController extends Controller
             return response()->json(
                 [
                     'status' => 'failed',
-                    'message' => 'Data group tidak ditemukan.',
+                    'message' => 'Data grup tidak ditemukan.',
                 ],
                 404
             );
@@ -429,7 +441,7 @@ class GroupController extends Controller
 
         return response()->json([
             "status" => "success",
-            "message" => "Status group berhasil diupdate.",
+            "message" => "Status grup berhasil diupdate.",
         ], 200);
     }
 
@@ -462,7 +474,7 @@ class GroupController extends Controller
             return response()->json(
                 [
                     'status' => 'failed',
-                    'message' => 'Data group tidak ditemukan.',
+                    'message' => 'Data grup tidak ditemukan.',
                 ],
                 404
             );
@@ -474,7 +486,37 @@ class GroupController extends Controller
 
         return response()->json([
             "status" => "success",
-            "message" => "Catatan group berhasil diupdate.",
+            "message" => "Catatan grup berhasil diupdate.",
+        ], 200);
+    }
+
+    /**
+     * Update Group Period Date
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function resetAllMemberRewards(Request $request, $id){
+        $group = Group::find($id);
+        if (!$group) {
+            return response()->json(
+                [
+                    'status' => 'failed',
+                    'message' => 'Data grup tidak ditemukan.',
+                ],
+                404
+            );
+        }
+
+        Member::where('group_id', $id)->update([
+            'is_get_reward' => 0,
+            'status_paid' => 'unpaid'
+        ]);
+
+        return response()->json([
+            "status" => "success",
+            "message" => "Pemenang grup $group->name telah berhasil di reset.",
         ], 200);
     }
 
@@ -507,7 +549,7 @@ class GroupController extends Controller
             return response()->json(
                 [
                     'status' => 'failed',
-                    'message' => 'Data group tidak ditemukan.',
+                    'message' => 'Data grup tidak ditemukan.',
                 ],
                 404
             );
@@ -519,7 +561,7 @@ class GroupController extends Controller
 
         return response()->json([
             "status" => "success",
-            "message" => "Tanggal kocok group arisan berhasil diupdate.",
+            "message" => "Tanggal kocok grup arisan berhasil diupdate.",
         ], 200);
     }
 
@@ -536,7 +578,7 @@ class GroupController extends Controller
             return response()->json(
                 [
                     'status' => 'failed',
-                    'message' => 'Data group tidak ditemukan.',
+                    'message' => 'Data grup tidak ditemukan.',
                 ],
                 400
             );
@@ -552,7 +594,7 @@ class GroupController extends Controller
 
         return response()->json([
             "status" => "success",
-            "message" => "Group berhasil dihapus.",
+            "message" => "Grup berhasil dihapus.",
         ], 200);
     }
 }

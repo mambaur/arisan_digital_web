@@ -72,6 +72,8 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
     Route::post('/members/notification/reminder/payment/{group_id}', [MemberController::class, 'paymentNotificationReminder']);
 
+    Route::post('/members/notification/single-reminder/payment/{member_id}', [MemberController::class, 'singlePaymentNotificationReminder']);
+
     Route::post('/members/notification/reminder/invitation/{member_id}', [MemberController::class, 'invitationNotificationReminder']);
 
     Route::get('/member/count/{group_id}', [MemberController::class, 'countMember']);
@@ -126,6 +128,8 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::patch('/group/update/notes/{id}', [GroupController::class, 'updateNotes']);
 
     Route::patch('/group/update/periods-date/{id}', [GroupController::class, 'updatePeriodsDate']);
+
+    Route::post('/group/reset-all-member-rewards/{id}', [GroupController::class, 'resetAllMemberRewards']);
 
     Route::delete('/group/delete/{id}', [GroupController::class, 'destroy']);
 
