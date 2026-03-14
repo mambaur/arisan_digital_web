@@ -73,7 +73,7 @@
         <p>
             Pengguna berhak untuk menghapus akun dan seluruh datanya dengan mengirimkan permintaan ke email berikut:<br>
 
-            <b>support@caraguna.com</b><br>
+            <b>halo@nexadream.id</b><br>
             <b>Subjek</b> Permintaan Penghapusan Akun Arisan Digital<br>
             Permintaan akan diproses dalam waktu maksimal 7 hari kerja.
         </p>
@@ -89,7 +89,7 @@
         <p>
             Jika Anda memiliki pertanyaan terkait Syarat dan Ketentuan ini, silakan hubungi kami di:<br>
 
-            <b>Email</b>: support@caraguna.com<br>
+            <b>Email</b>: halo@nexadream.id<br>
             <b>Nama Developer</b> CRG Studio<br>
         </p>
         

@@ -135,3 +135,4 @@ Route::get('/info/syarat-dan-ketentuan', [StaticWebController::class, 'termCondi
 Route::get('/info/apa-itu-arisan', [StaticWebController::class, 'whatIsArisan']);
 Route::get('/info/tentang-arisan', [StaticWebController::class, 'aboutArisan']);
 Route::get('/info/tips-arisan', [StaticWebController::class, 'tipsArisan']);
+Route::get('/info/delete-account', [StaticWebController::class, 'deleteAccount']);

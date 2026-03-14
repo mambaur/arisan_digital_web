@@ -46,4 +46,9 @@ class StaticWebController extends Controller
     {
         return view('statics.tips-arisan');
     }
+    
+    public function deleteAccount()
+    {
+        return view('statics.delete-account');
+    }
 }

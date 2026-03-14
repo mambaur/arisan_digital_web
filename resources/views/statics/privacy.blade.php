@@ -71,7 +71,7 @@
             </ul>
             Untuk permintaan penghapusan akun dan data, silakan kirim email ke:
             <br>
-            <b>support@caraguna.com</b><br>
+            <b>halo@nexadream.id</b><br>
             dengan subjek: Permintaan Hapus Akun Arisan Digital<br>
             Kami akan memproses permintaan Anda dalam waktu maksimal 7 hari kerja.<br>
         </p>
@@ -88,7 +88,7 @@
             Kebijakan privasi ini dapat diperbarui sewaktu-waktu. Setiap perubahan akan diinformasikan melalui aplikasi atau situs web resmi kami.
 
             Jika Anda memiliki pertanyaan atau keluhan mengenai kebijakan privasi ini, silakan hubungi kami di:<br>
-            <b>Email</b>: support@caraguna.com<br>
+            <b>Email</b>: halo@nexadream.id<br>
             <b>Aplikasi</b>: Arisan Digital<br>
         </p>
     </div>
