@@ -83,6 +83,8 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 
     Route::get('/users', [UserController::class, 'index'])->name('users');
 
+    Route::get('/users/generate-auth-token/{email}', [UserController::class, 'generateAuthToken'])->name('user_generate_auth_token');
+    
     Route::get('/users/data', [UserController::class, 'data'])->name('user_data');
 
     Route::get('/users/search/data', [UserController::class, 'getUserSearchData'])->name('user_search_data');

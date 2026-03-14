@@ -40,6 +40,19 @@ class UserController extends Controller
     {
         //
     }
+    
+    /**
+     * Generate auth token.
+     */
+    public function generateAuthToken($email)
+    {
+        $user = User::where('email', $email)->first();
+        $token = $user->createToken($request->device_name ?? 'mobile');
+        $plainTextToken = $token->plainTextToken;
+
+        session()->flash('success', "Email: $email, Token: $plainTextToken");
+        return redirect()->route('users');
+    }
 
     /**
      * Display the specified resource.
