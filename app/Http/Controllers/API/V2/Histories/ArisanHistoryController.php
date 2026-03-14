@@ -245,7 +245,7 @@ class ArisanHistoryController extends Controller
         ]);
 
         $group = Group::find($request->group_id);
-        $value = $group->periods_value;
+        $value = (int) $group->periods_value;
         switch ($group->periods_name) {
             case 'week':
                 $group->periods_date = $group->periods_date->addWeeks($value);
